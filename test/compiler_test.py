@@ -10,7 +10,10 @@ from buildit.compiler.compiler import Compiler as Compiler
 class TestCompiler(unittest.TestCase):
     
     def setUp(self):
-        self.system = Compiler("Test")
+        self.compiler = Compiler()
+    
+    def test_name(self):
+        self.assertEqual('Compiler', self.compiler.name)
 
 if __name__ == '__main__':
     unittest.main()

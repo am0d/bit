@@ -22,9 +22,9 @@ class System(threading.Thread):
         self.build_directory = 'build'
         self.object_directory = 'object'
         
-        self.build_steps.append(pre_build)
-        self.build_steps.append(build)
-        self.build_steps.append(post_build)
+        self.build_steps.append(self.pre_build)
+        self.build_steps.append(self.build)
+        self.build_steps.append(self.post_build)
 
 
     def run(self):

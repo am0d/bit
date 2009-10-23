@@ -6,15 +6,15 @@ from buildit.cprint import command
 class Compiler(object):
 
     def __init__(self):
-        self.name = name()
-        self.exe = self.exe()
-        self.extensions = self.extensions()
+        self.name = self.name()
+        self.exe = self.exe('dummy')
+        self.extensions = self.extensions('dummy')
         self.file_list = []
         self.flags = ''
         self.compile_steps = []
         
-        self.compile_steps.append(setup_files)
-        self.compile_steps.append(compile_files)
+        self.compile_steps.append(self.setup_files)
+        self.compile_steps.append(self.compile_files)
 
     def run(self):
         for function in self.compile_steps:

@@ -2,7 +2,7 @@
 
 class_list = []
 
-add_project(project)
+def add_project(project):
     if not isinstance(project, class):
         warning('{0} is not a recognized project type!'.format(project))
     class_list.append(project)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # buildit install script
 
-from disutils.core import setup
+from distutils.core import setup
 
 setup(name='buildit',
       version='0.1',

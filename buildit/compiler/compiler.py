@@ -33,7 +33,7 @@ class Compiler(object):
         return 0
         
     def compile_files(self):
-        command('{0}: {1}'.format(self.name.upper(), outfile_name)
+        command('{0}: {1}'.format(self.name.upper(), outfile_name))
         
     def add_flags(self, flags):
         self.flags += format_options(flags)

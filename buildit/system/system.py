@@ -1,10 +1,10 @@
 import os
 import sys
 import threading
-import datetime.datetime as datetime
+from datetime import datetime as datetime
 
-from buildit.compiler import compiler.Compiler as Compiler
-from buildit.linker import linker.Linker as Linker
+from buildit.compiler.compiler import Compiler as Compiler
+#from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
 from buildit.utils import fix_strings
 
@@ -13,7 +13,7 @@ class System(threading.Thread):
     def __init__(self, project_name,unity_build=False):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
-        self.linker = Linker()
+        #self.linker = Linker()
         self.file_list = []        
         self.build_steps = []
         self.unity_build = unity_build
@@ -41,7 +41,7 @@ class System(threading.Thread):
 
     def build(self):
         self.compiler.run(self.unity_build)
-        self.linker.run(self.unity_build)
+        #self.linker.run(self.unity_build)
         
     def post_build(self):
         pass

@@ -1,1 +1,7 @@
 *.pyc
+*.swp
+*.out
+*.exe
+*.o
+*.elf
+*.mach

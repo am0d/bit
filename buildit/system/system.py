@@ -7,13 +7,14 @@ from buildit.linker import linker.Linker as Linker
 
 class System(threading.Thread):
     
-    def __init__(self, unity_build=False):
+    def __init__(self, project_name,unity_build=False):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
         self.linker = Linker()
         self.file_list = []        
         self.build_steps = []
         self.unity_build = unity_build
+        self.project_name = project_name
         self.build_steps.append(pre_build)
         self.build_steps.append(build)
         self.build_steps.append(post_build)
@@ -37,4 +38,4 @@ class System(threading.Thread):
         pass
 
     def add_files(self, files):
-        self.file_list.append(files) # Just temporary.
+        self.file_list.append(files) # Just temporary~

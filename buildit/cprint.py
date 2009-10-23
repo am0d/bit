@@ -37,3 +37,6 @@ def warning(message):
 
 def error(message):
     cprint(message, red)
+    
+def command(message):
+    cprint(message, magenta)

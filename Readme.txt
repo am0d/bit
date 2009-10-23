@@ -1,8 +1,5 @@
 Contributors:
-
-
-
-Tres Walsh 	    <tres.walsh@mnmlstc.com> 	(SAHChandler)Damien Schoof 	<damien.schoof@gmail.com> 	(a_m0d)
+    Tres Walsh      <tres.walsh@mnmlstc.com> 	(SAHChandler)    Damien Schoof   <damien.schoof@gmail.com> 	(a_m0d)
 
 
 This project is released under a BSD License

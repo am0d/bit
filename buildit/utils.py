@@ -61,7 +61,19 @@ def flatten(list_name, containers=(list, tuple)):
             return reduce(lambda x, y : x + y, map(flatten, list_name))
     else:
         return [list_name]
-        
+
+def fix_strings(file_list):
+    if isinstance(file_list, list) or isinstance(file_list, tuple) 
+        if sys.platform == 'win32':
+            for file_name in file_list:
+                file_list.remove(file_name)
+                file_name = file_name.replace('\\', '/')
+                file_list.append(file_name)
+                file_list.sort()
+        else:
+            file_list.sort()
+    return file_list
+
 def format_options(option_list, option='')
     string = ''
     for item in option_list:

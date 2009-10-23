@@ -2,9 +2,10 @@
 
 import sys
 import threading
-import ctypes.windll.kernel32 as windll
+
 
 if sys.platform == 'win32':
+    import ctypes.windll.kernel32 as windll
     green = 0x0002
     red = 0x0004
     magenta = 0x0005

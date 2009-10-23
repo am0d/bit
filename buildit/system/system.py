@@ -1,6 +1,7 @@
 import os
 import sys
 import threading
+import datetime.datetime as datetime
 
 from buildit.compiler import compiler.Compiler as Compiler
 from buildit.linker import linker.Linker as Linker
@@ -26,11 +27,13 @@ class System(threading.Thread):
 
 
     def run(self):
+        start_time = datetime.now()
         for function in self.build_steps:
             return_value = function()
             if not return_value == 0:
                 error('\nError: {0}'.format(lookup_error(return_value)))
                 sys.exit(return_value)
+        info('{0}: {1}'.format(self.name.upper(), datetime.now() - start_time))
 
     def pre_build(self):
         pass
@@ -41,6 +44,14 @@ class System(threading.Thread):
         
     def post_build(self):
         pass
+
+    def name(self):
+        name = str(self)
+        name = name.split('(')
+        name = name.pop(0)
+        name = name.replace('<', '')
+        name = name.replace('\n', '')
+        return name
 
     def add_files(self, files):
         

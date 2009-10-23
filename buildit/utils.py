@@ -33,7 +33,7 @@ def file_hash(file_name):
 def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
     
-which(program_name):
+def which(program_name):
     if system_type() == 'windows':
         program_name = '{0}.exe'.format(program_name)
     filepath = os.path.split(program_name)[0]

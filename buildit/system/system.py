@@ -5,6 +5,7 @@ import datetime.datetime as datetime
 
 from buildit.compiler import compiler.Compiler as Compiler
 from buildit.linker import linker.Linker as Linker
+from buildit.cprint import error, info
 from buildit.utils import fix_strings
 
 class System(threading.Thread):
@@ -17,7 +18,7 @@ class System(threading.Thread):
         self.build_steps = []
         self.unity_build = unity_build
         self.project_name = project_name
-        self.source_directory = '.'
+        self.source_directory = 'source'
         self.build_directory = 'build'
         self.object_directory = 'object'
         
@@ -54,9 +55,7 @@ class System(threading.Thread):
         return name
 
     def add_files(self, files):
-        
         self.file_list.append(files) # Just temporary~
-        
         
     def source_directory(self, directory):
         ''' Set the System's base source directory '''

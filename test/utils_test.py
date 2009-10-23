@@ -45,5 +45,10 @@ class TestUtils(unittest.TestCase):
         sys.platform = 'unknown'
         self.assertEqual('generic', system_type())
 
+    def test_format_options(self):
+        options = ['all', 'error', 'typos', 'etc']
+        self.assertEqual(' all error typos etc', format_options(options))
+        self.assertEqual(' -Wall -Werror -Wtypos -Wetc', format_options(options, '-W'))
+
 if __name__ == "__main__":
    unittest.main() 

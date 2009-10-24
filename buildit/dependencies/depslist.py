@@ -63,3 +63,23 @@ class Depslist(object):
         else:
             return ''
 
+    def parse_file(self, file):
+        ''' Parses one file and returns a list of all the files
+            that the file depends on (determined by the files it
+            includes).
+            '''
+        deps = []
+        try:
+            file = open(file, "r")
+            try:
+                self.current_file = file.name
+
+                for line in file.readlines():
+                    path = parse_line(line)
+                    if not path == '':
+                        deps.append(path)
+            finally:
+                file.close()
+        except IOError:
+            return deps
+

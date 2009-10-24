@@ -21,6 +21,7 @@ class System(threading.Thread):
         self.source_directory = 'source'
         self.build_directory = 'build'
         self.object_directory = 'object'
+        self.unity_directory = 'unity'
         
         self.build_steps.append(self.pre_build)
         self.build_steps.append(self.build)
@@ -34,7 +35,8 @@ class System(threading.Thread):
             if not return_value == 0:
                 error('\nError: {0}'.format(lookup_error(return_value)))
                 sys.exit(return_value)
-        info('{0}: {1}'.format(self.name.upper(), datetime.now() - start_time))
+        end_time = datetime.now()
+        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time)))
 
     def pre_build(self):
         pass
@@ -57,14 +59,38 @@ class System(threading.Thread):
     def add_files(self, files):
         self.file_list.append(files) # Just temporary~
         
-    def source_directory(self, directory):
+    @property
+    def source_directory(self):
+        pass
+        
+    @source_directory.setter
+    def source_directory(self, value):
         ''' Set the System's base source directory '''
-        self.source_directory = directory
-        
-    def build_directory(self, directory):
-        ''' Set the System's build (output) directory'''
-        self.build_directory = directory
-        
-    def object_directory(self, directory):
+        self.source_directory = value
+
+    @property
+    def build_directory(self):
+        pass
+
+    @build_directory.setter
+    def build_directory(self, value):
+        ''' Set the System's build (output) directory '''
+        self.build_directory = value
+
+    @property
+    def object_directory(self):
+        pass
+    
+    @object_directory.setter    
+    def object_directory(self, value):
         ''' Set the System's object file directory '''
-        self.object_directory = directory
+        self.object_directory = value
+    
+    @property
+    def unity_directory(self):
+        pass
+
+    @unity_directory.setter
+    def unity_directory(self, value):
+        ''' Set the System's unity build directory '''
+        self.unity_directory = value

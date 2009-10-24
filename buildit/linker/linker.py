@@ -1,5 +1,8 @@
 # Base Linker Class
 
+import os
+import subprocess
+
 from buildit.utils import which
 from buildit.cprint import command
 
@@ -24,6 +27,10 @@ class Linker(object):
         
     def link(self):
         command('{0}: {1}'.format(self.name.upper(), outfile_name))
+        try:
+            subprocess.call(run_string)
+        except OSError:
+            os.system(run_string)
     
     def exe(self):
         return which('echo')

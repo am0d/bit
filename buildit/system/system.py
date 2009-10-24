@@ -10,7 +10,7 @@ from buildit.utils import fix_strings
 
 class System(threading.Thread):
     
-    def __init__(self, project_name,unity_build=False):
+    def __init__(self, project_name, unity_build=False, linker=False):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
         #self.linker = Linker()

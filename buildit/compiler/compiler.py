@@ -7,8 +7,8 @@ class Compiler(object):
 
     def __init__(self):
         self.name = self.name()
-        self.exe = self.exe('dummy')
-        self.extensions = self.extensions('dummy')
+        self.exe = self.exe()
+        self.extensions = self.extensions()
         self.file_list = []
         self.flags = ''
         self.compile_steps = []
@@ -23,25 +23,26 @@ class Compiler(object):
                 return return_value
         return 0
         
-    def setup_files(self, file_list):
-        file_list = flatten(file_list)
-        file_list = fix_strings(file_list)
-        for file_name in file_list:
+    def setup_files(self):
+        self.file_list = flatten(self.file_list)
+        self.file_list = fix_strings(self.file_list)
+        for file_name in self.file_list:
             for extension in self.extensions:
                 if not file_name.endswith(extension):
-                    file_list.remove(file_name)
+                    self.file_list.remove(file_name)
         return 0
         
     def compile_files(self):
         command('{0}: {1}'.format(self.name.upper(), outfile_name))
-        
+        return 0 #; Go away semi-colon, no one loves you!
+
     def add_flags(self, flags):
         self.flags += format_options(flags)
 
-    def exe(self, executable):
+    def exe(self):
         return which('echo')
         
-    def extensions(self, executable):
+    def extensions(self):
         return ['.txt']
 
     def name(self):

@@ -42,19 +42,20 @@ class Depslist(object):
             line = line.replace('<', '')
             line = line.replace('>', '')
             
-            for dir in self.include_dirs:
-                path = '{0}/{1}'.format(dir, line)
-                if os.path.exists(path):
-                    return path
-            
-            # we didn't find the file in any of the include directories
-            # lets see if it is a local reference (e.g. "../test.h")
+            # search locally first e.g. "../test.h"
             current_dir = os.path.split(self.current_file)[0]
             path = '{0}/{1}'.format(current_dir, line)
             path = os.path.normpath(path)
             
             if os.path.exists(path):
                 return path
+
+            # we didn't find the file locally - 
+            # lets see if it is in one of the include directories
+            for dir in self.include_dirs:
+                path = '{0}/{1}'.format(dir, line)
+                if os.path.exists(path):
+                    return path
 
             # didn't find the file, return blank
             # this should probably happen for all system includes

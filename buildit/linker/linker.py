@@ -18,7 +18,7 @@ class Linker(object):
         
         self.link_steps.append(self.link)
         
-    def run(self):
+    def run(self, unity_build):
         for function in self.link_steps:
             return_value = function()
             if not return_value == 0:

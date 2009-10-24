@@ -16,7 +16,7 @@ class Compiler(object):
         self.compile_steps.append(self.setup_files)
         self.compile_steps.append(self.compile_files)
 
-    def run(self):
+    def run(self, unity_build):
         for function in self.compile_steps:
             return_value = function()
             if not return_value == 0:

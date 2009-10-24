@@ -10,7 +10,7 @@ from buildit.utils import fix_strings
 
 class System(threading.Thread):
     
-    def __init__(self, project_name, unity_build=False, linker=False):
+    def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
         #self.linker = Linker()
@@ -43,7 +43,8 @@ class System(threading.Thread):
 
     def build(self):
         self.compiler.run(self.unity_build)
-        #self.linker.run(self.unity_build)
+        if self.linker == True:
+            self.linker.run(self.unity_build)
         
     def post_build(self):
         pass

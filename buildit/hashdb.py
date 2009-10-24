@@ -12,10 +12,11 @@ class HashDB(object):
         self.name = hash_name
         self.__location'.buildit/{0}'.format(self.name)
         self.__file = None
-        self.__dict = None
+        self.__dict = []
         self.__run()
+        assert(isinstance(self.__dict, dict))
 
-    def run(self):
+    def __run(self):
         try:
             os.makedirs('.buildit')
             if system_type == 'windows':
@@ -30,8 +31,8 @@ class HashDB(object):
         for line in self.file:
             line = line.replace('\n', '')
             line = line.split(':')
-            self.dict.append(line)
-        self.dict = dict(list(self.dict))
+            self.__dict.append(line)
+        self.__dict = dict(tuple(self.__dict))
         
     @property        
     def dictionary(self):

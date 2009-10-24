@@ -41,9 +41,8 @@ class HashDB(object):
         for file_name in file_list:
             self._file.write('{0}:{1}\n'.format(file_name, 
                                                 file_hash(file_name))
-        
-            
-        
+        self.__file.close()
+
     @property        
     def dictionary(self):
         return self.__dict

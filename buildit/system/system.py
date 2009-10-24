@@ -7,13 +7,16 @@ from buildit.compiler.compiler import Compiler as Compiler
 from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
 from buildit.utils import fix_strings
+from buildit.hashdb import HashDB
 
 class System(threading.Thread):
     
     def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
+        self.name = name()
         self.compiler = Compiler()
         self.linker = Linker()
+        self.hashdb = HashDB(self.name)
         self.file_list = []        
         self.build_steps = []
         self.unity_build = unity_build

@@ -4,20 +4,22 @@ import os
 import sys
 
 from buildit.cprint import error, warning
-from buildit.utils import fix_strings, file_hash
+from buildit.utils import fix_strings, file_hash, system_type
 
 class HashDB(object):
     
     def __init__(self, hash_name):
         self.name = hash_name
-        self.location'.buildit/{0}'.format(self.name)
-        self.file = None
-        self.dict = None
-        self.run()
+        self.__location'.buildit/{0}'.format(self.name)
+        self.__file = None
+        self.__dict = None
+        self.__run()
 
     def run(self):
         try:
             os.makedirs('.buildit')
+            if system_type == 'windows':
+                subprocess.call('attrib +h .buildit')
         except:
             pass
         if not os.path.exists(hash_location)
@@ -33,6 +35,6 @@ class HashDB(object):
         
     @property        
     def dictionary(self):
-        return self.dict
+        return self.__dict
 
     

@@ -46,7 +46,8 @@ def which(program_name):
             if is_exe(exe_file):
                 return exe_file
     return None
-    
+
+@property    
 def system_type():
     systems = {'win32': 'windows', 'cygwin': 'windows',
                'linux': 'linux', 'linux2': 'linux',

@@ -13,18 +13,18 @@ class System(threading.Thread):
     
     def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
-        self.name = name()
+        self.__name = name()
         self.compiler = Compiler()
         self.linker = Linker()
         self.hashdb = HashDB(self.name)
         self.file_list = []        
-        self.build_steps = []
-        self.unity_build = unity_build
-        self.project_name = project_name
-        self.source_directory = 'source'
-        self.build_directory = 'build'
-        self.object_directory = 'object'
-        self.unity_directory = 'unity'
+        self.__build_steps = []
+        self.__unity_build = unity_build
+        self.__project_name = project_name
+        self.__source_directory = 'source'
+        self.__build_directory = 'build'
+        self.__object_directory = 'object'
+        self.__unity_directory = 'unity'
         
         self.build_steps.append(self.pre_build)
         self.build_steps.append(self.build)
@@ -70,7 +70,7 @@ class System(threading.Thread):
     @source_directory.setter
     def source_directory(self, value):
         ''' Set the System's base source directory '''
-        self.source_directory = value
+        self.__source_directory = value
 
     @property
     def build_directory(self):
@@ -79,7 +79,7 @@ class System(threading.Thread):
     @build_directory.setter
     def build_directory(self, value):
         ''' Set the System's build (output) directory '''
-        self.build_directory = value
+        self.__build_directory = value
 
     @property
     def object_directory(self):
@@ -88,13 +88,14 @@ class System(threading.Thread):
     @object_directory.setter    
     def object_directory(self, value):
         ''' Set the System's object file directory '''
-        self.object_directory = value
+        self.__object_directory = value
     
     @property
     def unity_directory(self):
+        #return self.__unity_directory
         pass
 
     @unity_directory.setter
     def unity_directory(self, value):
         ''' Set the System's unity build directory '''
-        self.unity_directory = value
+        self.__unity_directory = value

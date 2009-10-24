@@ -13,7 +13,7 @@ class System(threading.Thread):
     def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
-        #self.linker = Linker()
+        self.linker = Linker()
         self.file_list = []        
         self.build_steps = []
         self.unity_build = unity_build

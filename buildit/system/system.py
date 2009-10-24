@@ -4,7 +4,7 @@ import threading
 from datetime import datetime as datetime
 
 from buildit.compiler.compiler import Compiler as Compiler
-#from buildit.linker.linker import Linker as Linker
+from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
 from buildit.utils import fix_strings
 

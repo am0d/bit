@@ -51,7 +51,14 @@ class System(threading.Thread):
         pass
 
     def add_files(self, files):
-        self.file_list.append(files) # Just temporary~
+        if not isinstance(files, basestring):
+            for item in flatten(files):
+                if isinstance(item, basestring):
+                    self.__file_list.append(item)
+        elif isinstance(files, basestring):
+            self.__file_list.append(files)
+        else:
+            warning('{0} is not a supported datatype!'.format(files))
 
     @property
     def name(self):

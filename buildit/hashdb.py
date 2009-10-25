@@ -33,7 +33,7 @@ class HashDB(object):
             line = line.split(':')
             self.__dict.append(line)
         self.__dict = dict(tuple(self.__dict))
-        
+
     def generate_hashfile(file_list):
         self.__file.open(self.__location, 'w')
         if sys.platform == 'win32':

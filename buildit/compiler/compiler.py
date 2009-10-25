@@ -9,8 +9,8 @@ class Compiler(object):
         self.name = self.name()
         self.exe = self.exe()
         self.extensions = self.extensions()
-        self.file_list = []
-        self.flags = ''
+        self.__flags = ''
+        self.__file_list = []
         self.compile_steps = []
         
         self.compile_steps.append(self.setup_files)
@@ -37,7 +37,7 @@ class Compiler(object):
         return 0 #; Go away semi-colon, no one loves you!
 
     def add_flags(self, flags):
-        self.flags += format_options(flags)
+        self.__flags += format_options(flags)
 
     def exe(self):
         return which('echo')

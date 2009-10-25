@@ -3,18 +3,18 @@
 import os
 import subprocess
 
-from buildit.utils import which
+from buildit.utils import which, format_options
 from buildit.cprint import command
 
 class Linker(object):
     
     def __init__(self):
-        self.name = self.name()
+        self.__name = self.name()
         self.exe = self.exe()
         self.extensions = self.extensions()
-        self.file_list = []
-        self.link_steps = []
-        self.flags = ''
+        self.__file_list = []
+        self.__link_steps = []
+        self.__flags = ''
         
         self.link_steps.append(self.link)
         
@@ -32,8 +32,23 @@ class Linker(object):
         except OSError:
             os.system(run_string)
     
+    def name(self):
+        name = str(self)
+        name = name.split('(')
+        name = name.pop(0)
+        name = name.replace('<', '')
+        name = name.replace('\n', '')
+        return name
+    
+    def add_flags(self, flags):
+        self.__flags += flags
+
+    @property
     def exe(self):
         return which('echo')
-        
+    
+    @property    
     def extensions(self):
         return ['.txt']
+        
+    

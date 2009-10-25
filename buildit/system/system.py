@@ -16,8 +16,8 @@ class System(threading.Thread):
         self.__name = name()
         self.compiler = Compiler()
         self.linker = Linker()
-        self.hashdb = HashDB(self.name)
-        self.file_list = []        
+        self.__hashdb = HashDB(self.name)
+        self.__file_list = []        
         self.__build_steps = []
         self.__unity_build = unity_build
         self.__project_name = project_name
@@ -45,7 +45,7 @@ class System(threading.Thread):
         pass
 
     def build(self):
-        self.compiler.run(self.unity_build)
+        self.compiler.run(self.__file_list, self.unity_build)
         if self.linker == True:
             self.linker.run(self.unity_build)
         

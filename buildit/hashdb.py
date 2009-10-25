@@ -10,7 +10,7 @@ class HashDB(object):
 
     def __init__(self, hash_name):
         self.name = hash_name
-        self.__location'.buildit/{0}'.format(self.name)
+        self.__location = '.buildit/{0}'.format(self.name)
         self.__file = None
         self.__dict = []
         self.__run()
@@ -23,7 +23,7 @@ class HashDB(object):
                 subprocess.call('attrib +h .buildit')
         except:
             pass
-        if not os.path.exists(hash_location)
+        if not os.path.exists(hash_location):
             warning('HashDB file not found. Running first time generation')
             self.file = open(self.location, 'w')
             self.file.close()
@@ -39,8 +39,8 @@ class HashDB(object):
         if sys.platform == 'win32':
             file_list = fix_strings(file_list)
         for file_name in file_list:
-            self._file.write('{0}:{1}\n'.format(file_name, 
-                                                file_hash(file_name))
+            self._file.write('{0}:{1}\n'.format(file_name, \
+                                                file_hash(file_name)))
         self.__file.close()
 
     @property        

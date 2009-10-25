@@ -7,7 +7,7 @@ from buildit.cprint import error, warning
 from buildit.utils import fix_strings, file_hash, system_type
 
 class HashDB(object):
-    
+
     def __init__(self, hash_name):
         self.name = hash_name
         self.__location'.buildit/{0}'.format(self.name)
@@ -46,7 +46,7 @@ class HashDB(object):
     @property        
     def dictionary(self):
         return self.__dict
-        
+
     @property
     def file_hash(self, file_name):
         return self.__dict.get(file_name, '')

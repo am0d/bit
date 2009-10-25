@@ -13,7 +13,6 @@ class System(threading.Thread):
     
     def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
-        self.__name = name()
         self.compiler = Compiler()
         self.linker = Linker()
         self.__hashdb = HashDB(self.name)
@@ -29,7 +28,6 @@ class System(threading.Thread):
         self.build_steps.append(self.pre_build)
         self.build_steps.append(self.build)
         self.build_steps.append(self.post_build)
-
 
     def run(self):
         start_time = datetime.now()
@@ -48,10 +46,14 @@ class System(threading.Thread):
         self.compiler.run(self.__file_list, self.unity_build)
         if self.linker == True:
             self.linker.run(self.unity_build)
-        
+ 
     def post_build(self):
         pass
 
+    def add_files(self, files):
+        self.file_list.append(files) # Just temporary~
+
+    @property
     def name(self):
         name = str(self)
         name = name.split('(')
@@ -59,9 +61,6 @@ class System(threading.Thread):
         name = name.replace('<', '')
         name = name.replace('\n', '')
         return name
-
-    def add_files(self, files):
-        self.file_list.append(files) # Just temporary~
         
     @property
     def source_directory(self):

@@ -6,17 +6,17 @@ import threading
 
 if sys.platform == 'win32':
     import ctypes.windll.kernel32 as windll
-    green = 0x0002
-    red = 0x0004
     magenta = 0x0005
     yellow = 0x0006
-
+    green = 0x0002
+    red = 0x0004
+    
 else:
-    green = '\33[1;32m'
-    red = '\33[1;31m'
     magenta = '\33[1;35m'
     yellow = '\33[1;33m'
-
+    green = '\33[1;32m'
+    red = '\33[1;31m'
+    
 print_lock = threading.Lock()
 
 def cprint(message, color):
@@ -29,7 +29,7 @@ def cprint(message, color):
     else:
         print('{0}{1}\33[0m'.format(color, message))
     print_lock.release()
-    
+
 def info(message):
     cprint(message, green)
     

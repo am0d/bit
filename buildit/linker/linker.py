@@ -9,13 +9,9 @@ from buildit.cprint import command
 class Linker(object):
     
     def __init__(self):
-        self.__name = self.name()
-        self.exe = self.exe()
-        self.extensions = self.extensions()
         self.__file_list = []
         self.__link_steps = []
         self.__flags = ''
-        
         self.__link_steps.append(self.link)
         
     def run(self, unity_build):
@@ -32,6 +28,7 @@ class Linker(object):
         except OSError:
             os.system(run_string)
     
+    @property
     def name(self):
         name = str(self)
         name = name.split('(')

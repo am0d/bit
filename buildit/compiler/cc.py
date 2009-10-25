@@ -4,9 +4,11 @@ from buildit.compiler import compiler.Compiler as Compiler
 
 class CC(Compiler):
     
+    @property
     def exe(self):
         return which('cc')
-        
+    
+    @property    
     def extensions(self):
         return ['.c']
         

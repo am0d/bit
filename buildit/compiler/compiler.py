@@ -6,9 +6,6 @@ from buildit.cprint import command
 class Compiler(object):
 
     def __init__(self):
-        self.name = self.name()
-        self.exe = self.exe()
-        self.extensions = self.extensions()
         self.__flags = ''
         self.__file_list = []
         self.__compile_steps = []
@@ -39,12 +36,15 @@ class Compiler(object):
     def add_flags(self, flags):
         self.__flags += format_options(flags)
 
+    @property
     def exe(self):
         return which('echo')
         
+    @property    
     def extensions(self):
         return ['.txt']
 
+    @property
     def name(self):
         name = str(self)
         name = name.split('(')

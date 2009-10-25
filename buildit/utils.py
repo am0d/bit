@@ -5,21 +5,32 @@ import sys
 import time
 import shutil
 import tarfile
+import zipfile
 import hashlib
 import threading
 
 from buildit.cprint import error, warning
 
-#def archive(directory, name=directory, ark='bz2'):
-#    '''ark_type = {'bz2': 'w:bz2', 'gz': 'w:gz', 'zip', 'w:zip' }
-#    ark = ark_type.get(ark, 'bz2')
-#    tar_name = name'''
-#    pass
-    
+def archive(directory, name=directory, ark='bz2'):
+    if not ark == 'zip':
+        ark_type = {'bz2': 'w:bz2', 'gz': 'w:gz'}
+        ark_type = ark_type.get(ark, 'bz2')
+        ark_ext = '.tar.{0}'.format(ark_type)
+    else:
+        ark_ext = '.{0}'.format(ark)
+    ark_name = name
+    if ark == 'zip':
+        ark_file = zipfile.ZipFile('{0}{1}'.format(ark_name, ark_ext). 'w')
+        ark_file.write(directory)
+    else:
+        ark_file = tarfile.open('{0}{1}'.format())
+        ark_file.add(directory)
+    ark_file.close()
+
 def wait():
     while threading.active_count() > 1:
         time.sleep(1)
-        
+
 def file_hash(file_name):
     try:
         f = open(file_name, 'rb')
@@ -32,9 +43,9 @@ def file_hash(file_name):
         
 def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
-    
+
 def which(program_name):
-    if system_type() == 'windows':
+    if system_type == 'windows':
         program_name = '{0}.exe'.format(program_name)
     filepath = os.path.split(program_name)[0]
     if filepath:
@@ -46,7 +57,8 @@ def which(program_name):
             if is_exe(exe_file):
                 return exe_file
     return None
-    
+
+@property    
 def system_type():
     systems = {'win32': 'windows', 'cygwin': 'windows',
                'linux': 'linux', 'linux2': 'linux',

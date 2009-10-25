@@ -4,28 +4,30 @@ import threading
 from datetime import datetime as datetime
 
 from buildit.compiler.compiler import Compiler as Compiler
-#from buildit.linker.linker import Linker as Linker
+from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
 from buildit.utils import fix_strings
+from buildit.hashdb import HashDB
 
 class System(threading.Thread):
-    
-    def __init__(self, project_name,unity_build=False):
+
+    def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
-        #self.linker = Linker()
-        self.file_list = []        
-        self.build_steps = []
-        self.unity_build = unity_build
-        self.project_name = project_name
-        self.source_directory = 'source'
-        self.build_directory = 'build'
-        self.object_directory = 'object'
-        
+        self.linker = Linker()
+        self.__hashdb = HashDB(self.name)
+        self.__file_list = []        
+        self.__build_steps = []
+        self.__unity_build = unity_build
+        self.__project_name = project_name
+        self.__source_directory = 'source'
+        self.__build_directory = 'build'
+        self.__object_directory = 'object'
+        self.__unity_directory = 'unity'
+
         self.build_steps.append(self.pre_build)
         self.build_steps.append(self.build)
         self.build_steps.append(self.post_build)
-
 
     def run(self):
         start_time = datetime.now()
@@ -34,18 +36,31 @@ class System(threading.Thread):
             if not return_value == 0:
                 error('\nError: {0}'.format(lookup_error(return_value)))
                 sys.exit(return_value)
-        info('{0}: {1}'.format(self.name.upper(), datetime.now() - start_time))
+        end_time = datetime.now()
+        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time)))
 
     def pre_build(self):
-        pass
+        return 0
 
     def build(self):
-        self.compiler.run(self.unity_build)
-        #self.linker.run(self.unity_build)
-        
+        self.compiler.run(self.__file_list, self.unity_build)
+        if self.linker == True:
+            self.linker.run(self.unity_build)
+ 
     def post_build(self):
-        pass
+        return 0
 
+    def add_files(self, files):
+        if isinstance(files, tuple) or isinstance(files, list):
+            for item in flatten(files):
+                if isinstance(item, basestring):
+                    self.__file_list.append(item)
+        elif isinstance(files, basestring):
+            self.__file_list.append(files)
+        else:
+            warning('{0} is not a supported datatype!'.format(files))
+
+    @property
     def name(self):
         name = str(self)
         name = name.split('(')
@@ -53,18 +68,40 @@ class System(threading.Thread):
         name = name.replace('<', '')
         name = name.replace('\n', '')
         return name
-
-    def add_files(self, files):
-        self.file_list.append(files) # Just temporary~
         
-    def source_directory(self, directory):
+    @property
+    def source_directory(self):
+        pass
+        
+    @source_directory.setter
+    def source_directory(self, value):
         ''' Set the System's base source directory '''
-        self.source_directory = directory
-        
-    def build_directory(self, directory):
-        ''' Set the System's build (output) directory'''
-        self.build_directory = directory
-        
-    def object_directory(self, directory):
+        self.__source_directory = value
+
+    @property
+    def build_directory(self):
+        pass
+
+    @build_directory.setter
+    def build_directory(self, value):
+        ''' Set the System's build (output) directory '''
+        self.__build_directory = value
+
+    @property
+    def object_directory(self):
+        pass
+    
+    @object_directory.setter    
+    def object_directory(self, value):
         ''' Set the System's object file directory '''
-        self.object_directory = directory
+        self.__object_directory = value
+    
+    @property
+    def unity_directory(self):
+        #return self.__unity_directory
+        pass
+
+    @unity_directory.setter
+    def unity_directory(self, value):
+        ''' Set the System's unity build directory '''
+        self.__unity_directory = value

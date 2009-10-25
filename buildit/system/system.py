@@ -10,7 +10,7 @@ from buildit.utils import fix_strings
 from buildit.hashdb import HashDB
 
 class System(threading.Thread):
-    
+
     def __init__(self, project_name, unity_build=False, linker=True):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
@@ -24,7 +24,7 @@ class System(threading.Thread):
         self.__build_directory = 'build'
         self.__object_directory = 'object'
         self.__unity_directory = 'unity'
-        
+
         self.build_steps.append(self.pre_build)
         self.build_steps.append(self.build)
         self.build_steps.append(self.post_build)
@@ -40,7 +40,7 @@ class System(threading.Thread):
         info('{0}: {1}'.format(self.name.upper(), (end_time - start_time)))
 
     def pre_build(self):
-        pass
+        return 0
 
     def build(self):
         self.compiler.run(self.__file_list, self.unity_build)
@@ -48,10 +48,10 @@ class System(threading.Thread):
             self.linker.run(self.unity_build)
  
     def post_build(self):
-        pass
+        return 0
 
     def add_files(self, files):
-        if not isinstance(files, basestring):
+        if isinstance(files, tuple) or isinstance(files, list):
             for item in flatten(files):
                 if isinstance(item, basestring):
                     self.__file_list.append(item)

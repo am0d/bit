@@ -11,13 +11,13 @@ class Compiler(object):
         self.extensions = self.extensions()
         self.__flags = ''
         self.__file_list = []
-        self.compile_steps = []
+        self.__compile_steps = []
         
-        self.compile_steps.append(self.setup_files)
-        self.compile_steps.append(self.compile_files)
+        self.__compile_steps.append(self.setup_files)
+        self.__compile_steps.append(self.compile_files)
 
     def run(self, unity_build):
-        for function in self.compile_steps:
+        for function in self.__compile_steps:
             return_value = function()
             if not return_value == 0:
                 return return_value

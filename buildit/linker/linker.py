@@ -16,10 +16,10 @@ class Linker(object):
         self.__link_steps = []
         self.__flags = ''
         
-        self.link_steps.append(self.link)
+        self.__link_steps.append(self.link)
         
     def run(self, unity_build):
-        for function in self.link_steps:
+        for function in self.__link_steps:
             return_value = function()
             if not return_value == 0:
                 return return_value

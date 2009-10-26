@@ -76,9 +76,10 @@ def flatten(list_name, containers=(list, tuple)):
 
 def fix_strings(file_list):
     if isinstance(file_list, list) or isinstance(file_list, tuple):
-        if system_type() == 'windows':
+        if sys.platform == 'win32':
             for file_name in file_list:
                 file_list.remove(file_name)
+                file_name = file_name.replace('\\', '/')
                 file_name = os.path.normpath(file_name)
                 file_list.append(file_name)
                 file_list.sort()

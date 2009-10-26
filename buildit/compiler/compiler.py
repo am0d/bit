@@ -1,6 +1,7 @@
 # Base Compiler Class
 
 from buildit.utils import which
+from buildit.utils import flatten
 from buildit.cprint import command
 
 class Compiler(object):

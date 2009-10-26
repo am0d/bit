@@ -43,9 +43,9 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        self.compiler.run(self.__file_list, self.unity_build)
+        self.compiler.run(self.__file_list, self.__unity_build)
         if self.linker == True:
-            self.linker.run(self.unity_build)
+            self.linker.run(self.__unity_build)
  
     def post_build(self):
         return 0

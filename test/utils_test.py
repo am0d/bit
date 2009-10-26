@@ -50,5 +50,18 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(' all error typos etc', format_options(options))
         self.assertEqual(' -Wall -Werror -Wtypos -Wetc', format_options(options, '-W'))
 
+    def test_fix_strings(self):
+        paths = ['/home/test/buildit/main.cpp',
+                 '/home/test/buildit/src/test.cpp',
+                 '/home/build/yesterday/three.c'
+                 ]
+        paths = paths.sort()
+        
+        sys.platform = 'linux'
+        self.assertEqual(paths, fix_strings(paths))
+
+        sys.platform = 'win32'
+        self.assertEqual(paths, fix_strings(paths))
+
 if __name__ == "__main__":
    unittest.main() 

@@ -15,6 +15,10 @@ class Compiler(object):
         self.__flags = ''
         self.__file_list = []
         self.__compile_steps = []
+        self.__object_dir = '.'
+
+        self.__source_option = '-c'
+        self.__output_option = '-o'
         
         self.__compile_steps.append(self.setup_files)
         self.__compile_steps.append(self.compile_files)
@@ -41,9 +45,12 @@ class Compiler(object):
         for file_name in self.__file_list:
             out_file = file_name.split('/')
             out_file = out_file.pop()
-            out_file = '{0}/{1}{2}'.format(self.out_file, self.output_extension)
+            out_file = '{0}/{1}{2}'.format(self.__object_dir, out_file, 
+                        self.output_extension)
             command('{0}: {1}'.format(self.name.upper(), out_file))
-            run_string = '{0} {1}'.format(self.exe, file_name)
+            run_string = '{0} {1} {2} {3} {4}'.format(self.exe, 
+                    self.__source_option, file_name, 
+                    self.__output_option, out_file)
             try: 
                 return_value = subprocess.call(run_string)
             except OSError:
@@ -63,6 +70,14 @@ class Compiler(object):
     @property
     def output_extension(self):
         return '.txt'
+
+    @property
+    def object_dir(self):
+        return self.__object_dir
+
+    @object_dir.setter
+    def object_dir(self, dir):
+        self.__object_dir = dir
         
     @property    
     def extensions(self):

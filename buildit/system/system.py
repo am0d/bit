@@ -6,7 +6,7 @@ from datetime import datetime as datetime
 from buildit.compiler.compiler import Compiler as Compiler
 from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
-from buildit.utils import lookup_error
+from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
 from buildit.utils import name
 from buildit.hashdb import HashDB
@@ -24,7 +24,7 @@ class System(threading.Thread):
         self.__project_name = project_name
         self.__source_directory = 'source'
         self.__build_directory = 'build'
-        self.__object_directory = 'object'
+        self.object_directory = 'object'
         self.__unity_directory = 'unity'
 
         self.__build_steps.append(self.pre_build)
@@ -95,6 +95,7 @@ class System(threading.Thread):
     def object_directory(self, value):
         ''' Set the System's object file directory '''
         self.__object_directory = value
+        self.compiler.object_dir = value
     
     @property
     def unity_directory(self):

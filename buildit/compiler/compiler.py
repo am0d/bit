@@ -40,7 +40,7 @@ class Compiler(object):
             try: 
                 return_value = subprocess.call(run_string)
             except OSError:
-                return_value os.system(run_string)
+                return_value = os.system(run_string)
             if not return_value == 0:
                 return return_value
             counter +=1    

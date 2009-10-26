@@ -25,13 +25,13 @@ class System(threading.Thread):
         self.__object_directory = 'object'
         self.__unity_directory = 'unity'
 
-        self.build_steps.append(self.pre_build)
-        self.build_steps.append(self.build)
-        self.build_steps.append(self.post_build)
+        self.__build_steps.append(self.pre_build)
+        self.__build_steps.append(self.build)
+        self.__build_steps.append(self.post_build)
 
     def run(self):
         start_time = datetime.now()
-        for function in self.build_steps:
+        for function in self.__build_steps:
             return_value = function()
             if not return_value == 0:
                 error('\nError: {0}'.format(lookup_error(return_value)))

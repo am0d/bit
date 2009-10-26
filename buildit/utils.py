@@ -11,7 +11,7 @@ import threading
 
 from buildit.cprint import error, warning
 
-def archive(directory, name=directory, ark='bz2'):
+def archive(directory, name='archive', ark='bz2'):
     if not ark == 'zip':
         ark_type = {'bz2': 'w:bz2', 'gz': 'w:gz'}
         ark_type = ark_type.get(ark, 'bz2')
@@ -20,7 +20,7 @@ def archive(directory, name=directory, ark='bz2'):
         ark_ext = '.{0}'.format(ark)
     ark_name = name
     if ark == 'zip':
-        ark_file = zipfile.ZipFile('{0}{1}'.format(ark_name, ark_ext). 'w')
+        ark_file = zipfile.ZipFile('{0}{1}'.format(ark_name, ark_ext), 'w')
         ark_file.write(directory)
     else:
         ark_file = tarfile.open('{0}{1}'.format())

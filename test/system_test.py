@@ -13,7 +13,7 @@ class TestSystem(unittest.TestCase):
         self.system = System("Test")
 
     def test_name(self):
-        self.assertEqual('System', self.system.name())
+        self.assertEqual('System', self.system.name)
 
 if __name__ == '__main__':
     unittest.main()

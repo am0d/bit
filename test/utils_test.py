@@ -31,19 +31,19 @@ class TestUtils(unittest.TestCase):
 
     def test_system_type(self):
         sys.platform = 'win32'
-        self.assertEqual('windows', system_type())
+        self.assertEqual('windows', system_type)
         sys.platform = 'cygwin'
-        self.assertEqual('windows', system_type())
+        self.assertEqual('windows', system_type)
         sys.platform = 'linux'
-        self.assertEqual('linux', system_type())
+        self.assertEqual('linux', system_type)
         sys.platform = 'linux2'
-        self.assertEqual('linux', system_type())
+        self.assertEqual('linux', system_type)
         sys.platform = 'darwin'
-        self.assertEqual('apple', system_type())
+        self.assertEqual('apple', system_type)
         sys.platform = ''
-        self.assertEqual('generic', system_type())
+        self.assertEqual('generic', system_type)
         sys.platform = 'unknown'
-        self.assertEqual('generic', system_type())
+        self.assertEqual('generic', system_type)
 
     def test_format_options(self):
         options = ['all', 'error', 'typos', 'etc']

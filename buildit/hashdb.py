@@ -23,11 +23,11 @@ class HashDB(object):
                 subprocess.call('attrib +h .buildit')
         except:
             pass
-        if not os.path.exists(hash_location):
+        if not os.path.exists(self.__location):
             warning('HashDB file not found. Running first time generation')
-            self.file = open(self.location, 'w')
+            self.file = open(self.__location, 'w')
             self.file.close()
-        self.file.open(self.location, 'r')
+        self.file = open(self.__location, 'r')
         for line in self.file:
             line = line.replace('\n', '')
             line = line.split(':')

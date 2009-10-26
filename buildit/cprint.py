@@ -2,10 +2,8 @@
 
 import sys
 import threading
-
-
 if sys.platform == 'win32':
-    import ctypes.windll.kernel32 as windll
+    import ctypes
     magenta = 0x0005
     yellow = 0x0006
     green = 0x0002
@@ -22,10 +20,10 @@ print_lock = threading.Lock()
 def cprint(message, color):
     print_lock.acquire()
     if sys.platform == 'win32':
-        handle = windll.GetStdHandle(-11)
-        windll.SetConsoleTextAttribute(handle, color | 0x0008)
+        handle = ctypes.windll.kernel32.GetStdHandle(-11)
+        ctypes.windll.kernel32.SetConsoleTextAttribute(handle, color | 0x0008)
         print(message),
-        windll.SetConsoleTextAttribute(handle, 0x0007) # Set it back to white
+        ctypes.windll.kernel32.SetConsoleTextAttribute(handle, 0x0007)
     else:
         print('{0}{1}\33[0m'.format(color, message))
     print_lock.release()

@@ -14,5 +14,5 @@ setup(name='buildit',
                 'buildit.system',
                 'buildit.compiler',
                 'buildit.linker'
-                  ]
-	 )
+               ]
+     )

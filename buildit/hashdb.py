@@ -2,6 +2,8 @@
 
 import os
 import sys
+import ctypes
+import subprocess
 
 from buildit.cprint import error, warning
 from buildit.utils import fix_strings, file_hash, system_type
@@ -19,8 +21,9 @@ class HashDB(object):
     def __run(self):
         try:
             os.makedirs('.buildit')
-            if system_type == 'windows':
-                subprocess.call('attrib +h .buildit')
+            if system_type() == 'windows':
+                windll = ctypes.windll.kernel32
+                windll.SetFileAttributes('.buildit', FILE_ATTRIBUTE_HIDDEN)
         except:
             pass
         if not os.path.exists(self.__location):

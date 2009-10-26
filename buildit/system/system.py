@@ -47,10 +47,8 @@ class System(threading.Thread):
         return_value = self.compiler.run(self.__file_list, self.__unity_build)
         if not return_value == 0:
             return return_value
-
         if self.linker == True:
             return_value = self.linker.run(self.__unity_build)
-
         return return_value
  
     def post_build(self):

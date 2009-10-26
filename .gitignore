@@ -6,3 +6,4 @@
 *.elf
 *.mach
 *~
+build

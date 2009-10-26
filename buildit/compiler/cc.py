@@ -2,6 +2,8 @@
 
 from buildit.compiler.compiler import Compiler as Compiler
 
+from buildit.utils import which
+
 class CC(Compiler):
     
     @property
@@ -11,6 +13,10 @@ class CC(Compiler):
     @property    
     def extensions(self):
         return ['.c']
+
+    @property
+    def output_extension(self):
+        return '.o'
         
     def add_includes(self, directory):
         self.flags += format_options(directory, '-I')

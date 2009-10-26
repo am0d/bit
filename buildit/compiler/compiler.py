@@ -1,5 +1,8 @@
 # Base Compiler Class
 
+import subprocess
+import os
+
 from buildit.utils import which
 from buildit.utils import flatten
 from buildit.utils import fix_strings
@@ -29,7 +32,7 @@ class Compiler(object):
         for file_name in self.__file_list:
             for extension in self.extensions:
                 if not file_name.endswith(extension):
-                    self.file_list.remove(file_name)
+                    self.__file_list.remove(file_name)
         return 0
 
     def compile_files(self):
@@ -37,8 +40,9 @@ class Compiler(object):
         for file_name in self.__file_list:
             out_file = file_name.split('/')
             out_file = out_file.pop()
-            out_file = '{0}{1}'.format(out_file, output_extension)
+            out_file = '{0}{1}'.format(out_file, self.output_extension)
             command('{0}: {1}'.format(self.name.upper(), out_file))
+            run_string = '{0} {1}'.format(self.exe, file_name)
             try: 
                 return_value = subprocess.call(run_string)
             except OSError:

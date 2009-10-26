@@ -10,5 +10,9 @@ setup(name='buildit',
       author='Tres Walsh',
       author_email='tres.walsh@mnmlstc.com',
       url='http://treswalsh.com',
-      packages=['buildit']
+      packages=['buildit',
+                'buildit.system',
+                'buildit.compiler',
+                'buildit.linker'
+                  ]
 	 )

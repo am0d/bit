@@ -1,6 +1,6 @@
 # Unix Based C Compiler
 
-from buildit.compiler import compiler.Compiler as Compiler
+from buildit.compiler.compiler import Compiler as Compiler
 
 class CC(Compiler):
     

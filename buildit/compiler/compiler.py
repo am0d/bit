@@ -2,6 +2,7 @@
 
 from buildit.utils import which
 from buildit.utils import flatten
+from buildit.utils import fix_strings
 from buildit.cprint import command
 
 class Compiler(object):
@@ -33,7 +34,7 @@ class Compiler(object):
 
     def compile_files(self):
         counter = 0
-        for file_name in file_list:
+        for file_name in self.__file_list:
             out_file = file_name.split('/')
             out_file = out_file.pop()
             out_file = '{0}{1}'.format(out_file, output_extension)

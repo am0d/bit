@@ -6,6 +6,7 @@ from datetime import datetime as datetime
 from buildit.compiler.compiler import Compiler as Compiler
 from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
+from buildit.utils import lookup_error
 from buildit.utils import fix_strings
 from buildit.hashdb import HashDB
 
@@ -43,9 +44,14 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        self.compiler.run(self.__file_list, self.__unity_build)
+        return_value = self.compiler.run(self.__file_list, self.__unity_build)
+        if not return_value == 0:
+            return return_value
+
         if self.linker == True:
-            self.linker.run(self.__unity_build)
+            return_value = self.linker.run(self.__unity_build)
+
+        return return_value
  
     def post_build(self):
         return 0

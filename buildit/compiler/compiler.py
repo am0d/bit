@@ -6,6 +6,7 @@ import os
 from buildit.utils import which
 from buildit.utils import flatten
 from buildit.utils import fix_strings
+from buildit.utils import name
 from buildit.cprint import command
 
 class Compiler(object):
@@ -40,7 +41,7 @@ class Compiler(object):
         for file_name in self.__file_list:
             out_file = file_name.split('/')
             out_file = out_file.pop()
-            out_file = '{0}{1}'.format(out_file, self.output_extension)
+            out_file = '{0}/{1}{2}'.format(self.out_file, self.output_extension)
             command('{0}: {1}'.format(self.name.upper(), out_file))
             run_string = '{0} {1}'.format(self.exe, file_name)
             try: 
@@ -69,9 +70,4 @@ class Compiler(object):
 
     @property
     def name(self):
-        name = str(self)
-        name = name.split('(')
-        name = name.pop(0)
-        name = name.replace('<', '')
-        name = name.replace('\n', '')
-        return name
+        return name(self)

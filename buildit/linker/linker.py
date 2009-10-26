@@ -4,6 +4,7 @@ import os
 import subprocess
 
 from buildit.utils import which, format_options
+from buildit.utils import name
 from buildit.cprint import command
 
 class Linker(object):
@@ -30,12 +31,7 @@ class Linker(object):
     
     @property
     def name(self):
-        name = str(self)
-        name = name.split('(')
-        name = name.pop(0)
-        name = name.replace('<', '')
-        name = name.replace('\n', '')
-        return name
+        return name(self)
     
     def add_flags(self, flags):
         self.__flags += flags

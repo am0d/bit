@@ -104,3 +104,13 @@ def lookup_error(value):
                   }
     return error_value.get(value, 'Unknown Error')
     
+def name(self):
+    name = str(self)
+    name = name.split(' ')
+    name = name[0]
+    name = name.split('.')
+    name = name.pop()
+    name = name.split('(')
+    name = name[0].replace('<', '')
+    return name
+

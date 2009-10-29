@@ -40,6 +40,7 @@ class Linker(object):
         run_string = '{0} {1} {2} {3} {4}'.format(self.exe,
                         self.__output_option, outfile_name,
                         self.__source_option, infiles)
+        print run_string
         try:
             subprocess.call(run_string)
         except OSError:

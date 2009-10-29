@@ -8,6 +8,7 @@ from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
 from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
+from buildit.utils import name as uname
 from buildit.hashdb import HashDB
 
 class System(threading.Thread):
@@ -68,7 +69,7 @@ class System(threading.Thread):
 
     @property
     def name(self):
-        return utils.name(self)
+        return uname(self)
         
     @property
     def source_directory(self):

@@ -6,6 +6,7 @@ import os
 from buildit.utils import which
 from buildit.utils import flatten
 from buildit.utils import fix_strings
+from buildit.utils import name as uname
 from buildit.cprint import command
 
 class Compiler(object):
@@ -39,7 +40,7 @@ class Compiler(object):
                     self.__file_list.remove(file_name)
 
         try: 
-            os.makedirs(self.__object_dir):
+            os.makedirs(self.__object_dir)
         except:
             pass
         return 0
@@ -79,7 +80,7 @@ class Compiler(object):
     def object_directory(self):
         return self.__object_directory
 
-    @object_dir.setter
+    @object_directory.setter
     def object_directory(self, value):
         self.__object_directory = value
         
@@ -89,4 +90,4 @@ class Compiler(object):
 
     @property
     def name(self):
-        return utils.name(self)
+        return uname(self)

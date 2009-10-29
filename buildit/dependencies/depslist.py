@@ -75,11 +75,12 @@ class Depslist(object):
                 self.current_file = file.name
 
                 for line in file.readlines():
-                    path = parse_line(line)
+                    path = self.parse_line(line)
                     if not path == '':
                         deps.append(path)
             finally:
                 file.close()
+                return deps
         except IOError:
             return deps
 

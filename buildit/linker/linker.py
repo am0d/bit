@@ -19,12 +19,11 @@ class Linker(object):
         self.__output_option = '>'
         self.__source_option = '<'
 
-        self.__object_directory = ''
+        self.__object_directory = '.'
         self.__build_directory = '.'
         self.__target = 'a.out'
         
     def run(self, unity_build):
-        print 'Linking ...'
         for function in self.__link_steps:
             return_value = function()
             if not return_value == 0:
@@ -32,13 +31,15 @@ class Linker(object):
         return 0
         
     def link(self):
-        infiles = '{0}/*.{1}'.format(self.__object_dir, self.__extensions)
-        outfile_name = '{0}/{1}'.format(self.__build_dir, self.__target)
+        infiles = ''
+        for ext in self.extensions:
+            infiles += '{0}/*{1}'.format(self.__object_directory, ext)
+        outfile_name = '{0}/{1}'.format(self.__build_directory, self.__target)
 
         command('{0}: {1}'.format(self.name.upper(), outfile_name))
         run_string = '{0} {1} {2} {3} {4}'.format(self.exe,
                         self.__output_option, outfile_name,
-                        self.__source_option, infile_name)
+                        self.__source_option, infiles)
         try:
             subprocess.call(run_string)
         except OSError:
@@ -63,7 +64,7 @@ class Linker(object):
     def object_directory(self):
         return self.__object_directory
 
-    @object_dir.setter
+    @object_directory.setter
     def object_directory(self, value):
         self.__object_directory = value
 

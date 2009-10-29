@@ -8,12 +8,11 @@ from buildit.linker.linker import Linker as Linker
 from buildit.cprint import error, info
 from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
-from buildit.utils import name
 from buildit.hashdb import HashDB
 
 class System(threading.Thread):
 
-    def __init__(self, project_name, unity_build=False, linker=True):
+    def __init__(self, project_name, unity_build=False, link_step=True):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
         self.linker = Linker()
@@ -24,8 +23,10 @@ class System(threading.Thread):
         self.__project_name = project_name
         self.__source_directory = 'source'
         self.__build_directory = 'build'
-        self.object_directory = 'object'
+        self.__object_directory = 'object'
         self.__unity_directory = 'unity'
+        self.__link_step = link_step
+
 
         self.__build_steps.append(self.pre_build)
         self.__build_steps.append(self.build)
@@ -48,7 +49,7 @@ class System(threading.Thread):
         return_value = self.compiler.run(self.__file_list, self.__unity_build)
         if not return_value == 0:
             return return_value
-        if self.linker == True:
+        if self.__link_step == True:
             return_value = self.linker.run(self.__unity_build)
         return return_value
  
@@ -67,7 +68,7 @@ class System(threading.Thread):
 
     @property
     def name(self):
-        return name(self)
+        return utils.name(self)
         
     @property
     def source_directory(self):
@@ -86,7 +87,7 @@ class System(threading.Thread):
     def build_directory(self, value):
         ''' Set the System's build (output) directory '''
         self.__build_directory = value
-        self.linker.build_dir = value
+        self.linker.build_directory = value
 
     @property
     def object_directory(self):
@@ -96,12 +97,11 @@ class System(threading.Thread):
     def object_directory(self, value):
         ''' Set the System's object file directory '''
         self.__object_directory = value
-        self.compiler.object_dir = value
-        self.linker.object_dir = value
+        self.compiler.object_directory = value
+        self.linker.object_directory = value
     
     @property
     def unity_directory(self):
-        #return self.__unity_directory
         pass
 
     @unity_directory.setter

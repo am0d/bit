@@ -104,8 +104,8 @@ def lookup_error(value):
                   }
     return error_value.get(value, 'Unknown Error')
     
-def name(self):
-    name = str(self)
+def name(value):
+    name = str(value)
     name = name.split(' ')
     name = name[0]
     name = name.split('.')

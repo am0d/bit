@@ -19,8 +19,8 @@ class Linker(object):
         self.__output_option = '>'
         self.__source_option = '<'
 
-        self.__object_dir = ''
-        self.__build_dir = '.'
+        self.__object_directory = ''
+        self.__build_directory = '.'
         self.__target = 'a.out'
         
     def run(self, unity_build):
@@ -60,20 +60,20 @@ class Linker(object):
         return ['.txt']
         
     @property
-    def object_dir(self):
-        return self.__object_dir
+    def object_directory(self):
+        return self.__object_directory
 
     @object_dir.setter
-    def object_dir(self, dir):
-        self.__object_dir = dir
+    def object_directory(self, value):
+        self.__object_directory = value
 
     @property
-    def build_dir(self):
-        return self.__build_dir
+    def build_directory(self):
+        return self.__build_directory
 
-    @build_dir.setter
-    def build_dir(self, dir):
-        self.__build_dir = dir
+    @build_directory.setter
+    def build_directory(self, value):
+        self.__build_directory = value
     
     @property
     def target(self):

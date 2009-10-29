@@ -6,7 +6,6 @@ import os
 from buildit.utils import which
 from buildit.utils import flatten
 from buildit.utils import fix_strings
-from buildit.utils import name
 from buildit.cprint import command
 
 class Compiler(object):
@@ -39,8 +38,10 @@ class Compiler(object):
                 if not file_name.endswith(extension):
                     self.__file_list.remove(file_name)
 
-        if not os.path.exists(self.__object_dir):
-            os.mkdir(self.__object_dir)
+        try: 
+            os.makedirs(self.__object_dir):
+        except:
+            pass
         return 0
 
     def compile_files(self):
@@ -53,7 +54,7 @@ class Compiler(object):
             command('{0}: {1}'.format(self.name.upper(), out_file))
             run_string = '{0} {1} {2} {3} {4}'.format(self.exe, 
                     self.__source_option, file_name, 
-                    self.__output_option, out_file)
+                    self.__output_option, out_file) # TODO: FIX THIS. 
             try: 
                 return_value = subprocess.call(run_string)
             except OSError:
@@ -75,12 +76,12 @@ class Compiler(object):
         return '.txt'
 
     @property
-    def object_dir(self):
-        return self.__object_dir
+    def object_directory(self):
+        return self.__object_directory
 
     @object_dir.setter
-    def object_dir(self, dir):
-        self.__object_dir = dir
+    def object_directory(self, value):
+        self.__object_directory = value
         
     @property    
     def extensions(self):
@@ -88,4 +89,4 @@ class Compiler(object):
 
     @property
     def name(self):
-        return name(self)
+        return utils.name(self)

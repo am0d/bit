@@ -86,6 +86,7 @@ class System(threading.Thread):
     def build_directory(self, value):
         ''' Set the System's build (output) directory '''
         self.__build_directory = value
+        self.linker.build_dir = value
 
     @property
     def object_directory(self):
@@ -96,6 +97,7 @@ class System(threading.Thread):
         ''' Set the System's object file directory '''
         self.__object_directory = value
         self.compiler.object_dir = value
+        self.linker.object_dir = value
     
     @property
     def unity_directory(self):

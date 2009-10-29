@@ -38,6 +38,9 @@ class Compiler(object):
             for extension in self.extensions:
                 if not file_name.endswith(extension):
                     self.__file_list.remove(file_name)
+
+        if not os.path.exists(self.__object_dir):
+            os.mkdir(self.__object_dir)
         return 0
 
     def compile_files(self):

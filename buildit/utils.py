@@ -84,6 +84,7 @@ def fix_strings(file_list): #Really should only be used internally
 
 def format_options(option_list, option=''):
     string = ''
+    option_list = list(option_list)
     option_list = flatten(option_list)
     for item in option_list:
         string += ' {0}{1}'.format(option , item)

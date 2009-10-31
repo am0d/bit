@@ -1,25 +1,28 @@
 # Unix Based C Compiler
 
-from buildit.compiler.compiler import Compiler as Compiler
+import os
+import shutil
 
+from buildit.compiler.compiler import Compiler
 from buildit.utils import which
+from buildit.cprint import command
 
 class CC(Compiler):
     
-    @property
-    def exe(self):
-        return which('cc')
-    
-    @property    
-    def extensions(self):
-        return ['.c']
+    def compile_files(self):
+        pass
 
-    @property
-    def output_extension(self):
-        return '.o'
-        
-    def add_includes(self, directory):
-        self.flags += format_options(directory, '-I')
-    
+    def link_files(self):
+        pass
+
     def add_define(self, define):
-        self.flags += format_options(define, '-D')
+        self.__flags += format_options(flags, '-D')
+
+    def add_include_directory(self, directory):
+        self.__flags += format_options(flags, '-I')
+
+    def add_library_directory(self, directory):
+        self.__flags += format_options(flags, '-L')
+
+    def add_library(self, library):
+        self.__flags += format_options(flags, '-l')

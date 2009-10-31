@@ -13,7 +13,7 @@ from buildit.hashdb import HashDB
 
 class System(threading.Thread):
 
-    def __init__(self, project_name, unity_build=False, link_step=True):
+    def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
         self.__hashdb = HashDB(self.name)
@@ -25,7 +25,6 @@ class System(threading.Thread):
         self.__build_directory = 'build'
         self.__object_directory = 'object'
         self.__unity_directory = 'unity'
-        self.__link_step = link_step
 
         self.__build_steps.append(self.pre_build)
         self.__build_steps.append(self.build)

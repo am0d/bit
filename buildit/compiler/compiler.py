@@ -16,7 +16,7 @@ class Compiler(object):
         self.__compile_steps = []
         self.__flags = ''
         self.__type = '' # Added for much much later on
-        self.__object_dir = '.'
+        self.__object_directory = '.'
 
         self.__compile_steps.append(self.setup_files)
         self.__compile_steps.append(self.compile_files)
@@ -38,7 +38,7 @@ class Compiler(object):
                 if not file_name.endswith(extension):
                     self.__file_list.remove(file_name)
         try:
-            os.makedirs(self.__object_dir)
+            os.makedirs(self.__object_directory)
         except:
             pass
         return 0
@@ -62,10 +62,11 @@ class Compiler(object):
 
     def __info_string(self, percentage, file_name):
         ''' Prints out what file is being created '''
-        command('[{0:>3}%] {1}: {2}'.format(percentage, self.name.upper(), file_name))
+        command('[{0:>3}%] {1}: {2}'.format(
+            percentage, self.name.upper(), file_name))
 
     def add_flags(self, flags):
-        self__flags += format_options(flags)
+        self.__flags += format_options(flags)
 
     @property
     def executable(self):

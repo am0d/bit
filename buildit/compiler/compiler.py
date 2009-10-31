@@ -12,11 +12,11 @@ from buildit.cprint import command
 class Compiler(object):
     
     def __init__(self):
-        self.__flags = ''
         self.__file_list = []
         self.__compile_steps = []
-        self.__object_dir = '.'
+        self.__flags = ''
         self.__type = '' # Added for much much later on
+        self.__object_dir = '.'
 
         self.__compile_steps.append(self.setup_files)
         self.__compile_steps.append(self.compile_files)
@@ -49,6 +49,20 @@ class Compiler(object):
 
     def link_files(self):
         pass
+
+    def __percentage(self, counter, file_list):
+        ''' 
+            Calculates the percentage of files completed, and returns it as a
+            string 
+        '''
+        percentage = 100 * float(counter)/float(len(file_list))
+        percentage = str(percentage).split('.')
+        percentage = percentage.pop(0)
+        return percentage
+
+    def __info_string(self, percentage, file_name):
+        ''' Prints out what file is being created '''
+        command('[{0:>3}%] {1}: {2}'.format(percentage, self.name.upper(), file_name))
 
     def add_flags(self, flags):
         self__flags += format_options(flags)

@@ -27,7 +27,6 @@ class System(threading.Thread):
         self.__unity_directory = 'unity'
         self.__link_step = link_step
 
-
         self.__build_steps.append(self.pre_build)
         self.__build_steps.append(self.build)
         self.__build_steps.append(self.post_build)
@@ -92,7 +91,7 @@ class System(threading.Thread):
     @build_directory.setter
     def build_directory(self, value):
         ''' Set the System's build (output) directory '''
-        self.__build_diectory = value
+        self.__build_directory = value
         self.compiler.build_directory = value
 
     @property

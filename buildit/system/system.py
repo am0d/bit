@@ -1,10 +1,10 @@
 import os
 import sys
 import threading
-from datetime import datetime as datetime
+from glob import glob
+from datetime import datetime
 
-from buildit.compiler.compiler import Compiler as Compiler
-from buildit.linker.linker import Linker as Linker
+from buildit.compiler.compiler import Compiler
 from buildit.cprint import error, info
 from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
@@ -16,7 +16,6 @@ class System(threading.Thread):
     def __init__(self, project_name, unity_build=False, link_step=True):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
-        self.linker = Linker()
         self.__hashdb = HashDB(self.name)
         self.__file_list = []        
         self.__build_steps = []
@@ -48,10 +47,6 @@ class System(threading.Thread):
 
     def build(self):
         return_value = self.compiler.run(self.__file_list, self.__unity_build)
-        if not return_value == 0:
-            return return_value
-        if self.__link_step == True:
-            return_value = self.linker.run(self.__unity_build)
         return return_value
  
     def post_build(self):
@@ -61,9 +56,19 @@ class System(threading.Thread):
         if isinstance(files, tuple) or isinstance(files, list):
             for item in flatten(files):
                 if isinstance(item, basestring):
-                    self.__file_list.append(item)
+                    if os.path.isdir(item):
+                        glob_list = glob('{0}/*'.format(item))
+                        for file_name in glob_list:
+                            self.__file_list.append(file_name)
+                    else
+                        self.__file_list.append(item)
         elif isinstance(files, basestring):
-            self.__file_list.append(files)
+            if os.path.isdir(files):
+                glob_list = glob('{0}/*'.format(files)
+                for item in glob_list:
+                    self.__file_list.append(item)
+            else:
+                self.__file_list.append(files)
         else:
             warning('{0} is not a supported datatype!'.format(files))
 
@@ -87,8 +92,8 @@ class System(threading.Thread):
     @build_directory.setter
     def build_directory(self, value):
         ''' Set the System's build (output) directory '''
-        self.__build_directory = value
-        self.linker.build_directory = value
+        self.__build_diectory = value
+        self.compiler.build_directory = value
 
     @property
     def object_directory(self):
@@ -99,7 +104,6 @@ class System(threading.Thread):
         ''' Set the System's object file directory '''
         self.__object_directory = value
         self.compiler.object_directory = value
-        self.linker.object_directory = value
     
     @property
     def unity_directory(self):

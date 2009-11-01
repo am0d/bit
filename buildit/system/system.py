@@ -44,7 +44,7 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        return_value = self.compiler.run(self.__file_list, self.__unity_build)
+        return_value = self.compiler.run(self.__file_list, self.__hashdb)
         return return_value
  
     def post_build(self):

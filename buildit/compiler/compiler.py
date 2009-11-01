@@ -17,6 +17,7 @@ class Compiler(object):
         self.__flags = ''
         self.__type = '' # Added for much much later on
         self.__object_directory = '.'
+        self.__build_directory = '.'
 
         self.__compile_steps.append(self.setup_files)
         self.__compile_steps.append(self.compile_files)

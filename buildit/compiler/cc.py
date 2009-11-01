@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import subprocess
 
 from buildit.compiler.compiler import Compiler
 from buildit.utils import which
@@ -13,6 +14,7 @@ class CC(Compiler):
         counter = 0
         for file_name in self.__file_list:
             module = ''
+            run_string = '{0} -o '.format(self.executable)
             percentage = self.__percentage(counter, self.__file_list)
             out_file = file_name.split('/')
             subdir_list = out_file
@@ -23,21 +25,28 @@ class CC(Compiler):
             else:
                 module = subdir_list.pop()
             self.__info_string(percentage, out_file)
+            out_file = '{0}{1}'.format(out_file, '.o')
+            run_string = '{0}{1} -c {2}'.format(
+                    run_string, out_file, self.__compile_flags)
+            return_value = subprocess.call(run_string)
+            if not return_value == 0:
+                return return_value
+            counter += 1
 
     def link_files(self):
         pass
 
     def add_define(self, define):
-        self.__flags += format_options(flags, '-D')
+        self.__compile_flags += format_options(flags, '-D')
 
     def add_include_directory(self, directory):
-        self.__flags += format_options(flags, '-I')
+        self.__compile_flags += format_options(flags, '-I')
 
     def add_library_directory(self, directory):
-        self.__flags += format_options(flags, '-L')
+        self.__link_flags += format_options(flags, '-L')
 
     def add_library(self, library):
-        self.__flags += format_options(flags, '-l')
+        self.__link_flags += format_options(flags, '-l')
 
     @property
     def executable(self):

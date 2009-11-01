@@ -14,7 +14,8 @@ class Compiler(object):
     def __init__(self):
         self.__file_list = []
         self.__compile_steps = []
-        self.__flags = ''
+        self.__compile_flags = ''
+        self.__link_flags = ''
         self.__type = '' # Added for much much later on
         self.__object_directory = '.'
         self.__build_directory = '.'
@@ -67,7 +68,16 @@ class Compiler(object):
             percentage, self.name.upper(), file_name))
 
     def add_flags(self, flags):
-        self.__flags += format_options(flags)
+        ''' Used mostly for compilers that have no link process '''
+        self.__compile_flags += format_options(flags)
+
+    def add_compile_flags(self, flags):
+        ''' Adds the flag to the compile steps '''
+        self.__compile_flags += format_options(flags)
+
+    def add_link_flags(self, flags):
+        ''' Adds the flag to the link step '''
+        self.__link_flags += format_options(flags)
 
     @property
     def executable(self):

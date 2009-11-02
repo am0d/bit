@@ -1,6 +1,6 @@
-from buildit.system.system import System
+from buildit.system.unix import Unix
 
-average = System("Average")
+average = Unix("Average")
 
 average.add_files('src')
 average.run()

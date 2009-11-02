@@ -57,7 +57,7 @@ class CC(Compiler):
     def executable(self):
         return self._executable
 
-    @executable.setter(self, value):
+    @executable.setter
     def executable(self, value):
         if isinstance(value, basestring):
             self._executable = which(value)

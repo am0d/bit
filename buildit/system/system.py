@@ -4,7 +4,7 @@ import threading
 from glob import glob
 from datetime import datetime
 
-from build.compiler.compiler import Compiler
+from buildit.compiler.compiler import Compiler
 from buildit.cprint import error, info
 from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
@@ -58,7 +58,7 @@ class System(threading.Thread):
                         glob_list = glob('{0}/*'.format(item))
                         for file_name in glob_list:
                             self.__file_list.append(file_name)
-                    else
+                    else:
                         self.__file_list.append(item)
         elif isinstance(files, basestring):
             if os.path.isdir(files):
@@ -92,7 +92,7 @@ class System(threading.Thread):
         self.build_directory = value
         self.compiler.build_directory = value
 
-     @property
+    @property
     def object_directory(self):
         pass
     

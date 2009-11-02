@@ -9,6 +9,8 @@ from buildit.utils import which
 from buildit.cprint import command
 
 class CC(Compiler):
+    def __init__(self):
+        super(Compiler,self).__init__()
     
     def compile_files(self):
         counter = 0

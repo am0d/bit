@@ -3,7 +3,7 @@ from buildit.compiler.cc import CC as CC
 from buildit.linker.ld import LD as LD
 
 linux = System("Hello World")
-linux.add_files('source/hello.c')
+linux.add_files('source')
 linux.compiler = CC()
 linux.linker = LD()
 linux.linker.target = 'HelloWorld'

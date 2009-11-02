@@ -13,20 +13,20 @@ class Compiler(object):
     
     def __init__(self):
         self.__file_list = []
-        self.__compile_steps = []
+        self._compile_steps = []
         self.__compile_flags = ''
         self.__link_flags = ''
         self.__type = '' # Added for much much later on
         self.__object_directory = '.'
         self.__build_directory = '.'
 
-        self.__compile_steps.append(self.setup_files)
-        self.__compile_steps.append(self.compile_files)
-        self.__compile_steps.append(self.link_files)
+        self._compile_steps.append(self.setup_files)
+        self._compile_steps.append(self.compile_files)
+        self._compile_steps.append(self.link_files)
 
     def run(self, file_list, unity_build):
         self.__file_list = file_list
-        for function in self.__compile_steps:
+        for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:
                 return return_value

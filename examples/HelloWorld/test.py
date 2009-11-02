@@ -1,5 +1,5 @@
-from buildit.system.system import System
+from buildit.system.unix import Unix
 
-linux = System("Hello World")
-linux.add_files('source')
-linux.run()
+hello = Unix("Hello World")
+hello.add_files('source/')
+hello.run()

@@ -1,12 +1,12 @@
 # Basic Unix-Based C/C++ System
 
-from buildit.compiler.compiler import CC
+from buildit.compiler.cc import CC
 from buildit.system.system import System
 
 class Unix(System):
 
-    def __init__(self, project_name, link_step=True, unity_build=False):
-        System.__init__(self, project_name, link_step, unity_build)
+    def __init__(self, project_name, unity_build=False):
+        System.__init__(self, project_name, unity_build)
         self.compiler = CC()
 
     def add_define(self, define):

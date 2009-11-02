@@ -76,7 +76,7 @@ class System(threading.Thread):
 
     @property
     def source_directory(self):
-        pass
+        return self.__source_directory
 
     @source_directory.setter
     def source_directory(self, value):
@@ -85,16 +85,16 @@ class System(threading.Thread):
 
     @property
     def build_directory(self):
-        pass
+        return self.__build_directory
 
     @build_directory.setter
     def build_directory(self, value):
-        self.build_directory = value
+        self.__build_directory = value
         self.compiler.build_directory = value
 
     @property
     def object_directory(self):
-        pass
+        return self.__object_directory
     
     @object_directory.setter    
     def object_directory(self, value):
@@ -104,7 +104,7 @@ class System(threading.Thread):
     
     @property
     def unity_directory(self):
-        pass
+        return self.__unity_directory
 
     @unity_directory.setter
     def unity_directory(self, value):

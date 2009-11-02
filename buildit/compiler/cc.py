@@ -32,6 +32,8 @@ class CC(Compiler):
             if not return_value == 0:
                 return return_value
             counter += 1
+        return 0 #; Semi-colon!? I killed you when I started using Python!
+    # YOU CAN'T KILL ME! I AM THE SEMI-COLON!
 
     def link_files(self):
         pass

@@ -16,7 +16,6 @@ class CC(Compiler):
         counter = 0
         for file_name in self.__file_list:
             module = ''
-            run_string = '{0} -o '.format(self.executable)
             percentage = self.__percentage(counter, self.__file_list)
             out_file = file_name.split('/')
             subdir_list = out_file
@@ -28,8 +27,8 @@ class CC(Compiler):
                 module = subdir_list.pop()
             self.__info_string(percentage, out_file)
             out_file = '{0}{1}'.format(out_file, '.o')
-            run_string = '{0}{1} -c {2}'.format(
-                    run_string, out_file, self.__compile_flags)
+            run_string = '{0} -o {1} -c {2}'.format(
+                    self.executable, out_file, self.__compile_flags)
             return_value = subprocess.call(run_string)
             if not return_value == 0:
                 return return_value

@@ -93,6 +93,7 @@ def format_options(option_list, option=''):
     
 def lookup_error(value):
     error_value = {
+                    None : 'Operation not yet implemented',
                     1000 : 'File Copy Error',
                     1001 : 'Operating System Error',
                     1002 : 'Compiler Error',

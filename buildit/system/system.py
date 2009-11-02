@@ -4,7 +4,7 @@ import threading
 from glob import glob
 from datetime import datetime
 
-from buildit.compiler.compiler import Compiler
+from build.compiler.compiler import Compiler
 from buildit.cprint import error, info
 from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
@@ -15,13 +15,13 @@ class System(threading.Thread):
 
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
-        self.compiler = Compiler()
+        self.compiler = Compiler
         self.__hashdb = HashDB(self.name)
-        self.__file_list = []        
+        self.__file_list = []
         self.__build_steps = []
         self.__unity_build = unity_build
         self.__project_name = project_name
-        self.__source_directory = 'source'
+        self.source_directory = 'source'
         self.__build_directory = 'build'
         self.__object_directory = 'object'
         self.__unity_directory = 'unity'
@@ -42,11 +42,11 @@ class System(threading.Thread):
 
     def pre_build(self):
         return 0
-
+   
     def build(self):
         return_value = self.compiler.run(self.__file_list, self.__hashdb)
         return return_value
- 
+
     def post_build(self):
         return 0
 
@@ -62,22 +62,22 @@ class System(threading.Thread):
                         self.__file_list.append(item)
         elif isinstance(files, basestring):
             if os.path.isdir(files):
-                glob_list = glob('{0}/*'.format(files)
+                glob_list = glob('{0}/*'.format(files))
                 for item in glob_list:
                     self.__file_list.append(item)
             else:
                 self.__file_list.append(files)
         else:
             warning('{0} is not a supported datatype!'.format(files))
-
+    
     @property
     def name(self):
         return uname(self)
-        
+
     @property
     def source_directory(self):
         pass
-        
+
     @source_directory.setter
     def source_directory(self, value):
         ''' Set the System's base source directory '''
@@ -89,11 +89,10 @@ class System(threading.Thread):
 
     @build_directory.setter
     def build_directory(self, value):
-        ''' Set the System's build (output) directory '''
-        self.__build_directory = value
+        self.build_directory = value
         self.compiler.build_directory = value
 
-    @property
+     @property
     def object_directory(self):
         pass
     
@@ -111,3 +110,4 @@ class System(threading.Thread):
     def unity_directory(self, value):
         ''' Set the System's unity build directory '''
         self.__unity_directory = value
+        self.compiler.unity_directory = value

@@ -9,8 +9,10 @@ from buildit.utils import which
 from buildit.cprint import command
 
 class CC(Compiler):
+
     def __init__(self):
-        super(Compiler,self).__init__()
+        super().__init__()
+        self._executable = which('cc')
     
     def compile_files(self):
         counter = 0
@@ -34,7 +36,7 @@ class CC(Compiler):
                 return return_value
             counter += 1
         return 0 #; Semi-colon!? I killed you when I started using Python!
-    # YOU CAN'T KILL ME! I AM THE SEMI-COLON!
+                 # YOU CAN'T KILL ME! I AM THE SEMI-COLON!
 
     def link_files(self):
         pass
@@ -53,7 +55,12 @@ class CC(Compiler):
 
     @property
     def executable(self):
-        return which('cc')
+        return self._executable
+
+    @executable.setter(self, value):
+    def executable(self, value):
+        if isinstance(value, basestring):
+            self._executable = which(value)
 
     @property
     def extensions(self):

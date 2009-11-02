@@ -16,23 +16,23 @@ class System(threading.Thread):
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
         self.compiler = Compiler()
-        self.__hashdb = HashDB(self.name)
-        self.__file_list = []
-        self.__build_steps = []
-        self.__unity_build = unity_build
-        self.__project_name = project_name
+        self._hashdb = HashDB(self.name)
+        self._file_list = []
+        self._build_steps = []
+        self._unity_build = unity_build
+        self._project_name = project_name
         self.source_directory = 'source'
-        self.__build_directory = 'build'
-        self.__object_directory = 'object'
-        self.__unity_directory = 'unity'
+        self._build_directory = 'build'
+        self._object_directory = 'object'
+        self._unity_directory = 'unity'
 
-        self.__build_steps.append(self.pre_build)
-        self.__build_steps.append(self.build)
-        self.__build_steps.append(self.post_build)
+        self._build_steps.append(self.pre_build)
+        self._build_steps.append(self.build)
+        self._build_steps.append(self.post_build)
 
     def run(self):
         start_time = datetime.now()
-        for function in self.__build_steps:
+        for function in self._build_steps:
             return_value = function()
             if not return_value == 0:
                 error('\nError: {0}'.format(lookup_error(return_value)))
@@ -44,7 +44,7 @@ class System(threading.Thread):
         return 0
    
     def build(self):
-        return_value = self.compiler.run(self.__file_list, self.__hashdb)
+        return_value = self.compiler.run(self._file_list, self._hashdb)
         return return_value
 
     def post_build(self):
@@ -57,16 +57,16 @@ class System(threading.Thread):
                     if os.path.isdir(item):
                         glob_list = glob('{0}/*'.format(item))
                         for file_name in glob_list:
-                            self.__file_list.append(file_name)
+                            self._file_list.append(file_name)
                     else:
-                        self.__file_list.append(item)
+                        self._file_list.append(item)
         elif isinstance(files, basestring):
             if os.path.isdir(files):
                 glob_list = glob('{0}/*'.format(files))
                 for item in glob_list:
-                    self.__file_list.append(item)
+                    self._file_list.append(item)
             else:
-                self.__file_list.append(files)
+                self._file_list.append(files)
         else:
             warning('{0} is not a supported datatype!'.format(files))
     
@@ -75,39 +75,30 @@ class System(threading.Thread):
         return uname(self)
 
     @property
-    def source_directory(self):
-        return self.__source_directory
-
-    @source_directory.setter
-    def source_directory(self, value):
-        ''' Set the System's base source directory '''
-        self.__source_directory = value
-
-    @property
     def build_directory(self):
-        return self.__build_directory
+        return self._build_directory
 
     @build_directory.setter
     def build_directory(self, value):
-        self.__build_directory = value
+        self._build_directory = value
         self.compiler.build_directory = value
 
     @property
     def object_directory(self):
-        return self.__object_directory
+        return self._object_directory
     
     @object_directory.setter    
     def object_directory(self, value):
         ''' Set the System's object file directory '''
-        self.__object_directory = value
+        self._object_directory = value
         self.compiler.object_directory = value
     
     @property
     def unity_directory(self):
-        return self.__unity_directory
+        return self._unity_directory
 
     @unity_directory.setter
     def unity_directory(self, value):
         ''' Set the System's unity build directory '''
-        self.__unity_directory = value
+        self._unity_directory = value
         self.compiler.unity_directory = value

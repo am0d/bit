@@ -15,7 +15,7 @@ class System(threading.Thread):
 
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
-        self.compiler = Compiler
+        self.compiler = Compiler()
         self.__hashdb = HashDB(self.name)
         self.__file_list = []
         self.__build_steps = []

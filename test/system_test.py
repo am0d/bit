@@ -7,6 +7,8 @@ sys.path.insert(1, os.path.dirname(os.getcwd()))
 
 from buildit.system.system import System as System
 
+import monkey_patches
+
 class TestSystem(unittest.TestCase):
     
     def setUp(self):
@@ -35,6 +37,9 @@ class TestSystem(unittest.TestCase):
 
         self.system.object_directory = ''
         self.assertEqual('', self.system.object_directory)
+
+        self.system.object_directory = ['object']
+        self.assertEqual('object', self.system.object_directory)
 
     def test_unity_directory(self):
         self.system.unity_directory = 'unity'

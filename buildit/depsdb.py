@@ -30,6 +30,7 @@ class Depslist(object):
     def __init__(self, include_dirs=[]):
         self.include_dirs=include_dirs
         self.current_file = ''
+        self.__dependencies = {}
 
     def parse_line(self, line):
         ''' Parses one line to find the absolute path of any include
@@ -87,7 +88,7 @@ class Depslist(object):
     def get_dependencies(self, file):
         ''' Returns a list of all the files that depend on file
             '''
-        pass
+        return self.__dependencies.get(file, [])
 
     def get_changed_files(self, file_list):
         ''' Iterates through the list of files that have changed,

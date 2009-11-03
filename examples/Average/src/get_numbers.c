@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include "modules.h"
-
+/* Checking for hash changes */
 int* get_numbers(num_numbers) {
 	int* array = NULL;
         int cur_index = 0;

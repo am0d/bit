@@ -48,7 +48,6 @@ class HashDB(object):
     def dictionary(self):
         return self.__dict
 
-    @property
     def file_hash(self, file_name):
         return self.__dict.get(file_name, '')
 

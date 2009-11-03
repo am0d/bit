@@ -5,7 +5,7 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.utils import which
+from buildit.utils import which, file_hash
 from buildit.cprint import command
 
 class CC(Compiler):
@@ -16,10 +16,12 @@ class CC(Compiler):
     
     def compile_files(self):
         counter = 1
+        hash_list = []
         for file in self._file_list:
             module = ''
             percentage = self._percentage(counter, len(self._file_list))
             file = file.replace('"', '')
+            hash_list.append(file)
             file_name = file.split('/')
             subdir = file_name
             file_name = file_name.pop()
@@ -28,24 +30,28 @@ class CC(Compiler):
             else:
                 subdir = subdir.pop()
             out_file = '{0}/{1}.o'.format(self._object_directory, file)
-            try:
-                os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
-            except OSError:
-                pass
-            self._info_string(percentage, file_name)
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
-                    self.executable, out_file, 
-                    file, self._compile_flags)
-            try:
-                return_value = subprocess.call(run_string)
-            except OSError:
-                return_value = os.system(run_string)
-            if not return_value == 0:
-                self._hashdb.generate_list(self._link_list)
-                return return_value
+            if not (os.path.exists(out_file) and 
+                    file_hash(file) == self.hashdb.file_hash(file)):
+                try:
+                    os.makedirs('{0}/{1}'.format(self._object_directory, 
+                        subdir))
+                except OSError:
+                    pass
+                self._info_string(percentage, file_name)
+                run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
+                        self.executable, out_file, 
+                        file, self._compile_flags)
+                try:
+                    return_value = subprocess.call(run_string)
+                except OSError:
+                    return_value = os.system(run_string)
+                if not return_value == 0:
+                    hash_list.remove(file)
+                    self.hashdb.generate_hashfile(hash_list)
+                    return return_value
             self._link_list.append(out_file)
             counter += 1
-        self.hashdb.generate_hashfile(self._link_list)
+        self.hashdb.generate_hashfile(hash_list)
         return 0
 
     def link_files(self):
@@ -59,7 +65,7 @@ class CC(Compiler):
             os.makedirs(self.build_directory)
         except OSError:
             pass
-        run_string = '{0} -o {1}/{2} {3}'.format(
+        run_string = '{0} -o "{1}/{2}" {3}'.format(
                 self.executable, self.build_directory,
                 self.project_name, build_string)
         try:

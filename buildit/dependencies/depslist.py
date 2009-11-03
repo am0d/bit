@@ -74,7 +74,7 @@ class Depslist(object):
             try:
                 self.current_file = file.name
 
-                for line in file.readlines():
+                for line in file:
                     path = self.parse_line(line)
                     if not path == '':
                         deps.append(path)
@@ -83,4 +83,20 @@ class Depslist(object):
                 return deps
         except IOError:
             return deps
+
+    def get_dependencies(self, file):
+        ''' Returns a list of all the files that depend on file
+            '''
+        pass
+
+    def get_changed_files(self, file_list):
+        ''' Iterates through the list of files that have changed,
+            and adds any files that depend on them.
+            '''
+        for file in file_list:
+            deps_list = self.get_dependencies(file)
+
+            for dependency in deps_list:
+                if not dependency in file_list:
+                    file_list.add(dependency)
 

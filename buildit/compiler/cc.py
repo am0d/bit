@@ -34,7 +34,7 @@ class CC(Compiler):
             self._info_string(percentage, file_name)
             run_string = '{0} -o {1} -c {2} {3}'.format(
                     self.executable, out_file, 
-                    file_name, self._compile_flags)
+                    file, self._compile_flags)
             try:
                 return_value = subprocess.call(run_string)
             except OSError:

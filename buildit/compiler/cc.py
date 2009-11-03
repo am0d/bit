@@ -10,13 +10,8 @@ from buildit.cprint import command
 
 class CC(Compiler):
 
-<<<<<<< HEAD
     def __init__(self):
-        Compiler.__init__()
-=======
-    def _init__(self):
-        Compiler._init__(self)
->>>>>>> amod/master
+        Compiler.__init__(self)
         self._executable = which('cc')
     
     def compile_files(self):

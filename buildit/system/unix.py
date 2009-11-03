@@ -6,7 +6,11 @@ from buildit.system.system import System
 class Unix(System):
 
     def __init__(self, project_name, unity_build=False):
+<<<<<<< HEAD
         System.__init__(project_name, unity_build)
+=======
+        System.__init__(self, project_name, unity_build)
+>>>>>>> amod/master
         self.compiler = CC()
 
     def add_define(self, define):

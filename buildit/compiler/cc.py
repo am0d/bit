@@ -19,16 +19,17 @@ class CC(Compiler):
         for file_name in self._file_list:
             module = ''
             percentage = self._percentage(counter, len(self._file_list))
-            out_file = file_name.split('/')
-            subdir_list = out_file
-            out_file = out_file.pop()
-            subdir_list.pop()
-            if not len(subdir_list) == 1:
-                module = '/'.join(subdir_list)
-            else:
-                module = subdir_list.pop()
-            self._info_string(percentage, out_file)
-            out_file = '{0}{1}'.format(out_file, '.o')
+            info_file = file_name.split('/')
+            subdir = info_file
+            info_file = info_file.pop()
+            subdir.pop()
+            out_file = '{0}/{1}.o'.format(self._object_directory, file_name)
+            try:
+                os.makedirs('{0}/{1}'.format(self._object_directory, 
+                    '/'.join(subdir))
+            except OSError:
+                pass
+            self._info_string(percentage, info_file)
             run_string = '{0} -o {1} -c {2} {3}'.format(
                     self.executable, out_file, 
                     file_name, self._compile_flags)

@@ -21,9 +21,9 @@ class System(threading.Thread):
         self._build_steps = []
         self._unity_build = unity_build
         self._project_name = project_name
-        self._build_directory = 'build'
-        self._object_directory = 'object'
-        self._unity_directory = 'unity'
+        self._build_directory = 'build/{0}'.format(self.name)
+        self._object_directory = 'object/{0}'.format(self.name)
+        self._unity_directory = 'unity/{0}'.format(self.name)
 
         self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)
@@ -78,7 +78,7 @@ class System(threading.Thread):
         self._compiler = value
         self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
-        self._compiler.unity_directory = self.unity_directory
+        self._compiler.unity_directory = self._unity_directory
 
     @property
     def name(self):

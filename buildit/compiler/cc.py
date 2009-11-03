@@ -30,7 +30,8 @@ class CC(Compiler):
             self._info_string(percentage, out_file)
             out_file = '{0}{1}'.format(out_file, '.o')
             run_string = '{0} -o {1} -c {2}'.format(
-                    self.executable, out_file, self._compile_flags)
+                    self.executable, out_file, file_name, self._compile_flags)
+            command(run_string)
             return_value = subprocess.call(run_string)
             if not return_value == 0:
                 return return_value

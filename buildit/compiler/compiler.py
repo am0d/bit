@@ -17,18 +17,22 @@ class Compiler(object):
         self._compile_steps = []
         self._compile_flags = ''
         self._link_flags = ''
+        self.hashdb = ''
+        self.project_name = ''
         self._executable = which('echo')
         self._type = '' # Added for much much later on
         self._object_directory = '.'
         self._build_directory = '.'
         self._unity_directory = '.'
+        
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
 
-    def run(self, file_list, unity_build):
+    def run(self, file_list, hashdb, project_name='PROJECT'):
         self._file_list = file_list
+        self.project_name = project_name
         for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:

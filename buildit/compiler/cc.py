@@ -46,7 +46,10 @@ class CC(Compiler):
         return 0
 
     def link_files(self):
-        pass
+        build_string = ''
+        command('[LINK] {0}'.format(self.project_name))
+        for file in self._link_list:
+            pass
 
     def add_define(self, define):
         self._compile_flags += format_options(flags, '-D')

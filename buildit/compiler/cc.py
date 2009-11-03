@@ -22,11 +22,13 @@ class CC(Compiler):
             info_file = file_name.split('/')
             subdir = info_file
             info_file = info_file.pop()
-            subdir.pop()
+            if len(subdir) > 1:
+                subdir = '/'.join(subdir)
+            else:
+                subdir = subdir.pop()
             out_file = '{0}/{1}.o'.format(self._object_directory, file_name)
             try:
-                os.makedirs('{0}/{1}'.format(self._object_directory, 
-                    '/'.join(subdir))
+                os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
             except OSError:
                 pass
             self._info_string(percentage, info_file)

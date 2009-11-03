@@ -32,7 +32,10 @@ class CC(Compiler):
             run_string = '{0} -o {1} -c {2} {3}'.format(
                     self.executable, out_file, 
                     file_name, self._compile_flags)
-            return_value = subprocess.call(run_string)
+            try:
+                return_value = subprocess.call(run_string)
+            except OSError:
+                return_value = os.system(run_string)
             if not return_value == 0:
                 return return_value
             counter += 1

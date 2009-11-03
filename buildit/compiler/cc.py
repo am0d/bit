@@ -15,10 +15,10 @@ class CC(Compiler):
         self._executable = which('cc')
     
     def compile_files(self):
-        counter = 0
+        counter = 1
         for file_name in self._file_list:
             module = ''
-            percentage = self._percentage(counter, self._file_list)
+            percentage = self._percentage(counter, len(self._file_list))
             out_file = file_name.split('/')
             subdir_list = out_file
             out_file = out_file.pop()
@@ -29,10 +29,10 @@ class CC(Compiler):
                 module = subdir_list.pop()
             self._info_string(percentage, out_file)
             out_file = '{0}{1}'.format(out_file, '.o')
-            args = '-o {0} -c {1} {2}'.format(
-                    out_file, file_name, self._compile_flags)
-            command('{0} {1}'.format(self.executable, args))
-            return_value = subprocess.call([self.executable, args])
+            run_string = '{0} -o {1} -c {2} {3}'.format(
+                    self.executable, out_file, 
+                    file_name, self._compile_flags)
+            return_value = subprocess.call(run_string)
             if not return_value == 0:
                 return return_value
             counter += 1

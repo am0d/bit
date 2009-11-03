@@ -46,7 +46,7 @@ def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
 
 def which(program_name):
-    if system_type == 'windows':
+    if sys.platform == 'win32':
         program_name = '{0}.exe'.format(program_name)
     filepath = os.path.split(program_name)[0]
     if filepath:

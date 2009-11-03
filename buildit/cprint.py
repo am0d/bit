@@ -24,6 +24,7 @@ def cprint(message, color):
         ctypes.windll.kernel32.SetConsoleTextAttribute(handle, color | 0x0008)
         print(message),
         ctypes.windll.kernel32.SetConsoleTextAttribute(handle, 0x0007)
+        print('')
     else:
         print('{0}{1}\33[0m'.format(color, message))
     print_lock.release()

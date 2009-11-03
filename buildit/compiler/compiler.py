@@ -53,12 +53,12 @@ class Compiler(object):
     def link_files(self):
         pass
 
-    def _percentage(self, counter, file_list):
+    def _percentage(self, counter, list_length):
         ''' 
             Calculates the percentage of files completed, and returns it as a
             string 
         '''
-        percentage = 100 * float(counter)/float(len(file_list))
+        percentage = 100 * float(counter)/float(list_length)
         percentage = str(percentage).split('.')
         percentage = percentage.pop(0)
         return percentage

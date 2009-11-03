@@ -23,16 +23,20 @@
 import os.path
 
 from buildit.utils import which
-from buildit.cprint import command
+from buildit.cprint import command, warning
 
 class DepsDB(object):
 
-    def __init__(self, include_dirs=[]):
-        self.include_dirs=include_dirs
-        self.current_file = ''
+    def __init__(self, project_name, include_dirs=[]):
+        self.include_dirs = include_dirs
+        self.project_name = project_name
+        self.__location = '.buildit/{0}.deps'.format(
+                            self.project_name)
         self.__dependencies = {}
 
-    def parse_line(self, line):
+        self.__run()
+
+    def parse_line(self, line, current_file):
         ''' Parses one line to find the absolute path of any include
             statement on that line.
             '''
@@ -41,11 +45,11 @@ class DepsDB(object):
             line = line.replace('#include ', '', 1)
             line = line.replace('"', '')
             line = line.replace('<', '')
-            line = line.replace('>', '')
+            name = line.replace('>', '')
             
             # search locally first e.g. "../test.h"
-            current_dir = os.path.split(self.current_file)[0]
-            path = '{0}/{1}'.format(current_dir, line)
+            current_dir = os.path.split(current_file)[0]
+            path = '{0}/{1}'.format(current_dir, name)
             path = os.path.normpath(path)
             
             if os.path.exists(path):
@@ -54,7 +58,7 @@ class DepsDB(object):
             # we didn't find the file locally - 
             # lets see if it is in one of the include directories
             for dir in self.include_dirs:
-                path = '{0}/{1}'.format(dir, line)
+                path = '{0}/{1}'.format(dir, name)
                 if os.path.exists(path):
                     return path
 
@@ -73,10 +77,8 @@ class DepsDB(object):
         try:
             file = open(file, "r")
             try:
-                self.current_file = file.name
-
                 for line in file:
-                    path = self.parse_line(line)
+                    path = self.parse_line(line, file.name)
                     if not path == '':
                         deps.append(path)
             finally:
@@ -101,3 +103,29 @@ class DepsDB(object):
                 if not dependency in file_list:
                     file_list.add(dependency)
 
+    def __run(self):
+        try:
+            os.makedirs('.buildit/')
+            if system_type() == 'windows':
+                subprocess.call('attrib +h .buildit')
+        except:
+            pass
+        if not os.path.exists(self.__location):
+            warning('Dependency graph not found. Running first time '\
+                    'generation')
+            try:
+                self.deps_file = open(self.__location, 'w')
+                self.deps_file.close()
+            except IOError:
+                pass
+        try:
+            self.deps_file = open(self.__location)
+            for line in self.deps_file:
+                line = line.replace('\n', '')
+                line = line.split(':')
+                if line[0] not in self.__dependencies:
+                    self.__dependencies[line[0]] = []
+                self.__dependencies[line[0]].append(line[1])
+            self.deps_file.close()
+        except IOError:
+            pass

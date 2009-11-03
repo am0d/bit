@@ -10,6 +10,7 @@ from buildit.utils import lookup_error, flatten
 from buildit.utils import fix_strings
 from buildit.utils import name as uname
 from buildit.hashdb import HashDB
+from buildit.depsdb import DepsDB
 
 class System(threading.Thread):
 
@@ -17,6 +18,7 @@ class System(threading.Thread):
         threading.Thread.__init__(self)
         self._compiler = Compiler()
         self._hashdb = HashDB(self.name)
+        self._depsdb = DepsDB(self.name)
         self._file_list = []
         self._build_steps = []
         self._unity_build = unity_build

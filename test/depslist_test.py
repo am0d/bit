@@ -5,15 +5,15 @@ import unittest
 # when running the tests
 sys.path.insert(1, os.path.dirname(os.getcwd()))
 
-from buildit.dependencies.depslist import Depslist as Depslist
+from buildit.depsdb import DepsDB
 
 import monkey_patches
 
-class TestDepslist(unittest.TestCase):
+class TestDepsDB(unittest.TestCase):
     
     def setUp(self):
         self.include_dirs = []
-        self.depslist = Depslist(self.include_dirs)
+        self.depsdb = DepsDB(self.include_dirs)
     
     def test_parse_includes(self):
         lines = {
@@ -27,10 +27,9 @@ class TestDepslist(unittest.TestCase):
                 '}' : ''
                 }
 
-        self.depslist.current_file = '/home/test/buildit/src/main.cpp'
-
         for line in lines:
-            self.assertEqual(lines.get(line), self.depslist.parse_line(line))
+            self.assertEqual(lines.get(line), self.depsdb.parse_line(line,
+                                        '/home/test/buildit/src/main.cpp'))
 
 if __name__ == '__main__':
     unittest.main()

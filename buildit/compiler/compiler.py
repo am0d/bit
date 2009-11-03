@@ -44,7 +44,7 @@ class Compiler(object):
         self._file_list = fix_strings(self._file_list)
         for file_name in self._file_list:
             for extension in self.extensions:
-                if not file_name.endswith(extension):
+                if not file_name.endswith('{0}"'.format(extension)):
                     self._file_list.remove(file_name)
         try:
             os.makedirs(self._object_directory)

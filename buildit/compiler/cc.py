@@ -19,6 +19,7 @@ class CC(Compiler):
         for file in self._file_list:
             module = ''
             percentage = self._percentage(counter, len(self._file_list))
+            file = file.replace('"', '')
             file_name = file.split('/')
             subdir = file_name
             file_name = file_name.pop()
@@ -32,7 +33,7 @@ class CC(Compiler):
             except OSError:
                 pass
             self._info_string(percentage, file_name)
-            run_string = '{0} -o {1} -c {2} {3}'.format(
+            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
                     self.executable, out_file, 
                     file, self._compile_flags)
             try:
@@ -49,7 +50,7 @@ class CC(Compiler):
         build_string = ''
         command('[LINK] {0}'.format(self.project_name))
         for file_name in self._link_list:
-            build_string += ' {0}'.format(file_name)
+            build_string += ' "{0}"'.format(file_name)
         for item in self._link_flags:
             build_string += item
         try:

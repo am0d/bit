@@ -43,8 +43,8 @@ class Compiler(object):
     def setup_files(self):
         self._file_list = flatten(self._file_list)
         self._file_list = fix_strings(self._file_list)
-        for file_name in self._file_list:
-            for extension in self.extensions:
+        for extension in self.extensions:
+            for file_name in self._file_list:
                 if not file_name.endswith('{0}"'.format(extension)):
                     self._file_list.remove(file_name)
         try:

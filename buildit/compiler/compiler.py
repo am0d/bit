@@ -13,6 +13,7 @@ class Compiler(object):
     
     def __init__(self):
         self._file_list = []
+        self._link_list = []
         self._compile_steps = []
         self._compile_flags = ''
         self._link_flags = ''

@@ -21,9 +21,13 @@ class System(threading.Thread):
         self._build_steps = []
         self._unity_build = unity_build
         self._project_name = project_name
-        self._build_directory = 'build/{0}'.format(self.name)
-        self._object_directory = 'object/{0}'.format(self.name)
-        self._unity_directory = 'unity/{0}'.format(self.name)
+        self._build_directory = ''
+        self.object_directory = ''
+        self.unity_directory = ''
+        
+        self.build_directory = 'build/{0}'.format(self.name)
+        self.object_directory = 'object/{0}'.format(self.name)
+        self.unity_directory = 'unity/{0}'.format(self.name)
 
         self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)

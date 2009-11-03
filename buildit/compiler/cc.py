@@ -16,17 +16,17 @@ class CC(Compiler):
     
     def compile_files(self):
         counter = 1
-        for file_name in self._file_list:
+        for file in self._file_list:
             module = ''
             percentage = self._percentage(counter, len(self._file_list))
-            info_file = file_name.split('/')
-            subdir = info_file
-            info_file = info_file.pop()
+            file_name = file.split('/')
+            subdir = file_name
+            file_name = file_name.pop()
             if len(subdir) > 1:
                 subdir = '/'.join(subdir)
             else:
                 subdir = subdir.pop()
-            out_file = '{0}/{1}.o'.format(self._object_directory, file_name)
+            out_file = '{0}/{1}.o'.format(self._object_directory, file)
             try:
                 os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
             except OSError:
@@ -41,6 +41,7 @@ class CC(Compiler):
                 return_value = os.system(run_string)
             if not return_value == 0:
                 return return_value
+            self._link_list.append(out_file)
             counter += 1
         return 0
 

@@ -25,7 +25,7 @@ import os.path
 from buildit.utils import which
 from buildit.cprint import command
 
-class Depslist(object):
+class DepsDB(object):
 
     def __init__(self, include_dirs=[]):
         self.include_dirs=include_dirs

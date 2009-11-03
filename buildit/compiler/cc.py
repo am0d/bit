@@ -31,7 +31,7 @@ class CC(Compiler):
                 os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
             except OSError:
                 pass
-            self._info_string(percentage, info_file)
+            self._info_string(percentage, file_name)
             run_string = '{0} -o {1} -c {2} {3}'.format(
                     self.executable, out_file, 
                     file_name, self._compile_flags)

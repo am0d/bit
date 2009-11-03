@@ -82,14 +82,15 @@ def fix_strings(file_list): #Really should only be used internally
         file_list.sort()
     return file_list
 
-def format_options(option_list, option=''):
+def format_options(option_list, option='', quotes=False):
     string = ''
     option_list = list(option_list)
     option_list = flatten(option_list)
     for item in option_list:
+        if quotes:
+            item = '"{0}"'.format(item)
         string += ' {0}{1}'.format(option , item)
     return string
-    
     
 def lookup_error(value):
     error_value = {

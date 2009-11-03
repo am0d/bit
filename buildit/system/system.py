@@ -53,25 +53,31 @@ class System(threading.Thread):
     def post_build(self):
         return 0
 
-    def add_files(self, files):
-        if isinstance(files, tuple) or isinstance(files, list):
-            for item in flatten(files):
-                if isinstance(item, basestring):
-                    if os.path.isdir(item):
-                        glob_list = glob('{0}/*'.format(item))
-                        for file_name in glob_list:
-                            self._file_list.append(file_name)
-                    else:
-                        self._file_list.append(item)
-        elif isinstance(files, basestring):
-            if os.path.isdir(files):
-                glob_list = glob('{0}/*'.format(files))
-                for item in glob_list:
+    def add(self, files):
+    if isinstance(files, tuple) or isinstance(files, list):
+        for item in flatten(files):
+            if isinstance(item, basestring):
+                if os.path.isdir(item):
+                    glob_list = glob('{0}/*'.format(item))
+                    for file_name in glob_list:
+                        file_name = '"{0}"'.format(file_name)
+                        self._file_list.append(file_name)
+                else:
+                    item = '"{0}"'
                     self._file_list.append(item)
+    elif isinstance(files, basestring):
+        if isinstance(item, basestring):
+            if os.path.isdir(item):
+                glob_list = glob('{0}/*'.format(item))
+                for file_name in glob_list:
+                    file_name = '"{0}"'.format(file_name)
+                    self._file_list.append(file_name)
             else:
-                self._file_list.append(files)
-        else:
-            warning('{0} is not a supported datatype!'.format(files))
+                item = '"{0}"'
+                self._file_list.append(item)
+    else:
+        warning('{0} is not a supported datatype.'.format(files))
+    self._file_list = fix_strings(self._file_list)
     
     @property
     def compiler(self):

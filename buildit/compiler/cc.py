@@ -48,20 +48,36 @@ class CC(Compiler):
     def link_files(self):
         build_string = ''
         command('[LINK] {0}'.format(self.project_name))
-        for file in self._link_list:
+        for file_name in self._link_list:
+            build_string += ' {0}'.format(file_name)
+        for item in self._link_flags:
+            build_string += item
+        try:
+            os.makedirs(self.build_directory)
+        except OSError:
             pass
+        run_string = '{0} -o {1}/{2} {3}'.format(
+                self.executable, self.build_directory,
+                self.project_name, build_string)
+        try:
+            return_value = subprocess.call(run_string)
+        except OSError:
+            return_value = os.system(run_string)
+        if not return_value == 0:
+            return return_value
+        return 0
 
     def add_define(self, define):
-        self._compile_flags += format_options(flags, '-D')
+        self._compile_flags += format_options(define, '-D')
 
     def add_include_directory(self, directory):
-        self._compile_flags += format_options(flags, '-I')
+        self._compile_flags += format_options(directory, '-I', True)
 
     def add_library_directory(self, directory):
-        self._link_flags += format_options(flags, '-L')
+        self._link_flags += format_options(directory, '-L', True)
 
     def add_library(self, library):
-        self._link_flags += format_options(flags, '-l')
+        self._link_flags += format_options(directory, '-l')
 
     @property
     def executable(self):

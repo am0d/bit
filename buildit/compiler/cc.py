@@ -11,7 +11,7 @@ from buildit.cprint import command
 class CC(Compiler):
 
     def __init__(self):
-        super().__init__()
+        Compiler.__init__()
         self._executable = which('cc')
     
     def compile_files(self):
@@ -35,8 +35,7 @@ class CC(Compiler):
             if not return_value == 0:
                 return return_value
             counter += 1
-        return 0 #; Semi-colon!? I killed you when I started using Python!
-                 # YOU CAN'T KILL ME! I AM THE SEMI-COLON!
+        return 0
 
     def link_files(self):
         pass

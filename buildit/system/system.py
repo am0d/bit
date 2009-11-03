@@ -22,8 +22,8 @@ class System(threading.Thread):
         self._unity_build = unity_build
         self._project_name = project_name
         self._build_directory = ''
-        self.object_directory = ''
-        self.unity_directory = ''
+        self._object_directory = ''
+        self._unity_directory = ''
         
         self.build_directory = 'build/{0}'.format(self.name)
         self.object_directory = 'object/{0}'.format(self.name)

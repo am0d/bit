@@ -33,6 +33,7 @@ class Compiler(object):
     def run(self, file_list, hashdb, project_name='PROJECT'):
         self._file_list = file_list
         self.project_name = project_name
+        self.hashdb = hashdb
         for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:

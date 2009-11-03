@@ -45,7 +45,7 @@ class CC(Compiler):
                 return return_value
             self._link_list.append(out_file)
             counter += 1
-        self._hashdb.generate_list(self._link_list)
+        self.hashdb.generate_hashfile(self._link_list)
         return 0
 
     def link_files(self):

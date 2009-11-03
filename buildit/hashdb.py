@@ -35,12 +35,12 @@ class HashDB(object):
             self.__dict.append(line)
         self.__dict = dict(tuple(self.__dict))
 
-    def generate_hashfile(file_list):
-        self.__file.open(self.__location, 'w')
+    def generate_hashfile(self, file_list):
+        self.__file=open(self.__location, 'w')
         if sys.platform == 'win32':
             file_list = fix_strings(file_list)
         for file_name in file_list:
-            self._file.write('{0}:{1}\n'.format(file_name, \
+            self.__file.write('{0}:{1}\n'.format(file_name, \
                                                 file_hash(file_name)))
         self.__file.close()
 

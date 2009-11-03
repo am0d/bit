@@ -15,13 +15,12 @@ class System(threading.Thread):
 
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
-        self.compiler = Compiler()
+        self._compiler = Compiler()
         self._hashdb = HashDB(self.name)
         self._file_list = []
         self._build_steps = []
         self._unity_build = unity_build
         self._project_name = project_name
-        self.source_directory = 'source'
         self._build_directory = 'build'
         self._object_directory = 'object'
         self._unity_directory = 'unity'
@@ -44,7 +43,7 @@ class System(threading.Thread):
         return 0
    
     def build(self):
-        return_value = self.compiler.run(self._file_list, self._hashdb)
+        return_value = self._compiler.run(self._file_list, self._hashdb)
         return return_value
 
     def post_build(self):
@@ -71,6 +70,17 @@ class System(threading.Thread):
             warning('{0} is not a supported datatype!'.format(files))
     
     @property
+    def compiler(self):
+        return self._compiler
+
+    @compiler.setter
+    def compiler(self, value):
+        self._compiler = value
+        self._compiler.object_directory = self._object_directory
+        self._compiler.build_directory = self._build_directory
+        self._compiler.unity_directory = self.unity_directory
+
+    @property
     def name(self):
         return uname(self)
 
@@ -81,7 +91,7 @@ class System(threading.Thread):
     @build_directory.setter
     def build_directory(self, value):
         self._build_directory = value
-        self.compiler.build_directory = value
+        self._compiler.build_directory = value
 
     @property
     def object_directory(self):
@@ -91,7 +101,7 @@ class System(threading.Thread):
     def object_directory(self, value):
         ''' Set the System's object file directory '''
         self._object_directory = value
-        self.compiler.object_directory = value
+        self._compiler.object_directory = value
     
     @property
     def unity_directory(self):
@@ -101,4 +111,4 @@ class System(threading.Thread):
     def unity_directory(self, value):
         ''' Set the System's unity build directory '''
         self._unity_directory = value
-        self.compiler.unity_directory = value
+        self._compiler.unity_directory = value

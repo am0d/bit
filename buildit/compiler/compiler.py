@@ -20,6 +20,7 @@ class Compiler(object):
         self._type = '' # Added for much much later on
         self._object_directory = '.'
         self._build_directory = '.'
+        self._unity_directory = '.'
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
@@ -94,12 +95,28 @@ class Compiler(object):
         return '.txt'
 
     @property
+    def build_directory(self):
+        return self._build_directory
+
+    @build_directory.setter
+    def build_directory(self, value):
+        self._build_directory = value
+
+    @property
     def object_directory(self):
         return self._object_directory
 
     @object_directory.setter
     def object_directory(self, value):
         self._object_directory = value
+
+    @property
+    def unity_directory(self):
+        return self._unity_directory
+
+    @unity_directory.setter
+    def unity_directory(self, value):
+        self._unity_directory = value
 
     @property
     def extensions(self):

@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 from buildit.cprint import error, warning
-from buildit.utils import fix_strings, file_hash, system_type
+from buildit.utils import fix_strings, file_hash
 
 class HashDB(object):
 
@@ -20,7 +20,7 @@ class HashDB(object):
     def __run(self):
         try:
             os.makedirs('.buildit')
-            if system_type() == 'windows':
+            if sys.platform == 'windows':
                 subprocess.call('attrib +h .buildit')
         except:
             pass
@@ -44,7 +44,7 @@ class HashDB(object):
                                                 file_hash(file_name)))
         self.__file.close()
 
-    @property        
+    @property 
     def dictionary(self):
         return self.__dict
 
@@ -52,4 +52,3 @@ class HashDB(object):
     def file_hash(self, file_name):
         return self.__dict.get(file_name, '')
 
-    

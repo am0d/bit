@@ -41,9 +41,11 @@ class CC(Compiler):
             except OSError:
                 return_value = os.system(run_string)
             if not return_value == 0:
+                self._hashdb.generate_list(self._link_list)
                 return return_value
             self._link_list.append(out_file)
             counter += 1
+        self._hashdb.generate_list(self._link_list)
         return 0
 
     def link_files(self):

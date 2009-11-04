@@ -4,6 +4,6 @@
 
 int main(int argc, char* argv[])
 {
-	std::vector<std::string> parameters(argc, argv + argc);
+	std::vector<std::string> parameters(argv, argv + argc);
 	std::cout << "Hello, World!" << std::endl;
 }

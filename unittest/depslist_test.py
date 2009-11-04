@@ -13,7 +13,7 @@ class TestDepsDB(unittest.TestCase):
     
     def setUp(self):
         self.include_dirs = []
-        self.depsdb = DepsDB(self.include_dirs)
+        self.depsdb = DepsDB('test', self.include_dirs)
     
     def test_parse_includes(self):
         lines = {

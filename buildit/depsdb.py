@@ -28,12 +28,14 @@ from buildit.cprint import command, warning
 class DepsDB(object):
 
     def __init__(self, project_name, include_dirs=[]):
+        ''' Initialise all the attributes and load any pre-calculated
+            dependencies into memory
+            '''
         self.include_dirs = include_dirs
         self.project_name = project_name
         self.__location = '.buildit/{0}.deps'.format(
                             self.project_name)
         self.__dependencies = {}
-
         self.__run()
 
     def parse_line(self, line, current_file):
@@ -68,24 +70,29 @@ class DepsDB(object):
         else:
             return ''
 
-    def parse_file(self, file):
+    def parse_file(self, file_name):
         ''' Parses one file and returns a list of all the files
             that the file depends on (determined by the files it
             includes).
             '''
         deps = []
         try:
-            file = open(file, "r")
+            file = open(file_name, "r")
             try:
                 for line in file:
-                    path = self.parse_line(line, file.name)
+                    path = self.parse_line(line, file_name)
                     if not path == '':
                         deps.append(path)
             finally:
                 file.close()
-                return deps
         except IOError:
-            return deps
+            pass
+        for name in deps:
+            if name not in self.__dependencies:
+                self.__dependencies[name] = []
+            if file_name not in self.__dependencies[name]:
+                self.__dependencies[name].append(file_name)
+        return deps
 
     def get_dependencies(self, file):
         ''' Returns a list of all the files that depend on file
@@ -104,13 +111,18 @@ class DepsDB(object):
                     file_list.add(dependency)
 
     def __run(self):
+        ''' Load into memory all the files currently in the dependency
+            graph on disk
+            '''
         try:
+            # make sure we have a .buildit directory
             os.makedirs('.buildit/')
             if system_type() == 'windows':
                 subprocess.call('attrib +h .buildit')
         except:
             pass
         if not os.path.exists(self.__location):
+            # create the .deps file if it doesn't exist already
             warning('Dependency graph not found. Running first time '\
                     'generation')
             try:
@@ -119,6 +131,7 @@ class DepsDB(object):
             except IOError:
                 pass
         try:
+            #read in all the dependencies from the file
             self.deps_file = open(self.__location)
             for line in self.deps_file:
                 line = line.replace('\n', '')
@@ -129,3 +142,12 @@ class DepsDB(object):
             self.deps_file.close()
         except IOError:
             pass
+
+    def save_deps(self):
+        try:
+            self.deps_file = open(self.__location, 'w')
+            for file, deps in self.__dependencies.iteritems():
+                for dep in deps:
+                    self.deps_file.write('{0}:{1}\n'.format(file, dep))
+        except:
+            warning('An error occurred while saving the dependency graph')

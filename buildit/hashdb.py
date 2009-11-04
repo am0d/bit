@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 
+from buildit.depsdb import DepsDB
 from buildit.cprint import error, warning
 from buildit.utils import fix_strings, file_hash
 
@@ -11,6 +12,7 @@ class HashDB(object):
 
     def __init__(self, hash_name):
         self.name = hash_name
+        self.depsdb = DepsDB(self.name)
         self.__location = '.buildit/{0}'.format(self.name)
         self.__file = None
         self.__dict = []
@@ -52,12 +54,24 @@ class HashDB(object):
             if file_name not in self.__dict:
                 hash = file_hash(file_name)
                 self.__dict[file_name] = hash
-                self.__file.write('{0}:{1}\n'.format(file_name, hash))
-                self.__compile_list.append(file_name)
-            else:
-                if not file_hash(file_name) == self.__dict[file_name]:
+                if file_name not in self.__compile_list:
                     self.__compile_list.append(file_name)
+                self.depsdb.parse_file(file_name)
+                for dep in self.depsdb.get_dependencies(file_name):
+                    if dep not in self.__compile_list:
+                        self.__compile_list.append(dep)
+            else:
+                new_hash = file_hash(file_name)
+                if not new_hash == self.__dict[file_name]:
+                    if file_name not in self.__compile_list:
+                        self.__compile_list.append(file_name)
+                    self.__dict[file_name] = new_hash
+                    self.depsdb.parse_file(file_name)
+                    for dep in self.depsdb.get_dependencies(file_name):
+                        if dep not in self.__compile_list:
+                            self.__compile_list.append(dep)
         self.__file.close()
+        self.depsdb.save_deps()
 
     @property 
     def dictionary(self):

@@ -1,7 +1,8 @@
 Overview
 ========
 
-buildit is an easy to use, easy to modify, and easy to understand build system. It supports dependency tracking, multiple projects, and an easy to use API.
+buildit is an easy to use, easy to modify, and easy to understand build system.
+It supports dependency tracking, multiple projects, and an easy to use API.
 
 Contributors:
 	Tres Walsh      <tres.walsh@mnmlstc.com> 	(SAHChandler)

@@ -13,25 +13,21 @@ class CC(Compiler):
     def __init__(self):
         Compiler.__init__(self)
         self._executable = which('cc')
-    
+
     def compile_files(self):
         counter = 1
-        hash_list = []
         for file in self._file_list:
-            module = ''
-            percentage = self._percentage(counter, len(self._file_list))
-            file = file.replace('"', '')
-            hash_list.append(file)
-            file_name = file.split('/')
-            subdir = file_name
-            file_name = file_name.pop()
-            if len(subdir) > 1:
-                subdir = '/'.join(subdir)
-            else:
-                subdir = subdir.pop()
-            out_file = '{0}/{1}.o'.format(self._object_directory, file)
-            if not (os.path.exists(out_file) and 
-                    file_hash(file) == self.hashdb.file_hash(file)):
+            if file in self._compile_list:
+                module = ''
+                percentage = self._percentage(counter, len(self._compile_list))
+                file_name = file.split('/')
+                subdir = file_name
+                file_name = file_name.pop()
+                if len(subdir) > 1:
+                    subdir = '/'.join(subdir)
+                else:
+                    subdir = subdir.pop()
+                out_file = '{0}/{1}.o'.format(self._object_directory, file)
                 try:
                     os.makedirs('{0}/{1}'.format(self._object_directory, 
                         subdir))
@@ -46,12 +42,13 @@ class CC(Compiler):
                 except OSError:
                     return_value = os.system(run_string)
                 if not return_value == 0:
-                    hash_list.remove(file)
-                    self.hashdb.generate_hashfile(hash_list)
                     return return_value
-            self._link_list.append(out_file)
-            counter += 1
-        self.hashdb.generate_hashfile(hash_list)
+                self._link_list.append(out_file)
+                counter += 1
+            else:
+                #Don't need to compile file; just link it
+                out_file = '{0}/{1}.o'.format(self._object_directory, file)
+                self._link_list.append(out_file)
         return 0
 
     def link_files(self):

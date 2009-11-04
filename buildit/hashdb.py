@@ -14,6 +14,7 @@ class HashDB(object):
         self.__location = '.buildit/{0}'.format(self.name)
         self.__file = None
         self.__dict = []
+        self.__compile_list = []
         self.__run()
         assert(isinstance(self.__dict, dict))
 
@@ -35,13 +36,27 @@ class HashDB(object):
             self.__dict.append(line)
         self.__dict = dict(tuple(self.__dict))
 
-    def generate_hashfile(self, file_list):
+    def generate_hashfile(self):
         self.__file=open(self.__location, 'w')
         if sys.platform == 'win32':
             file_list = fix_strings(file_list)
+        for file, hash in self.__dict.iteritems():
+            self.__file.write('{0}:{1}\n'.format(file, hash))
+        self.__file.close()
+
+    def add(self, file_list):
+        self.__file = open(self.__location, 'w')
+        file_list = fix_strings(file_list)
         for file_name in file_list:
-            self.__file.write('{0}:{1}\n'.format(file_name, \
-                                                file_hash(file_name)))
+            file_name = file_name.replace('"', '')
+            if file_name not in self.__dict:
+                hash = file_hash(file_name)
+                self.__dict[file_name] = hash
+                self.__file.write('{0}:{1}\n'.format(file_name, hash))
+                self.__compile_list.append(file_name)
+            else:
+                if not file_hash(file_name) == self.__dict[file_name]:
+                    self.__compile_list.append(file_name)
         self.__file.close()
 
     @property 
@@ -50,4 +65,8 @@ class HashDB(object):
 
     def file_hash(self, file_name):
         return self.__dict.get(file_name, '')
+
+    @property
+    def compile_list(self):
+        return self.__compile_list
 

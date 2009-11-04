@@ -32,6 +32,7 @@ class Compiler(object):
 
     def run(self, file_list, hashdb, project_name='PROJECT'):
         self._file_list = file_list
+        self._compile_list = hashdb.compile_list
         self.project_name = project_name
         self.hashdb = hashdb
         for function in self._compile_steps:
@@ -46,11 +47,14 @@ class Compiler(object):
         for file_name in self._file_list:
             valid_ext = False
             for extension in self.extensions:
-                if file_name.endswith('{0}"'.format(extension)):
+                if file_name.endswith('{0}'.format(extension)):
                     valid_ext = True
                     break
             if not valid_ext:
+                #remove the file from the file_list if we can't compile it
                 self._file_list.remove(file_name)
+                if file_name in self._compile_list:
+                    self._compile_list.remove(file_name)
         try:
             os.makedirs(self._object_directory)
         except:

@@ -49,8 +49,10 @@ class System(threading.Thread):
         return 0
    
     def build(self):
+        self._hashdb.add(self._file_list)
         return_value = self._compiler.run(self._file_list, self._hashdb, \
                         self._project_name)
+        self._hashdb.generate_hashfile()
         return return_value
 
     def post_build(self):
@@ -63,7 +65,7 @@ class System(threading.Thread):
                     if os.path.isdir(item):
                         glob_list = glob('{0}/*'.format(item))
                         for file_name in glob_list:
-                            file_name = '"{0}"'.format(file_name)
+                            file_name = '{0}'.format(file_name)
                             self._file_list.append(file_name)
                     else:
                         item = '"{0}"'
@@ -72,10 +74,10 @@ class System(threading.Thread):
             if os.path.isdir(files):
                 glob_list = glob('{0}/*'.format(files))
                 for file_name in glob_list:
-                    file_name = '"{0}"'.format(file_name)
+                    file_name = '{0}'.format(file_name)
                     self._file_list.append(file_name)
             else:
-                item = '"{0}"'
+                item = '{0}'
                 self._file_list.append(files)
         else:
             warning('{0} is not a supported datatype.'.format(files))

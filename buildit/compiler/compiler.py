@@ -18,6 +18,7 @@ class Compiler(object):
         self._compile_flags = ''
         self._link_flags = ''
         self.hashdb = ''
+        self.dependencydb = ''
         self.project_name = ''
         self._executable = which('echo')
         self._type = '' # Added for much much later on
@@ -30,11 +31,12 @@ class Compiler(object):
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
 
-    def run(self, file_list, hashdb, project_name='PROJECT'):
+    def run(self, file_list, hashdb, dependencydb, project_name='PROJECT'):
         self._file_list = file_list
         self._compile_list = hashdb.compile_list
         self.project_name = project_name
         self.hashdb = hashdb
+        self.dependencydb = dependencydb
         for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:

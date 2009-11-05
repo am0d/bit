@@ -98,7 +98,8 @@ def lookup_error(value):
                     1000 : 'File Copy Error',
                     1001 : 'Operating System Error',
                     1002 : 'Compiler Error',
-                    1003 : 'Linker Error'
+                    1003 : 'Linker Error',
+                    1004 : 'File IO Error' 
                   }
     return error_value.get(value, 'Unknown Error')
     

@@ -2,12 +2,12 @@
 # like from buildit.compiler.compiler import Compiler. 
 # This just saves them the trouble
 
-# Dependency Modules
-from buildit.dependency.c import C
-from buildit.dependency.cpp import CPP
+# System Modules
+from buildit.system.system import System
+from buildit.system.unix import Unix
 
 # Compiler Modules
 from buildit.compiler.cc import CC
-from buildit.compiler.cxx import CC
+from buildit.compiler.cxx import CXX
 from buildit.compiler.tcc import TCC
 from buildit.compiler.llvmgcc import LLVMGCC

@@ -1,5 +1,5 @@
-from buildit.system.unix import Unix
+from buildit import Unix
 
 test = Unix('Spaces In Name')
-test.add('src/')
+test.add('src')
 test.run()

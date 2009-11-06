@@ -1,5 +1,6 @@
-from buildit.system.unix import Unix
-from buildit.compiler.cxx import CXX
+from buildit import Unix
+from buildit import CXX
+
 
 hello = Unix('Hello World')
 hello.add('src')

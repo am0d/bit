@@ -16,39 +16,31 @@ class CC(Compiler):
 
     def compile_files(self):
         counter = 1
-        for file in self._file_list:
-            if file in self._compile_list:
-                module = ''
-                percentage = self._percentage(counter, len(self._compile_list))
-                file_name = file.split('/')
-                subdir = file_name
-                file_name = file_name.pop()
-                if len(subdir) > 1:
-                    subdir = '/'.join(subdir)
-                else:
-                    subdir = subdir.pop()
-                out_file = '{0}/{1}.o'.format(self._object_directory, file)
-                try:
-                    os.makedirs('{0}/{1}'.format(self._object_directory, 
-                        subdir))
-                except OSError:
-                    pass
-                self._info_string(percentage, file_name)
-                run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
-                        self.executable, out_file, 
-                        file, self._compile_flags)
-                try:
-                    return_value = subprocess.call(run_string)
-                except OSError:
-                    return_value = os.system(run_string)
-                if not return_value == 0:
-                    return return_value
-                self._link_list.append(out_file)
-                counter += 1
+        for file in self._compile_list:
+            percentage = self._percentage(counter, len(self._compile_list))
+            file_name = file.split('/')
+            subdir = file_name
+            if len(subdir) > 1:
+                subdir = '/'.join(subdir)
             else:
-                #Don't need to compile file; just link it
-                out_file = '{0}/{1}.o'.format(self._object_directory, file)
-                self._link_list.append(out_file)
+                subdir = subdir.pop()
+            out_file = '{0}/{1}.o'.format(self._object_directoyr, file)
+            try:
+                os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
+            except OSError:
+                pass
+            self._info_string(percentage, file_name)
+            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
+                    self.executable, out_file, 
+                    file, self._compile_flags)
+            try:
+                return_value = subprocess.call(run_string) 
+            except OSError:
+                return_value = os.system(run_string)
+            if not return_value == 0:
+                return return_value
+            self._link_list.append(out_file)
+            counter += 1
         return 0
 
     def link_files(self):

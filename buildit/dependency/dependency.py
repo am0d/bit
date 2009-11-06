@@ -55,6 +55,10 @@ class Dependency(object):
             if self.__magic_word in line:
                 line = parse_line(line)
                 dependencies.append(line)
+        for name in dependencies:
+            if not name in self.__dependencies:
+                dependencies.remove(name)
+        return dependencies
 
     # Leave implementation up to each language
     def parse_line(self, string):

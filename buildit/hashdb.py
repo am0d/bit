@@ -9,9 +9,8 @@ from buildit.utils import fix_strings, file_hash, error_lookup
 
 class HashDB(object):
 
-    def __init__(self, hash_name):
-        self.name = hash_name
-        self.depsdb = DepsDB(self.name)
+    def __init__(self, name):
+        self.name = name
         self.__location = '.buildit/{0}'.format(self.name)
         self.__file = None
         self.__dict = []

@@ -63,6 +63,4 @@ class Dependency(object):
     # Leave implementation up to each language
     def parse_line(self, string):
         ''' Returns a formatted string for dependency searching '''
-        return string
-
-    
+        return string 

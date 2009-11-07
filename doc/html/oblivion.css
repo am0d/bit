@@ -20,6 +20,7 @@ code.white { color: #EEEEEC; }
 /* Hyperlink subclasses */
 a { text-align: left; font-size: 10pt; font-family: sans-serif; color: #729FCF; }
 a.header3 { font-size: 12pt; text-decoration: none; }
+a.header2 { font-size: 18pt; text-decoration: none; }
 a.tableindex { color: #DCA3A3; }
 a.menu { text-decoration: none; }
 a.bar { text-decoration: none; }

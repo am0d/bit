@@ -12,6 +12,8 @@ class Dependency(object):
         self.name = name
         self._directories = directories
         self.__location = '.buildit/{0}.deps'.format(self.name)
+        self.header = 'generic'
+        self.__magic_word = 'generic'
         self.__dependencies = {}
         self.file = None
         self.language = None
@@ -40,3 +42,25 @@ class Dependency(object):
         except:
             error('Error: File IO Error')
 
+    def generate_dependencies(self):
+        self.file = open(self.__location, 'w')
+        self.write('[{0}]'.format(self.header.upper()))
+        self.close()
+
+    def parse_file(self, file_name):
+        ''' Returns a list of dependencies '''
+        dependencies = []
+        file = open(file_name, 'r')
+        for line in file:
+            if self.__magic_word in line:
+                line = parse_line(line)
+                dependencies.append(line)
+        for name in dependencies:
+            if not name in self.__dependencies:
+                dependencies.remove(name)
+        return dependencies
+
+    # Leave implementation up to each language
+    def parse_line(self, string):
+        ''' Returns a formatted string for dependency searching '''
+        return string 

@@ -1,4 +1,4 @@
-from buildit.system.unix import Unix
+from buildit import Unix
 
 average = Unix("Average")
 

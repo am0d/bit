@@ -6,3 +6,4 @@ class CPP(C):
 
     def __init__(self, name, directories=[]):
         C.__init__(self, name, directories)
+        self.header = 'CPP'

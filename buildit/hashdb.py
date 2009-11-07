@@ -43,7 +43,7 @@ class HashDB(object):
         if sys.platform == 'win32':
             file_list = fix_strings(file_list)
         for file_name in file_list:
-            self.__file.write('{0}:{1}\n'
+            self.__file.write('{0}:{1}\n')
         self.__file.close()
 
     @property

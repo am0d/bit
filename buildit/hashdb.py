@@ -5,12 +5,12 @@ import sys
 import subprocess
 
 from buildit.cprint import error, warning
-from buildit.utils import fix_strings, file_hash, error_lookup
+from buildit.utils import fix_strings, file_hash, lookup_error
 
 class HashDB(object):
 
     def __init__(self, name):
-        self.name = name
+        self.name = name 
         self.__location = '.buildit/{0}'.format(self.name)
         self.__file = None
         self.__dict = []
@@ -25,7 +25,7 @@ class HashDB(object):
         except:
             pass
         if not os.path.exists(self.__location):
-            warning('Generating HashDB file.')
+            warning('Generating HashDB File.')
             try:
                 self.file = open(self.__location, 'w')
                 self.file.close()
@@ -39,23 +39,23 @@ class HashDB(object):
         self.__dict = dict(tuple(self.__dict))
 
     def generate_hashfile(self, file_list):
-        try:
+        try: 
             self.__file = open(self.__location, 'w')
-            if sys.platform == 'win32':
-                file_list = fix_strings(file_list)
             for file_name in file_list:
-                self.__file.write('{0}:{1}\n')
+                self.__file.write('{0}:{1}\n'.format(file_name, 
+                    hash(file_name)))
             self.__file.close()
         except IOError:
             error('Error: Could not generate HashDB')
+
+    def hash(self, file_name):
+        return self.__dict.get(file_name, '')
 
     @property
     def dictionary(self):
         return self.__dict
 
-    def file_hash(self, file_name):
-        return self.__dict.get(file_name, '')
-
     @property
     def compile_list(self):
         return self.__compile_list
+

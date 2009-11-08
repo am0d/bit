@@ -26,7 +26,6 @@ class Compiler(object):
         self._object_directory = '.'
         self._build_directory = '.'
         self._unity_directory = '.'
-        
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)

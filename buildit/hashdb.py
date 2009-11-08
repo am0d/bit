@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 from buildit.cprint import error, warning
-from buildit.utils import fix_strings, file_hash, error_lookup
+from buildit.utils import fix_strings, file_hash, lookup_error
 
 class HashDB(object):
 

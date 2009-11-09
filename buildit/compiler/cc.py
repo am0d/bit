@@ -12,10 +12,7 @@ class CC(Compiler):
 
     def __init__(self):
         Compiler.__init__(self)
-        self._executable = which('cc')
-
-    def setup_files(self):
-        Compiler.setup_files(self)
+        self._executable = which('cc') 
 
     def compile_files(self):
         counter = 1
@@ -28,20 +25,23 @@ class CC(Compiler):
             else:
                 subdir = subdir.pop()
             out_file = '{0}/{1}.o'.format(self._object_directory, file)
-            try:
-                os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
-            except OSError:
-                pass
-            self._info_string(percentage, file_name)
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
-                    self.executable, out_file, 
-                    file, self._compile_flags)
-            try:
-                return_value = subprocess.call(run_string) 
-            except OSError:
-                return_value = os.system(run_string)
-            if not return_value == 0:
-                return return_value
+            if os.path.exists(out_file) and \ 
+            file_hash(file) == self._hashdb.hash(file):
+                try:
+                    os.makedirs('{0}/{1}'.format(self._object_directory, 
+                        subdir))
+                except OSError:
+                    pass
+                self._info_string(percentage, file_name)
+                run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
+                        self.executable, out_file,
+                        file, self._compile_flags)
+                try:
+                    return_value = subprocess.call(run_string) 
+                except OSError:
+                    return_value = os.system(run_string)
+                if not return_value == 0:
+                    return return_value
             self._link_list.append(out_file)
             counter += 1
         return 0

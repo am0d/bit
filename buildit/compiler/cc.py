@@ -14,6 +14,9 @@ class CC(Compiler):
         Compiler.__init__(self)
         self._executable = which('cc')
 
+    def setup_files(self):
+        Compiler.setup_files(self)
+
     def compile_files(self):
         counter = 1
         for file in self._compile_list:
@@ -24,7 +27,7 @@ class CC(Compiler):
                 subdir = '/'.join(subdir)
             else:
                 subdir = subdir.pop()
-            out_file = '{0}/{1}.o'.format(self._object_directoyr, file)
+            out_file = '{0}/{1}.o'.format(self._object_directory, file)
             try:
                 os.makedirs('{0}/{1}'.format(self._object_directory, subdir))
             except OSError:

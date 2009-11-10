@@ -7,6 +7,7 @@ class FileList:
     def __init__(self, project_name):
         self._file_list = []
         self._compile_list = []
+        self._extensions = []
         self._hash_db = HashDB(project_name)
         self._deps_db = Dependency(project_name)
 
@@ -37,3 +38,15 @@ class FileList:
         """ Displays the whole list of files
         """
         print self._file_list
+
+    def set_extensions(self, extensions):
+        self._extensions = extensions
+
+    @property
+    def files_to_compile(self):
+        return self._compile_list
+
+    @property
+    def files_to_link(self):
+        return [file for file in self._file_list
+                if file.endswith(tuple(self._extensions))]

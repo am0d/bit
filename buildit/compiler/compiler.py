@@ -12,9 +12,7 @@ from buildit.cprint import command
 class Compiler(object):
     
     def __init__(self):
-        self._file_list = []
-        self._compile_list = []
-        self._link_list = []
+        self._file_list = ""
         self._compile_steps = []
         self._compile_flags = ''
         self._link_flags = ''
@@ -32,7 +30,7 @@ class Compiler(object):
         self._compile_steps.append(self.link_files)
 
     def run(self, file_list, parent, project_name='PROJECT'):
-        self._file_list = []
+        self._file_list = file_list
         self.parent = parent
         self.project_name = project_name
         database = '{0}_{1}_{2}'.format(self.parent, 
@@ -45,10 +43,7 @@ class Compiler(object):
 
     def setup_files(self):
         ''' Puts the appropriate files into the compile list. '''
-        for file_name in self._file_list:
-            for extension in self.extensions:
-                if file_name.endswith('{0}'.format(extension)):
-                    self._compile_list.append(file_name)
+        self._file_list.set_extensions(self.extensions)
         try:
             os.makedirs(self._object_directory)
         except:

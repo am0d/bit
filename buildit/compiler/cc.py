@@ -16,8 +16,8 @@ class CC(Compiler):
 
     def compile_files(self):
         counter = 1
-        for file in self._compile_list:
-            percentage = self._percentage(counter, len(self._compile_list))
+        for file in self._file_list.files_to_compile:
+            percentage = self._percentage(counter, len(self._file_list.files_to_compile))
             file_name = file.split('/')
             subdir = file_name
             if len(subdir) > 1:
@@ -41,14 +41,13 @@ class CC(Compiler):
                     return_value = os.system(run_string)
                 if not return_value == 0:
                     return return_value
-            self._link_list.append(out_file)
             counter += 1
         return 0
 
     def link_files(self):
         build_string = ''
         command('[LINK] {0}'.format(self.project_name))
-        for file_name in self._link_list:
+        for file_name in self._file_list.files_to_link:
             build_string += ' "{0}"'.format(file_name)
         for item in self._link_flags:
             build_string += item

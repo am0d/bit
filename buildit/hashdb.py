@@ -48,8 +48,16 @@ class HashDB(object):
         except IOError:
             error('Error: Could not generate HashDB')
 
-    def hash(self, file_name):
-        return self.__dict.get(file_name, '')
+    def has_changed(self, file_name):
+        new_hash = file_hash(file_name)
+        if file_name not in self.__dict:
+            self.__dict[file_name] = new_hash
+            return True
+        elif not (new_hash == self.__dict[file_name]):
+            self.__dict[file_name] = new_hash
+            return True
+        else:
+            return False
 
     @property
     def dictionary(self):

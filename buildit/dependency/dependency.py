@@ -4,7 +4,7 @@ import os
 import sys
 
 from buildit.utils import which, lookup_error
-from buildit.cprint import command, warning
+from buildit.cprint import command, warning, error
 
 class Dependency(object):
 
@@ -35,17 +35,19 @@ class Dependency(object):
                 error('Error: File IO Error')
         try:
             self.file = open(self.__location, 'r')
-            self.language = self.file.readline()
             for line in self.file:
                 line = line.replace('\n', '')
                 line = line.split(':')
-        except:
+                if line[0] not in self.__dependencies:
+                    self.__dependencies[line[0]] = []
+                self.__dependencies[line[0]].append(line[1])
+        except IOError:
             error('Error: File IO Error')
+        finally:
+            self.file.close()
 
     def generate_dependencies(self):
-        self.file = open(self.__location, 'w')
-        self.write('[{0}]'.format(self.header.upper()))
-        self.close()
+        pass
 
     def parse_file(self, file_name):
         ''' Returns a list of dependencies '''
@@ -64,3 +66,6 @@ class Dependency(object):
     def parse_line(self, string):
         ''' Returns a formatted string for dependency searching '''
         return string 
+
+    def get_files_dependent_on(self, file_name):
+        return self.__dependencies.get(file_name, [])

@@ -7,30 +7,26 @@ from glob import glob
 from datetime import datetime
 
 from buildit.compiler.compiler import Compiler
-from buildit.dependency.dependency import Dependency
 from buildit.utils import lookup_error, flatten, fix_strings
 from buildit.utils import name as uname
 from buildit.cprint import error, info, warning
-from buildit.hashdb import HashDB
 
 class System(threading.Thread):
-
+    
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
         self._compiler = Compiler()
-        self._hashdb = HashDB(self.name)
-        self._depsdb = Dependency(self.name)
-        self._file_list = []
         self._build_steps = []
+        self._file_list = []
         self._unity_build = unity_build
         self._project_name = project_name
+        self._unity_directory = ''
         self._build_directory = ''
         self._object_directory = ''
-        self._unity_directory = ''
 
-        self.build_directory = 'build/{0}'.format(self.name)
-        self.object_directory = 'object/{0}'.format(self.name)
-        self.unity_directory = 'unity/{0}'.format(self.name)
+        self.unity_directory = 'build/{0}'.format(self.name)
+        self.build_directory = 'object/{0}'.format(self.name)
+        self.object_directory = 'unity/{0}'.format(self.name)
 
         self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)
@@ -44,16 +40,14 @@ class System(threading.Thread):
                 error('\nError: {0}'.format(lookup_error(return_value)))
                 sys.exit(return_value)
         end_time = datetime.now()
-        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time)))
+        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time))
 
     def pre_build(self):
         return 0
-
+    
     def build(self):
-        return_value = self._compiler.run(self._file_list, self._hashdb, \
-                                          self._depsdb, self._project_name)
-        self._hashdb.generate_hashfile(self._file_list)
-        return return_value
+        return_value = self._compiler.run(self._file_list, self.name, 
+            self._project_name)
 
     def post_build(self):
         return 0
@@ -90,7 +84,7 @@ class System(threading.Thread):
     @compiler.setter
     def compiler(self, value):
         self._compiler = value
-        self._compiler.object_directory = self.object_directory
+        self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
         self._compiler.unity_directory = self._unity_directory
 

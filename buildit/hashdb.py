@@ -59,6 +59,14 @@ class HashDB(object):
         else:
             return False
 
+    def remove_hash(self, file_name):
+        ''' Removes a hash from the internal dictionary.
+            Used by FileList to make sure that if a file didn't compile
+            correctly, its hash will not be saved to disk, and therefore
+            it will be compiled the next time we run. '''
+        if file_name in self.__dict:
+            del self.__dict[file_name]
+
     @property
     def dictionary(self):
         return self.__dict

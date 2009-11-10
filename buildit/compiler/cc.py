@@ -38,6 +38,7 @@ class CC(Compiler):
                 return_value = os.system(run_string)
             if not return_value == 0:
                 return return_value
+            self._file_list.has_no_errors(file)
             counter += 1
         return 0
 

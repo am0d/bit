@@ -49,6 +49,7 @@ class System(threading.Thread):
     def build(self):
         return_value = self._compiler.run(self._file_list, self.name, 
             self._project_name)
+        self._file_list.write_to_disk()
 
     def post_build(self):
         return 0

@@ -38,12 +38,12 @@ class HashDB(object):
             self.__dict.append(line)
         self.__dict = dict(tuple(self.__dict))
 
-    def generate_hashfile(self, file_list):
+    def generate_hashfile(self):
         try: 
             self.__file = open(self.__location, 'w')
-            for file_name in file_list:
+            for file_name in self.__dict:
                 self.__file.write('{0}:{1}\n'.format(file_name, 
-                    hash(file_name)))
+                    self.__dict[file_name]))
             self.__file.close()
         except IOError:
             error('Error: Could not generate HashDB')

@@ -76,7 +76,7 @@ class System(threading.Thread):
                 item = '{0}'.format(item)
                 new_files.append(files)
         else:
-            warning('{0} is not supported datatype.'.format(type(files)))
+            warning('{0} is not a supported datatype.'.format(type(files)))
         new_files = fix_strings(new_files)
         self._file_list.add(new_files)
 

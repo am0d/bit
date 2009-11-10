@@ -10,7 +10,7 @@ from buildit.compiler.compiler import Compiler
 from buildit.dependency.dependency import Dependency
 from buildit.utils import lookup_error, flatten, fix_strings
 from buildit.utils import name as uname
-from buildit.cprint import error, info
+from buildit.cprint import error, info, warning
 from buildit.hashdb import HashDB
 
 class System(threading.Thread):
@@ -52,7 +52,7 @@ class System(threading.Thread):
     def build(self):
         return_value = self._compiler.run(self._file_list, self._hashdb, \
                                           self._depsdb, self._project_name)
-        self._hashdb.generate_hashfile()
+        self._hashdb.generate_hashfile(self._file_list)
         return return_value
 
     def post_build(self):

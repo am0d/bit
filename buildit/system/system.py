@@ -7,6 +7,7 @@ from glob import glob
 from datetime import datetime
 
 from buildit.compiler.compiler import Compiler
+from buildit.filelist import FileList
 from buildit.utils import lookup_error, flatten, fix_strings
 from buildit.utils import name as uname
 from buildit.cprint import error, info, warning
@@ -17,7 +18,7 @@ class System(threading.Thread):
         threading.Thread.__init__(self)
         self._compiler = Compiler()
         self._build_steps = []
-        self._file_list = []
+        self._file_list = FileList(project_name)
         self._unity_build = unity_build
         self._project_name = project_name
         self._unity_directory = ''
@@ -40,12 +41,13 @@ class System(threading.Thread):
                 error('\nError: {0}'.format(lookup_error(return_value)))
                 sys.exit(return_value)
         end_time = datetime.now()
-        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time))
+        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time)))
 
     def pre_build(self):
         return 0
     
     def build(self):
+        self._file_list.display()
         return_value = self._compiler.run(self._file_list, self.name, 
             self._project_name)
 
@@ -53,6 +55,7 @@ class System(threading.Thread):
         return 0
 
     def add(self, files):
+        new_files = []
         if isinstance(files, tuple) or isinstance(files, list):
             for item in flatten(files):
                 if isinstance(item, basestring):
@@ -60,22 +63,23 @@ class System(threading.Thread):
                         glob_list = glob('{0}/*'.format(item))
                         for file_name in glob_list:
                             file_name = '"{0}"'.format(file_name)
-                            self._file_list.append(file_name)
+                            new_files.append(file_name)
                     else:
                         item = '"{0}"'.format(item)
-                        self._file_list.append(item)
+                        new_files.append(item)
         elif isinstance(file, basestring):
             if os.path.isdir(files):
                 glob_list = glob('{0}/*'.format(files))
                 for file_name in glob_list:
                     file_name = '"{0}"'.format(file_name)
-                    self._file_list.append(file_name)
+                    new_files.append(file_name)
             else:
                 item = '"{0}"'.format(item)
-                self._file_list.append(files)
+                new_files.append(files)
         else:
             warning('{0} is not supported datatype.'.format(files))
-        self._file_list = fix_strings(self._file_list)
+        new_files = fix_strings(new_files)
+        self._file_list.add(new_files)
 
     @property
     def compiler(self):

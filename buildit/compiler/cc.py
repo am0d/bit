@@ -25,8 +25,7 @@ class CC(Compiler):
             else:
                 subdir = subdir.pop()
             out_file = '{0}/{1}.o'.format(self._object_directory, file)
-            if os.path.exists(out_file) and \
-                file_hash(file) == self._hashdb.hash(file):
+            if os.path.exists(out_file):
                 try:
                     os.makedirs('{0}/{1}'.format(self._object_directory, 
                         subdir))

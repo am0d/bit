@@ -3,7 +3,6 @@
 import os
 import subprocess
 
-from buildit.depsdb import DepsDB
 from buildit.utils import which
 from buildit.utils import flatten
 from buildit.utils import fix_strings
@@ -20,7 +19,6 @@ class Compiler(object):
         self._compile_flags = ''
         self._link_flags = ''
         self.hashdb = ''
-        self.dependencydb = ''
         self.project_name = ''
         self.parent = ''
         self._executable = which('echo')
@@ -34,13 +32,11 @@ class Compiler(object):
         self._compile_steps.append(self.link_files)
 
     def run(self, file_list, parent, project_name='PROJECT'):
-        self._file_list = file_list
+        self._file_list = []
         self.parent = parent
         self.project_name = project_name
         database = '{0}_{1}_{2}'.format(self.parent, 
                 self.name, self.project_name)
-        self.hashdb = HashDB(database)
-        self.depsdb = DepsDB(self.language, database)
         for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:
@@ -53,7 +49,6 @@ class Compiler(object):
             for extension in self.extensions:
                 if file_name.endswith('{0}'.format(extension)):
                     self._compile_list.append(file_name)
-        self._compile_list = hash_check(self._compile_list)
         try:
             os.makedirs(self._object_directory)
         except:

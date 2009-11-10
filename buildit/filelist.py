@@ -44,7 +44,8 @@ class FileList:
 
     @property
     def files_to_compile(self):
-        return self._compile_list
+        return [file for file in self._compile_list
+                if file.endswith(tuple(self._extensions))]
 
     @property
     def files_to_link(self):

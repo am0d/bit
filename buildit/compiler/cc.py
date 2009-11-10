@@ -16,31 +16,28 @@ class CC(Compiler):
 
     def compile_files(self):
         counter = 1
+        file_count = len(self._file_list.files_to_compile)
         for file in self._file_list.files_to_compile:
-            percentage = self._percentage(counter, len(self._file_list.files_to_compile))
-            file_name = file.split('/')
-            subdir = file_name
-            if len(subdir) > 1:
-                subdir = '/'.join(subdir)
-            else:
-                subdir = subdir.pop()
+            percentage = self._percentage(counter, file_count)
+            subdir = os.path.dirname(file)
+            file_name = os.path.split(file)[1]
             out_file = '{0}/{1}.o'.format(self._object_directory, file)
-            if os.path.exists(out_file):
+            if not os.path.exists(out_file):
                 try:
                     os.makedirs('{0}/{1}'.format(self._object_directory, 
                         subdir))
                 except OSError:
                     pass
-                self._info_string(percentage, file_name)
-                run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
-                        self.executable, out_file,
-                        file, self._compile_flags)
-                try:
-                    return_value = subprocess.call(run_string) 
-                except OSError:
-                    return_value = os.system(run_string)
-                if not return_value == 0:
-                    return return_value
+            self._info_string(percentage, file_name)
+            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
+                    self.executable, out_file,
+                    file, self._compile_flags)
+            try:
+                return_value = subprocess.call(run_string) 
+            except OSError:
+                return_value = os.system(run_string)
+            if not return_value == 0:
+                return return_value
             counter += 1
         return 0
 

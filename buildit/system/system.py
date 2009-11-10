@@ -25,9 +25,9 @@ class System(threading.Thread):
         self._build_directory = ''
         self._object_directory = ''
 
-        self.unity_directory = 'build/{0}'.format(self.name)
-        self.build_directory = 'object/{0}'.format(self.name)
-        self.object_directory = 'unity/{0}'.format(self.name)
+        self.unity_directory = 'unity/{0}'.format(self.name)
+        self.build_directory = 'build/{0}'.format(self.name)
+        self.object_directory = 'object/{0}'.format(self.name)
 
         self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)
@@ -47,7 +47,6 @@ class System(threading.Thread):
         return 0
     
     def build(self):
-        self._file_list.display()
         return_value = self._compiler.run(self._file_list, self.name, 
             self._project_name)
 

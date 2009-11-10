@@ -56,7 +56,7 @@ class System(threading.Thread):
 
     def add(self, files):
         new_files = []
-        if isinstance(files, tuple) or isinstance(files, list):
+        if isinstance(files, (tuple, list)):
             for item in flatten(files):
                 if isinstance(item, basestring):
                     if os.path.isdir(item):
@@ -67,7 +67,7 @@ class System(threading.Thread):
                     else:
                         item = '"{0}"'.format(item)
                         new_files.append(item)
-        elif isinstance(file, basestring):
+        elif isinstance(files, (str, basestring)):
             if os.path.isdir(files):
                 glob_list = glob('{0}/*'.format(files))
                 for file_name in glob_list:
@@ -77,7 +77,7 @@ class System(threading.Thread):
                 item = '"{0}"'.format(item)
                 new_files.append(files)
         else:
-            warning('{0} is not supported datatype.'.format(files))
+            warning('{0} is not supported datatype.'.format(type(files)))
         new_files = fix_strings(new_files)
         self._file_list.add(new_files)
 

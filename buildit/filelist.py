@@ -1,5 +1,5 @@
 from buildit.hashdb import HashDB
-from buildit.dependency.dependency import Dependency
+from buildit.dependency.c import C
 
 from buildit.cprint import warning
 
@@ -10,7 +10,7 @@ class FileList:
         self._have_compiled = {}
         self._extensions = []
         self._hash_db = HashDB(project_name)
-        self._deps_db = Dependency(project_name)
+        self._deps_db = C(project_name)
 
     def add(self, file_list):
         ''' Takes a list of files and adds them to the internal file list
@@ -24,6 +24,7 @@ class FileList:
                     if self._hash_db.has_changed(file):
                         self._have_compiled[file] = False
                         self.add_to_compile_list(file)
+                        self._deps_db.parse_file(file)
                     else:
                         self._have_compiled[file] = True
         else:
@@ -46,6 +47,7 @@ class FileList:
             if not self._have_compiled[file_name]:
                 self._hash_db.remove_hash(file_name)
         self._hash_db.generate_hashfile()
+        self._deps_db.write_to_disk()
 
     def set_extensions(self, extensions):
         ''' Sets the extensions that we will be compiling

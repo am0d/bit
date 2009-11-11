@@ -13,7 +13,7 @@ class Dependency(object):
         self._directories = directories
         self.__location = '.buildit/{0}.deps'.format(self.name)
         self.header = 'generic'
-        self.__magic_word = 'generic'
+        self._magic_word = 'generic'
         self.__dependencies = {}
         self.file = None
         self.language = None
@@ -50,22 +50,52 @@ class Dependency(object):
         pass
 
     def parse_file(self, file_name):
-        ''' Returns a list of dependencies '''
+        ''' Finds all the files that file_name depends on
+            and adds it as a dependent of those files
+        '''
         dependencies = []
         file = open(file_name, 'r')
         for line in file:
-            if self.__magic_word in line:
-                line = parse_line(line)
-                dependencies.append(line)
+            if line.find(self._magic_word) > -1:
+                line = self.parse_line(line, file_name)
+                if not line == '':
+                    dependencies.append(line)
         for name in dependencies:
             if not name in self.__dependencies:
-                dependencies.remove(name)
-        return dependencies
+                self.__dependencies[name] = []
+            self.__dependencies[name].append(file_name)
 
     # Leave implementation up to each language
-    def parse_line(self, string):
+    def parse_line(self, string, current_file):
         ''' Returns a formatted string for dependency searching '''
-        return string 
+        line = string.partition(self._magic_word)
+        line = line[2].strip()
+        line = line.replace('<', '')
+        line = line.replace('>', '')
+        line = line.replace('"', '')
+        line = line.replace("'", '')
+
+        current_dir = os.path.split(current_file)[0]
+        path = '{0}/{1}'.format(current_dir, line)
+        path = os.path.normpath(path)
+        if os.path.exists(path):
+            return path
+        for dir in self._directories:
+            path = '{0}/{1}'.format(dir, line)
+            if os.path.exists(path):
+                return os.path.normpath(path)
+        return ''
 
     def get_files_dependent_on(self, file_name):
         return self.__dependencies.get(file_name, [])
+
+    def write_to_disk(self):
+        try:
+            self.file = open(self.__location, 'w')
+            for file in self.__dependencies:
+                for dependent in self.__dependencies[file]:
+                    self.file.write('{0}:{1}\n'.format(file, dependent))
+        except IOError:
+            error('Unable to save dependencies to disk')
+        finally:
+            self.file.close()

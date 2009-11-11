@@ -1,5 +1,5 @@
 from buildit.hashdb import HashDB
-from buildit.dependency.c import C
+from buildit.dependency.dependency import Dependency
 
 from buildit.cprint import warning
 
@@ -7,10 +7,12 @@ class FileList:
     def __init__(self, project_name):
         self._file_list = []
         self._compile_list = []
+        self._changed = {}
         self._have_compiled = {}
         self._extensions = []
-        self._hash_db = HashDB(project_name)
-        self._deps_db = C(project_name)
+        self._project_name = project_name
+        self._hash_db = HashDB(self._project_name)
+        self._deps_db = Dependency(self._project_name)
 
     def add(self, file_list):
         ''' Takes a list of files and adds them to the internal file list
@@ -22,6 +24,7 @@ class FileList:
                 if file not in self._file_list:
                     self._file_list.append(file)
                     if self._hash_db.has_changed(file):
+                        self._changed[file] = True
                         self._have_compiled[file] = False
                         self.add_to_compile_list(file)
                         self._deps_db.parse_file(file)
@@ -76,3 +79,19 @@ class FileList:
     def files_to_link(self):
         return [file for file in self._file_list
                 if file.endswith(tuple(self._extensions))]
+
+    def set_language(self, language):
+        ''' Sets the DepsDB to the correct language, and resets the
+            compile_list to the correct values
+        '''
+        module = __import__("buildit")
+        module = getattr(module, "dependency")
+        module = getattr(module, language.lower())
+        deps_class = getattr(module, language)
+        self._deps_db = deps_class(self._project_name)
+
+        self._compile_list = [i for i in self._changed]
+        for file in self._changed:
+            for dep in self._deps_db.get_files_dependent_on(file):
+                if dep not in self._compile_list:
+                    self._compile_list.append(dep)

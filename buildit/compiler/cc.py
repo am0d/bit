@@ -13,9 +13,11 @@ class CC(Compiler):
     def __init__(self):
         Compiler.__init__(self)
         self._executable = which('cc') 
+        self._language = 'C'
 
     def compile_files(self):
         counter = 1
+        self._file_list.never_compile(['.h'])
         file_count = len(self._file_list.files_to_compile)
         for file in self._file_list.files_to_compile:
             percentage = self._percentage(counter, file_count)

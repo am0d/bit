@@ -20,7 +20,7 @@ class Compiler(object):
         self.project_name = ''
         self.parent = ''
         self._executable = which('echo')
-        self._language = 'generic'
+        self._language = 'Generic'
         self._object_directory = '.'
         self._build_directory = '.'
         self._unity_directory = '.'
@@ -29,8 +29,7 @@ class Compiler(object):
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
 
-    def run(self, file_list, parent, project_name='PROJECT'):
-        self._file_list = file_list
+    def run(self, parent, project_name='PROJECT'):
         self.parent = parent
         self.project_name = project_name
         database = '{0}_{1}_{2}'.format(self.parent, 
@@ -43,8 +42,6 @@ class Compiler(object):
 
     def setup_files(self):
         ''' Puts the appropriate files into the compile list. '''
-        self._file_list.set_extensions(self.extensions)
-        self._file_list.never_compile('.h')
         try:
             os.makedirs(self._object_directory)
         except:
@@ -129,3 +126,13 @@ class Compiler(object):
     @property
     def name(self):
         return uname(self)
+
+    @property
+    def file_list(self):
+        return self._file_list
+
+    @file_list.setter
+    def file_list(self, new_list):
+        self._file_list = new_list
+        self._file_list.set_language(self._language)
+        self._file_list.set_extensions(self.extensions)

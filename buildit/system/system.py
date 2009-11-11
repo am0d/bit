@@ -17,8 +17,9 @@ class System(threading.Thread):
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
         self._compiler = Compiler()
-        self._build_steps = []
         self._file_list = FileList(project_name)
+        self._compiler.file_list = self._file_list
+        self._build_steps = []
         self._unity_build = unity_build
         self._project_name = project_name
         self._unity_directory = ''
@@ -48,7 +49,7 @@ class System(threading.Thread):
         return 0
     
     def build(self):
-        return_value = self._compiler.run(self._file_list, self.name, 
+        return_value = self._compiler.run(self.name, 
             self._project_name)
         self._file_list.write_to_disk()
 
@@ -92,6 +93,7 @@ class System(threading.Thread):
         self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
         self._compiler.unity_directory = self._unity_directory
+        self._compiler.file_list = self._file_list
 
     @property
     def name(self):

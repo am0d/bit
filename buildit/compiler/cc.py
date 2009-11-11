@@ -24,7 +24,6 @@ class CC(Compiler):
             out_file = self._file_list.object_location(file)
             if not os.path.exists(out_file):
                 try:
-                    print os.path.split(out_file)
                     os.makedirs('{0}'.format(os.path.split(out_file)[0]))
                 except OSError:
                     pass

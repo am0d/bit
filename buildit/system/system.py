@@ -17,8 +17,7 @@ class System(threading.Thread):
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
         self._file_list = FileList(project_name)
-        self._compiler = Compiler()
-        self._compiler.file_list = self._file_list
+        self._compiler = Compiler(self._file_list)
         self._build_steps = []
         self._unity_build = unity_build
         self._project_name = project_name

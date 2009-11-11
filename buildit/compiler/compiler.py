@@ -11,12 +11,10 @@ from buildit.cprint import command
 
 class Compiler(object):
     
-    def __init__(self):
-        self._file_list = ""
+    def __init__(self, file_list=None):
         self._compile_steps = []
         self._compile_flags = ''
         self._link_flags = ''
-        self.hashdb = ''
         self.project_name = ''
         self.parent = ''
         self._executable = which('echo')
@@ -24,6 +22,7 @@ class Compiler(object):
         self._object_directory = '.'
         self._build_directory = '.'
         self._unity_directory = '.'
+        self.file_list = file_list
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
@@ -133,6 +132,8 @@ class Compiler(object):
 
     @file_list.setter
     def file_list(self, new_list):
-        self._file_list = new_list
-        self._file_list.set_language(self._language)
-        self._file_list.set_extensions(self.extensions)
+        if new_list is not None:
+            self._file_list = new_list
+            self._file_list.set_language(self._language)
+            self._file_list.set_extensions(self.extensions)
+            self._file_list.never_compile(['.h'])

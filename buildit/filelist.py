@@ -12,6 +12,7 @@ class FileList:
         self._changed = {}
         self._have_compiled = {}
         self._extensions = []
+        self._never_compile = []
         self._object_directory = '.'
         self._project_name = project_name
         self._hash_db = HashDB(self._project_name)
@@ -26,7 +27,9 @@ class FileList:
             for file in file_list:
                 if file not in self._file_list:
                     self._file_list.append(file)
-                    if self._hash_db.has_changed(file):
+                    if self._hash_db.has_changed(file) or \
+                            (not os.path.exists(self.object_location(file))
+                             and not file.endswith(tuple(self._never_compile))):
                         self._changed[file] = True
                         self._have_compiled[file] = False
                         self.add_to_compile_list(file)
@@ -64,6 +67,12 @@ class FileList:
         ''' Marks files that we will never compile, but still depend on,
             as having been compiled already
         '''
+        if isinstance(extensions, (list, tuple)):
+            for ext in extensions:
+                if ext not in self._never_compile:
+                    self._never_compile.append(ext)
+        elif extensions not in self._never_compile:
+            self._never_compile.append(extensions)
         for file_name in self._compile_list:
             if file_name.endswith(tuple(extensions)):
                 self._have_compiled[file_name] = True

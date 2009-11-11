@@ -37,8 +37,7 @@ class FileList:
         for deps in self._deps_db.get_files_dependent_on(file):
             if deps not in self._compile_list:
                 self._compile_list.append(deps)
-                if deps not in self._have_compiled:
-                    self._have_compiled[deps] = False
+                self._have_compiled[deps] = False
         
     def write_to_disk(self):
         ''' Saves the HashDb to file

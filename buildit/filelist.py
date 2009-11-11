@@ -1,3 +1,5 @@
+import os.path
+
 from buildit.hashdb import HashDB
 from buildit.dependency.dependency import Dependency
 
@@ -10,6 +12,7 @@ class FileList:
         self._changed = {}
         self._have_compiled = {}
         self._extensions = []
+        self._object_directory = '.'
         self._project_name = project_name
         self._hash_db = HashDB(self._project_name)
         self._deps_db = Dependency(self._project_name)
@@ -70,6 +73,23 @@ class FileList:
         '''
         self._have_compiled[file_name] = True
 
+    def object_location(self, file_name):
+        subdir = os.path.dirname(file_name)
+        file_name = os.path.split(file_name)[1]
+        location = '{0}/{1}/{2}.o'.format(self._object_directory,
+                        subdir, file_name)
+        return location
+
+    #@property
+    #def object_directory(self):
+    #    print 'getting'
+    #    return self._object_directory
+
+    #@object_directory.setter
+    #def object_directory(self, value):
+    #    print 'setting'
+    #    self._object_directory = value
+
     @property
     def files_to_compile(self):
         return [file for file in self._compile_list
@@ -77,7 +97,7 @@ class FileList:
 
     @property
     def files_to_link(self):
-        return [file for file in self._file_list
+        return [self.object_location(file) for file in self._file_list
                 if file.endswith(tuple(self._extensions))]
 
     def set_language(self, language):

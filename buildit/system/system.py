@@ -16,8 +16,8 @@ class System(threading.Thread):
     
     def __init__(self, project_name, unity_build=False):
         threading.Thread.__init__(self)
-        self._compiler = Compiler()
         self._file_list = FileList(project_name)
+        self._compiler = Compiler(self._file_list)
         self._compiler.file_list = self._file_list
         self._build_steps = []
         self._unity_build = unity_build
@@ -64,8 +64,9 @@ class System(threading.Thread):
                     if os.path.isdir(item):
                         glob_list = glob('{0}/*'.format(item))
                         for file_name in glob_list:
-                            file_name = '{0}'.format(file_name)
-                            new_files.append(file_name)
+                            if os.path.isfile(file_name):
+                                file_name = '{0}'.format(file_name)
+                                new_files.append(file_name)
                     else:
                         item = '{0}'.format(item)
                         new_files.append(item)
@@ -73,8 +74,9 @@ class System(threading.Thread):
             if os.path.isdir(files):
                 glob_list = glob('{0}/*'.format(files))
                 for file_name in glob_list:
-                    file_name = '{0}'.format(file_name)
-                    new_files.append(file_name)
+                    if os.path.isfile(file_name):
+                        file_name = '{0}'.format(file_name)
+                        new_files.append(file_name)
             else:
                 item = '{0}'.format(item)
                 new_files.append(files)
@@ -116,6 +118,7 @@ class System(threading.Thread):
     def object_directory(self, value):
         self._object_directory = value
         self._compiler.object_directory = value
+        self._file_list.object_directory = value
 
     @property
     def unity_directory(self):

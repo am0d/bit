@@ -14,7 +14,7 @@ from buildit.cprint import error, info, warning
 
 class System(threading.Thread):
 
-    def __init__(self, project_name):
+    def __init__(self, project_name, unity_build):
         threading.Thread.__init__(self)
         self._file_list = FileList(project_name)
         self._compiler = Compiler(self._file_list)

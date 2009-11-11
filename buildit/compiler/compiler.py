@@ -44,6 +44,7 @@ class Compiler(object):
     def setup_files(self):
         ''' Puts the appropriate files into the compile list. '''
         self._file_list.set_extensions(self.extensions)
+        self._file_list.never_compile('.h')
         try:
             os.makedirs(self._object_directory)
         except:

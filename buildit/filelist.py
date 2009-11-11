@@ -80,15 +80,13 @@ class FileList:
                         subdir, file_name)
         return location
 
-    #@property
-    #def object_directory(self):
-    #    print 'getting'
-    #    return self._object_directory
+    @property
+    def object_directory(self):
+        return self._object_directory
 
     #@object_directory.setter
-    #def object_directory(self, value):
-    #    print 'setting'
-    #    self._object_directory = value
+    def set_object_directory(self, value):
+        self._object_directory = value
 
     @property
     def files_to_compile(self):

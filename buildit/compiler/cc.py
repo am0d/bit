@@ -21,16 +21,13 @@ class CC(Compiler):
         file_count = len(self._file_list.files_to_compile)
         for file in self._file_list.files_to_compile:
             percentage = self._percentage(counter, file_count)
-            subdir = os.path.dirname(file)
-            file_name = os.path.split(file)[1]
-            out_file = '{0}/{1}.o'.format(self._object_directory, file)
+            out_file = self._file_list.object_location(file)
             if not os.path.exists(out_file):
                 try:
-                    os.makedirs('{0}/{1}'.format(self._object_directory, 
-                        subdir))
+                    os.makedirs('{0}'.format(os.path.split(out_file)[0]))
                 except OSError:
                     pass
-            self._info_string(percentage, file_name)
+            self._info_string(percentage, file)
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
                     self.executable, out_file,
                     file, self._compile_flags)

@@ -16,9 +16,8 @@ class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._compiler = Compiler()
         self._file_list = FileList(project_name)
-        self._compiler.file_list = self._file_list
+        self._compiler = Compiler(self._file_list)
         self._build_steps = []
         self._project_name = project_name
         self._build_directory = ''
@@ -56,7 +55,33 @@ class System(threading.Thread):
         return 0
 
     def add(self, files):
-        pass
+        new_files = []
+        if isinstance(files, (tuple, list)):
+            for item in flatten(files):
+                if isinstance(item, basestring):
+                    if os.path.isdir(item):
+                        glob_list = glob('{0}/*'.format(item))
+                        for file_name in glob_list:
+                            if os.path.isfile(file_name):
+                                file_name = '{0}'.format(file_name)
+                                new_files.append(file_name)
+                    else:
+                        item = '{0}'.format(item)
+                        new_files.append(item)
+        elif isinstance(files, (str, basestring)):
+            if os.path.isdir(files):
+                glob_list = glob('{0}/*'.format(files))
+                for file_name in glob_list:
+                    if os.path.isfile(file_name):
+                        file_name = '{0}'.format(file_name)
+                        new_files.append(file_name)
+            else:
+                item = '{0}'.format(item)
+                new_files.append(files)
+        else:
+            warning('{0} is not a supported datatype.'.format(type(files)))
+        new_files = fix_strings(new_files)
+        self._file_list.add(new_files)
 
     @property
     def compiler(self):
@@ -92,5 +117,6 @@ class System(threading.Thread):
     def object_directory(self, value):
         self._object_directory = value
         self._compiler.object_directory = value
+        self._file_list.set_object_directory(value)
 
     

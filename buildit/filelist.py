@@ -1,5 +1,7 @@
 # "File System" Class
 
+import os
+
 from buildit.hashdb import HashDB
 from buildit.dependency.dependency import Dependency
 from buildit.cprint import warning
@@ -11,6 +13,8 @@ class FileList:
         self._extensions = []
         self._changed = {}
         self._have_compiled = {}
+        self._never_compile = []
+        self._object_directory = '.'
         self._project_name = project_name
         self._hash_db = HashDB(self._project_name)
         self._deps_db = Dependency(self._project_name)
@@ -24,7 +28,9 @@ class FileList:
             for file in file_list:
                 if file not in self._file_list:
                     self._file_list.append(file)
-                    if self._hash_db.has_changed(file):
+                    if self._hash_db.has_changed(file) or \
+                            (not os.path.exists(self.object_location(file))
+                             and not file.endswith(tuple(self._never_compile))):
                         self._changed[file] = True
                         self._have_compiled[file] = False
                         self.add_to_compile_list(file)
@@ -56,6 +62,12 @@ class FileList:
         ''' Marks files that we will never compile, but still depend on,
             as having been compiled already
         '''
+        if isinstance(extensions, (list, tuple)):
+            for ext in extensions:
+                if ext not in self._never_compile:
+                    self._never_compile.append(ext)
+        elif extensions not in self._never_compile:
+            self._never_compile.append(extensions)
         for file_name in self._compile_list:
             if file_name.endswith(tuple(extensions)):
                 self._have_compiled[file_name] = True
@@ -63,6 +75,31 @@ class FileList:
     def have_compiled(self, file_name):
         ''' Records the file as having no errors '''
         self._have_compiled[file_name] = True
+
+    def object_location(self, file_name):
+        subdir = os.path.dirname(file_name)
+        file_name = os.path.split(file_name)[1]
+        location = '{0}/{1}/{2}.o'.format(self._object_directory,
+                        subdir, file_name)
+        return location
+
+    @property
+    def object_directory(self):
+        return self._object_directory
+
+    @object_directory.setter
+    def object_directory(self, value):
+        self._object_directory = value
+
+    def files_to_compile(self):
+        return [file for file in self._compile_list
+                if file.endswith(tuple(self._extensions))]
+
+    @property
+    def files_to_link(self):
+        return [self.object_location(file) for file in self._file_list
+                if file.endswith(tuple(self._extensions))]
+
 
     @property
     def language(self):

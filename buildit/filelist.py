@@ -80,6 +80,12 @@ class FileList:
         '''
         self._have_compiled[file_name] = True
 
+    def rebuild(self):
+        ''' Called when all the object files have been cleaned
+            We must therefore compile *all* files in the link list
+        '''
+        self._compile_list = self._file_list
+
     def object_location(self, file_name):
         subdir = os.path.dirname(file_name)
         file_name = os.path.split(file_name)[1]

@@ -92,7 +92,7 @@ class System(threading.Thread):
             if arg == '--generate-deps':
                 self._build_steps.append(self.generate_dependencies)
             elif arg == '--rebuild':
-                self._build_steps.insert(0, self.clean)
+                self._build_steps.insert(0, self.rebuild)
             elif arg == '--clean':
                 self._build_steps = [self.clean]
             else:
@@ -111,6 +111,10 @@ class System(threading.Thread):
                 shutil.rmtree(self._build_directory)
         except OSError:
             return 1005
+
+    def rebuild(self):
+        self.clean()
+        self._file_list.rebuild()
 
     @property
     def compiler(self):

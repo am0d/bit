@@ -1,15 +1,16 @@
+# "File System" Class
+
 from buildit.hashdb import HashDB
 from buildit.dependency.dependency import Dependency
-
 from buildit.cprint import warning
 
 class FileList:
     def __init__(self, project_name):
         self._file_list = []
         self._compile_list = []
+        self._extensions = []
         self._changed = {}
         self._have_compiled = {}
-        self._extensions = []
         self._project_name = project_name
         self._hash_db = HashDB(self._project_name)
         self._deps_db = Dependency(self._project_name)
@@ -43,19 +44,13 @@ class FileList:
                 self._compile_list.append(deps)
                 self._have_compiled[deps] = False
         
-    def write_to_disk(self):
-        ''' Saves the HashDb to file
-        '''
+    def write(self):
+        ''' Saves the HashDB and DepsDB to file '''
         for file_name in self._have_compiled:
             if not self._have_compiled[file_name]:
                 self._hash_db.remove_hash(file_name)
         self._hash_db.generate_hashfile()
         self._deps_db.write_to_disk()
-
-    def set_extensions(self, extensions):
-        ''' Sets the extensions that we will be compiling
-        '''
-        self._extensions = extensions
 
     def never_compile(self, extensions):
         ''' Marks files that we will never compile, but still depend on,
@@ -66,9 +61,28 @@ class FileList:
                 self._have_compiled[file_name] = True
 
     def have_compiled(self, file_name):
-        ''' Records the file as having no errors
-        '''
+        ''' Records the file as having no errors '''
         self._have_compiled[file_name] = True
+
+    @property
+    def language(self):
+        pass
+
+    @language.setter
+    def language(self, value):
+        ''' Sets the DepsDB to the correct language, and resets the
+            compile_list to the correct values
+        '''
+        module = __import__("buildit")
+        module = getattr(module, "dependency")
+        module = getattr(module, value.lower())
+        deps_class = getattr(module, value)
+        self._deps_db = deps_class(self._project_name)
+        self._compile_list = [i for i in self._changed]
+        for file in self._changed:
+            for dep in self._deps_db.get_files_dependent_on(file):
+                if dep not in self._compile_list:
+                    self._compile_list.append(dep)
 
     @property
     def files_to_compile(self):
@@ -80,18 +94,11 @@ class FileList:
         return [file for file in self._file_list
                 if file.endswith(tuple(self._extensions))]
 
-    def set_language(self, language):
-        ''' Sets the DepsDB to the correct language, and resets the
-            compile_list to the correct values
-        '''
-        module = __import__("buildit")
-        module = getattr(module, "dependency")
-        module = getattr(module, language.lower())
-        deps_class = getattr(module, language)
-        self._deps_db = deps_class(self._project_name)
+    @property
+    def extensions(self, extensions):
+        return self._extensions
 
-        self._compile_list = [i for i in self._changed]
-        for file in self._changed:
-            for dep in self._deps_db.get_files_dependent_on(file):
-                if dep not in self._compile_list:
-                    self._compile_list.append(dep)
+    @extensions.setter(self, value):
+        self._extensions = value
+
+   

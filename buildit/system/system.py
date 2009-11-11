@@ -32,7 +32,7 @@ class System(threading.Thread):
 
     def run(self):
         start_time = datetime.now()
-        for function in self._build_steps
+        for function in self._build_steps:
             return_value = function()
             if not return_value == 0:
                 error('\nError: {0}'.format(lookup_error(return_value)))

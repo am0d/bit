@@ -135,7 +135,8 @@ class FileList:
     def extensions(self, extensions):
         return self._extensions
 
-    @extensions.setter(self, value):
+    @extensions.setter
+    def extensions(self, value):
         self._extensions = value
 
    

@@ -67,7 +67,9 @@ class System(threading.Thread):
         self._compiler = value
         self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
+        self._compiler.language = self._file_list.language
         self._compiler.file_list = self._file_list
+        
 
     @property
     def name(self):

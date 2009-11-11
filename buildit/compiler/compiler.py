@@ -83,6 +83,10 @@ class Compiler(object):
         self._link_flags += format_options(flags)
 
     @property
+    def language(self):
+        return self._language
+
+    @property
     def executable(self):
         return which('echo')
 
@@ -110,14 +114,6 @@ class Compiler(object):
     @object_directory.setter
     def object_directory(self, value):
         self._object_directory = value
-
-    @property
-    def unity_directory(self):
-        return self._unity_directory
-
-    @unity_directory.setter
-    def unity_directory(self, value):
-        self._unity_directory = value
 
     @property
     def extensions(self):

@@ -37,11 +37,12 @@ class System(threading.Thread):
         start_time = datetime.now()
         for function in self._build_steps:
             return_value = function()
-            if not return_value == 0:
+            if not (return_value == 0 or return_value == None):
                 error('\nError: {0}'.format(lookup_error(return_value)))
                 sys.exit(return_value)
         end_time = datetime.now()
-        info('{0}: {1}'.format(self.name.upper(), (end_time - start_time)))
+        info('{0}: {1}'.format(self._project_name.upper(),
+                                (end_time - start_time)))
 
     def pre_build(self):
         return 0

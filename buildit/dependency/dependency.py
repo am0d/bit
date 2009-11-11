@@ -46,6 +46,12 @@ class Dependency(object):
         finally:
             self.file.close()
 
+    def reset(self):
+        ''' Resets the dependency list - only use this before generating
+            the dependencies all over again
+        '''
+        self.__dependencies = {}
+
     def generate_dependencies(self):
         pass
 

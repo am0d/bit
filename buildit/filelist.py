@@ -33,7 +33,6 @@ class FileList:
                         self._changed[file] = True
                         self._have_compiled[file] = False
                         self.add_to_compile_list(file)
-                        self._deps_db.parse_file(file)
                     else:
                         self._have_compiled[file] = True
         else:
@@ -56,7 +55,6 @@ class FileList:
             if not self._have_compiled[file_name]:
                 self._hash_db.remove_hash(file_name)
         self._hash_db.generate_hashfile()
-        self._deps_db.write_to_disk()
 
     def set_extensions(self, extensions):
         ''' Sets the extensions that we will be compiling
@@ -88,6 +86,11 @@ class FileList:
         location = '{0}/{1}/{2}.o'.format(self._object_directory,
                         subdir, file_name)
         return location
+
+    def generate_dependencies(self):
+        for file in self._file_list:
+            self._deps_db.parse_file(file)
+        self._deps_db.write_to_disk()
 
     @property
     def object_directory(self):

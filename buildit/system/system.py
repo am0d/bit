@@ -2,6 +2,7 @@
 
 import os
 import sys
+import shutil
 import threading
 from glob import glob
 from datetime import datetime
@@ -32,6 +33,8 @@ class System(threading.Thread):
         self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)
         self._build_steps.append(self.post_build)
+
+        self.parse_commandline()
 
     def run(self):
         start_time = datetime.now()
@@ -83,6 +86,31 @@ class System(threading.Thread):
             warning('{0} is not a supported datatype.'.format(type(files)))
         new_files = fix_strings(new_files)
         self._file_list.add(new_files)
+    
+    def parse_commandline(self):
+        for arg in sys.argv[1:]:
+            if arg == '--generate-deps':
+                self._build_steps.append(self.generate_dependencies)
+            elif arg == '--rebuild':
+                self._build_steps.insert(0, self.clean)
+            elif arg == '--clean':
+                self._build_steps = [self.clean]
+            else:
+                warning('Unknown argument {0}'.format(arg))
+
+    def generate_dependencies(self):
+        self._file_list.generate_dependencies()
+
+    def clean(self):
+        try:
+            if os.path.exists(self._object_directory):
+                shutil.rmtree(self._object_directory)
+            if os.path.exists(self._unity_directory):
+                shutil.rmtree(self._unity_directory)
+            if os.path.exists(self._build_directory):
+                shutil.rmtree(self._build_directory)
+        except OSError:
+            return 1005
 
     @property
     def compiler(self):

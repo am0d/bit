@@ -57,9 +57,9 @@ class Dependency(object):
         file = open(file_name, 'r')
         for line in file:
             if line.find(self._magic_word) > -1:
-                line = self.parse_line(line, file_name)
-                if not line == '':
-                    dependencies.append(line)
+                name = self.parse_line(line, file_name)
+                if not name == '':
+                    dependencies.append(name)
         for name in dependencies:
             if not name in self.__dependencies:
                 self.__dependencies[name] = []
@@ -80,11 +80,11 @@ class Dependency(object):
         path = '{0}/{1}'.format(current_dir, line)
         path = os.path.normpath(path)
         if os.path.exists(path):
-            return fix_strings(path)
+            return fix_strings([path])[0]
         for dir in self._directories:
             path = '{0}/{1}'.format(dir, line)
             if os.path.exists(path):
-                return fix_strings(os.path.normpath(path))
+                return fix_strings([os.path.normpath(path)])[0]
         return ''
 
     def get_files_dependent_on(self, file_name):

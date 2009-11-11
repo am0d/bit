@@ -3,7 +3,7 @@
 import os
 import sys
 
-from buildit.utils import which, lookup_error
+from buildit.utils import which, lookup_error, fix_strings
 from buildit.cprint import command, warning, error
 
 class Dependency(object):
@@ -63,7 +63,8 @@ class Dependency(object):
         for name in dependencies:
             if not name in self.__dependencies:
                 self.__dependencies[name] = []
-            self.__dependencies[name].append(file_name)
+            if not file_name in self.__dependencies[name]:
+                self.__dependencies[name].append(file_name)
 
     # Leave implementation up to each language
     def parse_line(self, string, current_file):
@@ -79,11 +80,11 @@ class Dependency(object):
         path = '{0}/{1}'.format(current_dir, line)
         path = os.path.normpath(path)
         if os.path.exists(path):
-            return path
+            return fix_strings(path)
         for dir in self._directories:
             path = '{0}/{1}'.format(dir, line)
             if os.path.exists(path):
-                return os.path.normpath(path)
+                return fix_strings(os.path.normpath(path))
         return ''
 
     def get_files_dependent_on(self, file_name):

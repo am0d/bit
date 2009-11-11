@@ -12,22 +12,6 @@ import os.path
 
 from buildit.cprint import error, warning
 
-def archive(directory, name='archive', ark='bz2'):
-    if not ark == 'zip':
-        ark_type = {'bz2': 'w:bz2', 'gz': 'w:gz'}
-        ark_type = ark_type.get(ark, 'bz2')
-        ark_ext = '.tar.{0}'.format(ark_type)
-    else:
-        ark_ext = '.{0}'.format(ark)
-    ark_name = name
-    if ark == 'zip':
-        ark_file = zipfile.ZipFile('{0}{1}'.format(ark_name, ark_ext), 'w')
-        ark_file.write(directory)
-    else:
-        ark_file = tarfile.open('{0}{1}'.format())
-        ark_file.add(directory)
-    ark_file.close()
-
 def wait():
     while threading.active_count() > 1:
         time.sleep(1)
@@ -41,7 +25,7 @@ def file_hash(file_name):
         return h.hexdigest()
     except IOError:
         error('Could not hash: {0}'.format(file_name))
-        
+
 def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
 
@@ -59,12 +43,6 @@ def which(program_name):
                 return exe_file
     return None
 
-def system_type():
-    systems = {'win32': 'windows', 'cygwin': 'windows',
-               'linux': 'linux', 'linux2': 'linux',
-               'darwin': 'apple'}
-    return systems.get(sys.platform, 'generic')
-    
 def flatten(list_name, containers=(list, tuple)):
     if isinstance(list_name, containers):
         if len(list_name) < 1:
@@ -76,7 +54,7 @@ def flatten(list_name, containers=(list, tuple)):
 
 def fix_strings(file_list): #Really should only be used internally
     if isinstance(file_list, list) or isinstance(file_list, tuple):
-        if system_type() == 'windows':
+        if sys.platform == 'windows':
            file_list = [file_name.replace('\\', '/') 
                         for file_name in file_list ]
         file_list.sort()
@@ -94,7 +72,7 @@ def format_options(option_list, option='', quotes=False):
     
 def lookup_error(value):
     error_value = {
-                    None : 'Operation not yet implemented',
+                    None : 'Returned None',
                     1000 : 'File Copy Error',
                     1001 : 'Operating System Error',
                     1002 : 'Compiler Error',

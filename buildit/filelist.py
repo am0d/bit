@@ -43,16 +43,17 @@ class FileList:
         '''
         if file not in self._compile_list:
             self._compile_list.append(file)
-        for deps in self._deps_db.get_files_dependent_on(file):
-            if deps not in self._compile_list:
-                self._compile_list.append(deps)
-                self._have_compiled[deps] = False
+            self._have_compiled[file] = False
+            for deps in self._deps_db.get_files_dependent_on(file):
+                if deps not in self._compile_list:
+                    self.add_to_compile_list(deps)
         
     def write_to_disk(self):
         ''' Saves the HashDb to file
         '''
         for file_name in self._have_compiled:
-            if not self._have_compiled[file_name]:
+            if not self._have_compiled[file_name] and \
+                    not file_name.endswith(tuple(self._never_compile)):
                 self._hash_db.remove_hash(file_name)
         self._hash_db.generate_hashfile()
 

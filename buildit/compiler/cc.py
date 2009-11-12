@@ -18,7 +18,6 @@ class CC(Compiler):
     def compile_files(self):
         counter = 1
         file_count = len(self._file_list.files_to_compile)
-        file_list = fix_strings(self._file_list.files_to_compile)
         for file in file_list:
             percentage = self._percentage(counter, file_count)
             out_file = self._file_list.object_location(file)

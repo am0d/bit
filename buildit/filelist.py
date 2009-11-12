@@ -5,6 +5,7 @@ import os
 from buildit.hashdb import HashDB
 from buildit.dependency.dependency import Dependency
 from buildit.cprint import warning
+from buildit.utils import fix_strings
 
 class FileList:
     def __init__(self, project_name):
@@ -42,11 +43,13 @@ class FileList:
     def add_to_compile_list(self, file):
         ''' Adds a file and all those that depend on it to the compile list
         '''
-        if file not in self._compile_list:
+        if file not in self._compile_list or \
+                self._have_compiled[file]:
             self._compile_list.append(file)
             self._have_compiled[file] = False
             for deps in self._deps_db.get_files_dependent_on(file):
-                if deps not in self._compile_list:
+                if deps not in self._compile_list or \
+                        self._have_compiled[file]:
                     self.add_to_compile_list(deps)
         
     def write(self):
@@ -78,6 +81,8 @@ class FileList:
             We must therefore compile *all* files in the link list
         '''
         self._compile_list = self._file_list
+        for file in self._have_compiled:
+            self._have_compiled[file] = False
         return 0
 
     def object_location(self, file_name):
@@ -114,8 +119,8 @@ class FileList:
     def language(self):
         pass
 
-    @language.setter
-    def language(self, value):
+    #@language.setter
+    def set_language(self, value):
         ''' Sets the DepsDB to the correct language, and resets the
             compile_list to the correct values
         '''

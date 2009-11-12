@@ -55,7 +55,7 @@ def flatten(list_name, containers=(list, tuple)):
 def fix_strings(file_list): #Really should only be used internally
     if isinstance(file_list, list) or isinstance(file_list, tuple):
         if sys.platform == 'windows':
-           file_list = [file_name.replace('\\', '/') 
+           file_list = [os.path.normpath(file_name.replace('\\', '/'))
                         for file_name in file_list ]
         file_list.sort()
     return file_list

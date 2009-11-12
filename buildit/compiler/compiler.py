@@ -134,6 +134,6 @@ class Compiler(object):
     def file_list(self, new_list):
         if new_list is not None:
             self._file_list = new_list
-            self._file_list.language = self._language
+            self._file_list.set_language(self._language)
             self._file_list.set_extensions(self.extensions)
             self._file_list.never_compile(self.never_compile)

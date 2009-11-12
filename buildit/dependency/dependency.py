@@ -66,6 +66,7 @@ class Dependency(object):
                 name = self.parse_line(line, file_name)
                 if not name == '':
                     dependencies.append(name)
+        file_name = file_name.replace('./', '')
         for name in dependencies:
             if not name in self.__dependencies:
                 self.__dependencies[name] = []

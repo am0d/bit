@@ -18,13 +18,11 @@ class CC(Compiler):
     def compile_files(self):
         counter = 1
         file_count = len(self._file_list.files_to_compile)
+        file_list = self._file_list.files_to_compile
         for file in file_list:
             percentage = self._percentage(counter, file_count)
             out_file = self._file_list.object_location(file)
-            if sys.platform == 'win32':
-                info_file = file.split('\\')
-            else:
-                info_file = file.split('/')
+            info_file = file.split('/')
             info_file = info_file.pop()
             if not os.path.exists(out_file):
                 try:

@@ -5,8 +5,8 @@ from buildit.system.system import System
 
 class Unix(System):
 
-    def __init__(self, project_name, unity_build=False):
-        System.__init__(self, project_name, unity_build)
+    def __init__(self, project_name):
+        System.__init__(self, project_name)
         self.compiler = CC()
 
     def add_define(self, define):

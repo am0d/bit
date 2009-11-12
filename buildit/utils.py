@@ -62,8 +62,11 @@ def fix_strings(file_list): #Really should only be used internally
 
 def format_options(option_list, option='', quotes=False):
     string = ''
-    option_list = list(option_list)
-    option_list = flatten(option_list)
+    if isinstance(option_list, basestring):
+        option_list = [option_list]
+    else:
+        option_list = list(option_list)
+        option_list = flatten(option_list)
     for item in option_list:
         if quotes:
             item = '"{0}"'.format(item)
@@ -77,7 +80,8 @@ def lookup_error(value):
                     1001 : 'Operating System Error',
                     1002 : 'Compiler Error',
                     1003 : 'Linker Error',
-                    1004 : 'File IO Error' 
+                    1004 : 'File IO Error',
+                    1005 : 'Unable to remove directory'
                   }
     return error_value.get(value, 'Unknown Error')
     

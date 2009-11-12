@@ -34,7 +34,6 @@ class FileList:
                         self._changed[file] = True
                         self._have_compiled[file] = False
                         self.add_to_compile_list(file)
-                        self._deps_db.parse_file(file)
                     else:
                         self._have_compiled[file] = True
         else:
@@ -45,18 +44,18 @@ class FileList:
         '''
         if file not in self._compile_list:
             self._compile_list.append(file)
-        for deps in self._deps_db.get_files_dependent_on(file):
-            if deps not in self._compile_list:
-                self._compile_list.append(deps)
-                self._have_compiled[deps] = False
+            self._have_compiled[file] = False
+            for deps in self._deps_db.get_files_dependent_on(file):
+                if deps not in self._compile_list:
+                    self.add_to_compile_list(deps)
         
     def write(self):
         ''' Saves the HashDB and DepsDB to file '''
         for file_name in self._have_compiled:
-            if not self._have_compiled[file_name]:
+            if not self._have_compiled[file_name] and \
+                    not file_name.endswith(tuple(self._never_compile)):
                 self._hash_db.remove_hash(file_name)
         self._hash_db.generate_hashfile()
-        self._deps_db.write_to_disk()
 
     def never_compile(self, extensions):
         ''' Marks files that we will never compile, but still depend on,
@@ -76,12 +75,24 @@ class FileList:
         ''' Records the file as having no errors '''
         self._have_compiled[file_name] = True
 
+    def rebuild(self):
+        ''' Called when all the object files have been cleaned
+            We must therefore compile *all* files in the link list
+        '''
+        self._compile_list = self._file_list
+        return 0
+
     def object_location(self, file_name):
         subdir = os.path.dirname(file_name)
         file_name = os.path.split(file_name)[1]
         location = '{0}/{1}/{2}.o'.format(self._object_directory,
                         subdir, file_name)
         return location
+
+    def generate_dependencies(self):
+        for file in self._file_list:
+            self._deps_db.parse_file(file)
+        self._deps_db.write_to_disk()
 
     @property
     def object_directory(self):

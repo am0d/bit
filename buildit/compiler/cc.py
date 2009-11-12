@@ -5,7 +5,7 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.utils import which, file_hash
+from buildit.utils import which, file_hash, format_options
 from buildit.cprint import command
 
 class CC(Compiler):
@@ -17,7 +17,6 @@ class CC(Compiler):
 
     def compile_files(self):
         counter = 1
-        self._file_list.never_compile(['.h'])
         file_count = len(self._file_list.files_to_compile)
         for file in self._file_list.files_to_compile:
             percentage = self._percentage(counter, file_count)
@@ -87,3 +86,7 @@ class CC(Compiler):
     @property
     def extensions(self):
         return ['.c']
+
+    @property
+    def never_compile(self):
+        return ['.h']

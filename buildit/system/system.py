@@ -2,6 +2,7 @@
 
 import os
 import sys
+import shutil
 import threading
 from glob import glob
 from datetime import datetime
@@ -14,7 +15,7 @@ from buildit.cprint import error, info, warning
 
 class System(threading.Thread):
 
-    def __init__(self, project_name, unity_build):
+    def __init__(self, project_name):
         threading.Thread.__init__(self)
         self._file_list = FileList(project_name)
         self._compiler = Compiler(self._file_list)
@@ -29,6 +30,8 @@ class System(threading.Thread):
         self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)
         self._build_steps.append(self.post_build)
+
+        self.parse_commandline()
 
     def run(self):
         start_time = datetime.now()
@@ -82,6 +85,34 @@ class System(threading.Thread):
             warning('{0} is not a supported datatype.'.format(type(files)))
         new_files = fix_strings(new_files)
         self._file_list.add(new_files)
+    
+    def parse_commandline(self):
+        for arg in sys.argv[1:]:
+            if arg == '--generate-deps':
+                self._build_steps.append(self.generate_dependencies)
+            elif arg == '--rebuild':
+                self._build_steps.insert(0, self.rebuild)
+            elif arg == '--clean':
+                self._build_steps = [self.clean]
+            else:
+                warning('Unknown argument {0}'.format(arg))
+
+    def generate_dependencies(self):
+        self._file_list.generate_dependencies()
+
+    def clean(self):
+        try:
+            if os.path.exists(self._object_directory):
+                shutil.rmtree(self._object_directory)
+            if os.path.exists(self._build_directory):
+                shutil.rmtree(self._build_directory)
+            return 0
+        except OSError:
+            return 1005
+
+    def rebuild(self):
+        self.clean()
+        return self._file_list.rebuild()
 
     @property
     def compiler(self):

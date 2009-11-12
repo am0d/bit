@@ -119,6 +119,10 @@ class Compiler(object):
         return ['.txt']
 
     @property
+    def never_compile(self):
+        return []
+
+    @property
     def name(self):
         return uname(self)
 

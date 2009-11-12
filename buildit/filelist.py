@@ -85,6 +85,7 @@ class FileList:
             We must therefore compile *all* files in the link list
         '''
         self._compile_list = self._file_list
+        return 0
 
     def object_location(self, file_name):
         subdir = os.path.dirname(file_name)

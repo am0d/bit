@@ -15,12 +15,11 @@ from buildit.cprint import error, info, warning
 
 class System(threading.Thread):
     
-    def __init__(self, project_name, unity_build=False):
+    def __init__(self, project_name):
         threading.Thread.__init__(self)
         self._file_list = FileList(project_name)
         self._compiler = Compiler(self._file_list)
         self._build_steps = []
-        self._unity_build = unity_build
         self._project_name = project_name
         self._unity_directory = ''
         self._build_directory = ''
@@ -105,16 +104,15 @@ class System(threading.Thread):
         try:
             if os.path.exists(self._object_directory):
                 shutil.rmtree(self._object_directory)
-            if os.path.exists(self._unity_directory):
-                shutil.rmtree(self._unity_directory)
             if os.path.exists(self._build_directory):
                 shutil.rmtree(self._build_directory)
+            return 0
         except OSError:
             return 1005
 
     def rebuild(self):
         self.clean()
-        self._file_list.rebuild()
+        return self._file_list.rebuild()
 
     @property
     def compiler(self):

@@ -38,7 +38,7 @@ class HashDB(object):
             self.__dict.append(line)
         self.__dict = dict(tuple(self.__dict))
 
-    def generate_hashfile(self):
+    def write(self):
         try: 
             self.__file = open(self.__location, 'w')
             for file_name in self.__dict:

@@ -62,11 +62,9 @@ class FileList:
             as having been compiled already
         '''
         if isinstance(extensions, (list, tuple)):
-            for ext in extensions:
-                if ext not in self._never_compile:
-                    self._never_compile.append(ext)
+            self._never_compile = extensions
         elif extensions not in self._never_compile:
-            self._never_compile.append(extensions)
+            self._never_compile = [extensions]
         for file_name in self._compile_list:
             if file_name.endswith(tuple(extensions)):
                 self._have_compiled[file_name] = True

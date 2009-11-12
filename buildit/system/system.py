@@ -51,6 +51,7 @@ class System(threading.Thread):
         return_value = self._compiler.run(self.name, self._project_name)
         if not return_value == 0:
             return return_value
+        self._file_list.write()
         return 0
 
     def post_build(self):

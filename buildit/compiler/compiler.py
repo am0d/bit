@@ -136,4 +136,4 @@ class Compiler(object):
             self._file_list = new_list
             self._file_list.language = self._language
             self._file_list.set_extensions(self.extensions)
-            self._file_list.never_compile(['.h'])
+            self._file_list.never_compile(self.never_compile)

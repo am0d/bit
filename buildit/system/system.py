@@ -123,7 +123,7 @@ class System(threading.Thread):
         self._compiler = value
         self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
-        self._file_list.language = self._compiler.language
+        self._compiler.language = self._file_list.language
         self._compiler.file_list = self._file_list
         
 
@@ -148,6 +148,6 @@ class System(threading.Thread):
     def object_directory(self, value):
         self._object_directory = value
         self._compiler.object_directory = value
-        self._file_list.object_directory = value
+        self._file_list.set_object_directory(value)
 
     

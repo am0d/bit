@@ -123,6 +123,10 @@ class Compiler(object):
         return ['.txt']
 
     @property
+    def never_compile(self):
+        return []
+
+    @property
     def name(self):
         return uname(self)
 
@@ -136,4 +140,4 @@ class Compiler(object):
             self._file_list = new_list
             self._file_list.set_language(self._language)
             self._file_list.set_extensions(self.extensions)
-            self._file_list.never_compile(['.h'])
+            self._file_list.never_compile(self.never_compile)

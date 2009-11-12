@@ -12,3 +12,7 @@ class CXX(CC):
     @property
     def extensions(self):
         return ['.cpp', '.cxx', '.c++', '.C']
+
+    @property
+    def never_compile(self):
+        return ['.h', '.hpp']

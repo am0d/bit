@@ -21,6 +21,7 @@ class Database(object):
     
     def write(self):
         pass
+        self.__cursor.commit() # Close the cursor, and save the changes
 
     @property
     def dependency(self):
@@ -28,4 +29,5 @@ class Database(object):
 
     @dependency.setter
     def dependency(self, value):
-    
+        if isinstance(value, object):
+            self.__dependency = value

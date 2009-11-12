@@ -84,8 +84,11 @@ def fix_strings(file_list): #Really should only be used internally
 
 def format_options(option_list, option='', quotes=False):
     string = ''
-    option_list = list(option_list)
-    option_list = flatten(option_list)
+    if isinstance(option_list, basestring):
+        option_list = [option_list]
+    else:
+        option_list = list(option_list)
+        option_list = flatten(option_list)
     for item in option_list:
         if quotes:
             item = '"{0}"'.format(item)

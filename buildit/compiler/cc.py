@@ -5,7 +5,7 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.utils import which, file_hash
+from buildit.utils import which, file_hash, format_options
 from buildit.cprint import command
 
 class CC(Compiler):

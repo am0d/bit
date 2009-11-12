@@ -96,13 +96,15 @@ class Dependency(object):
     def get_files_dependent_on(self, file_name):
         return self.__dependencies.get(file_name, [])
 
-    def write_to_disk(self):
+    def write(self):
         try:
             self.file = open(self.__location, 'w')
             for file in self.__dependencies:
                 for dependent in self.__dependencies[file]:
                     self.file.write('{0}:{1}\n'.format(file, dependent))
+            return 0
         except IOError:
             error('Unable to save dependencies to disk')
+            return 1004
         finally:
             self.file.close()

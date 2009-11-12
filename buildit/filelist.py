@@ -55,7 +55,7 @@ class FileList:
             if not self._have_compiled[file_name] and \
                     not file_name.endswith(tuple(self._never_compile)):
                 self._hash_db.remove_hash(file_name)
-        self._hash_db.generate_hashfile()
+        self._hash_db.write()
 
     def never_compile(self, extensions):
         ''' Marks files that we will never compile, but still depend on,
@@ -92,7 +92,7 @@ class FileList:
     def generate_dependencies(self):
         for file in self._file_list:
             self._deps_db.parse_file(file)
-        self._deps_db.write_to_disk()
+        return self._deps_db.write()
 
     @property
     def object_directory(self):
@@ -102,6 +102,7 @@ class FileList:
     def object_directory(self, value):
         self._object_directory = value
 
+    @property
     def files_to_compile(self):
         return [file for file in self._compile_list
                 if file.endswith(tuple(self._extensions))]
@@ -110,7 +111,6 @@ class FileList:
     def files_to_link(self):
         return [self.object_location(file) for file in self._file_list
                 if file.endswith(tuple(self._extensions))]
-
 
     @property
     def language(self):
@@ -133,21 +133,11 @@ class FileList:
                     self._compile_list.append(dep)
 
     @property
-    def files_to_compile(self):
-        return [file for file in self._compile_list
-                if file.endswith(tuple(self._extensions))]
-
-    @property
-    def files_to_link(self):
-        return [file for file in self._file_list
-                if file.endswith(tuple(self._extensions))]
-
-    @property
     def extensions(self, extensions):
         return self._extensions
 
-    @extensions.setter
-    def extensions(self, value):
+    #@extensions.setter
+    def set_extensions(self, value):
         self._extensions = value
 
    

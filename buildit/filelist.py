@@ -52,9 +52,9 @@ class FileList:
     def write(self):
         ''' Saves the HashDB and DepsDB to file '''
         for file_name in self._have_compiled:
-            if not self._have_compiled[file_name] and \
-                    not file_name.endswith(tuple(self._never_compile)):
-                self._hash_db.remove_hash(file_name)
+            if not self._have_compiled[file_name]:
+                if not file_name.endswith(tuple(self._never_compile)):
+                    self._hash_db.remove_hash(file_name)
         self._hash_db.write()
 
     def never_compile(self, extensions):

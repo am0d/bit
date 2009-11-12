@@ -50,6 +50,7 @@ class System(threading.Thread):
     def build(self):
         return_value = self._compiler.run(self.name, self._project_name)
         if not return_value == 0:
+            self._file_list.write()
             return return_value
         self._file_list.write()
         return 0

@@ -5,7 +5,7 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.utils import which, file_hash, format_options
+from buildit.utils import which, file_hash, format_options, fix_strings
 from buildit.cprint import command
 
 class CC(Compiler):
@@ -18,15 +18,21 @@ class CC(Compiler):
     def compile_files(self):
         counter = 1
         file_count = len(self._file_list.files_to_compile)
-        for file in self._file_list.files_to_compile:
+        file_list = fix_strings(self._file_list.files_to_compile)
+        for file in file_list:
             percentage = self._percentage(counter, file_count)
             out_file = self._file_list.object_location(file)
+            if sys.platform == 'win32':
+                info_file = file.split('\\')
+            else:
+                info_file = file.split('/')
+            info_file = info_file.pop()
             if not os.path.exists(out_file):
                 try:
                     os.makedirs('{0}'.format(os.path.split(out_file)[0]))
                 except OSError:
                     pass
-            self._info_string(percentage, file)
+            self._info_string(percentage, info_file)
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
                     self.executable, out_file,
                     file, self._compile_flags)

@@ -21,14 +21,19 @@ class CC(Compiler):
         file_list = self._file_list.files_to_compile
         for file in file_list:
             percentage = self._percentage(counter, file_count)
-            out_file = self._file_list.object_location(file)
+            out_file = '{0}/{1}.o'.format(self.object_directory, file)
+            object_directory = out_file.split('/')
+            object_directory.pop()
+            if len(object_directory) > 1:
+                object_directory = '/'.join(object_directory)
+            else:
+                object_directory = object_directory.pop()
             info_file = file.split('/')
             info_file = info_file.pop()
-            if not os.path.exists(out_file):
-                try:
-                    os.makedirs('{0}'.format(os.path.split(out_file)[0]))
-                except OSError:
-                    pass
+            try:
+                os.makedirs(object_directory)
+            except OSError:
+                pass
             self._info_string(percentage, info_file)
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(
                     self.executable, out_file,
@@ -47,7 +52,8 @@ class CC(Compiler):
         build_string = ''
         command('[LINK] {0}'.format(self.project_name))
         for file_name in self._file_list.files_to_link:
-            build_string += ' "{0}"'.format(file_name)
+            build_string += ' "{0}/{1}"'.format(self.object_directory, 
+                    file_name)
         for item in self._link_flags:
             build_string += item
         try:

@@ -7,15 +7,18 @@ It supports dependency tracking, multiple projects, and an easy to use API.
 Roadmap
 =======
 
-Version 0.1 - Rush
+Version 0.2 - Fly By Night
 ------------------
 
- * Able to build multiple projects from one script
- * Able to use multiple compilers with one project
- * Dependency tracking
- * Able to build binaries
- * C/C++ Support
+ * SQLite backend for dependency tracking
+ * Static, Shared and Binaries for all C/C++ compilers.
+ * Lua Support
+ * MSVC Support
+ * Mono Compiler Support
+ * Better Documentation
+ * HTML/TXT Logging System
 
+ 
 Contributors:
 	Tres Walsh      <tres.walsh@mnmlstc.com>    (SAHChandler)
 	Damien Schoof   <damien.schoof@gmail.com>   (a_m0d)

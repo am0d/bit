@@ -13,8 +13,8 @@ Version 0.1 - Rush
  * Able to build multiple projects from one script
  * Able to use multiple compilers with one project
  * Dependency tracking
- * Able to build binaries (Done - 2009-11-02)
- * C/C++ Support (Done - 2009-11-02)
+ * Able to build binaries
+ * C/C++ Support
 
 Contributors:
 	Tres Walsh      <tres.walsh@mnmlstc.com>    (SAHChandler)

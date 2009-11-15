@@ -80,7 +80,8 @@ def lookup_error(value):
                     1005 : 'Unable to remove directory'
                   }
     return error_value.get(value, 'Unknown Error')
-    
+
+# This hack needs to be replaced
 def name(value):
     name = str(value)
     name = name.split(' ')

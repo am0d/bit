@@ -7,27 +7,34 @@ from buildit.utils import file_hash
 
 class Database(object):
 
-    def __init__(self, project_name):
+    def __init__(self, project_name, hash_type='sha512'):
         self.__project_name = project_name
+        self.__language = None
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__connection = sqlite3.connect(self.__location)
-        self.__cursor = self.__connection.cursor()
-        self.__dependency = None
 
     def add_hash(self, file_name):
         # More psuedo code than actualy working (so don't use it!)
+        cursor = self.__connection.cursor()
         hash = file_hash(file_name)
-        self.__cursor.execute('insert into hash values(?)', (file_name, hash))
-    
+        cursor.commit()
+        cursor.close()
+
+    def get_hash(self, file_name):
+        cursor = self.__connection.cursor()
+        cursor.commit()
+        cursor.close()
+
     def write(self):
-        pass
-        self.__cursor.commit() # Close the cursor, and save the changes
+        cursor = self.__connection.cursor()
+        cursor.commit()
+        cursor.close()
 
     @property
-    def dependency(self):
-        return self.__dependency
+    def language(self):
+        return self.__language
 
-    @dependency.setter
-    def dependency(self, value):
+    @language.setter
+    def language(self, value):
         if isinstance(value, object):
-            self.__dependency = value
+            self.__language = value

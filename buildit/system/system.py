@@ -15,10 +15,10 @@ from buildit.cprint import error, warning, info
 
 class System(threading.Thread):
 
-    def __init__(self, project_name):
+    def __init__(self, project_name, type='binary'):
         threading.Thread.__init__(self)
         self._database = Database(project_name)
-        self._compiler = Compiler()
+        self._compiler = Compiler(type)
         self._parser = CommandlineParser(sys.argv)
         self._build_steps = []
         self._file_list = []

@@ -51,10 +51,65 @@ class System(threading.Thread):
         return 0
 
     def add(self, files):
-        pass
+        if is instance(files, (tuple,list))
+            for item in flatten(files):
+                if isinstance(item, basestring):
+                    if os.path.isdir(item):
+                        glob_list = glob('{0}/*'.format(item))
+                        for file_name in glob_list:
+                            if os.path.isfile(file_name):
+                                self._file_list.append(file_name)
+                    else:
+                        self._file_list.append(item)
+        elif isinstance(files, basestring):
+            if os.path.isdir(files):
+                glob_list = glob('{0}/*'.format(files))
+                for file_name in glob_list:
+                    if os.path.isfile(file_name):
+                        self._file_list.append(file_name)
+            else:
+                self._file_list.append(files)
+        else:
+            warning('{0} is not a supported datatype.'format(type(files)))
+        self._file_list.sort()
 
     def remove(self, files):
-        pass
+        if isinstance(files, (tuple, list)):
+            for item in flatten(files):
+                if isinstance(item, basestring):
+                    if os.path.isdir(item):
+                        glob_list = glob('{0}/*'.format(item))
+                        for file_name in glob_list:
+                            if os.path.isfile(file_name):
+                                try:
+                                    self._file_list.remove(file_name)
+                                except ValueError:
+                                    warning('{0} could not be removed'.format(
+                                        file_name))
+                    else:
+                        try:
+                            self._file_list.remove(file_name)
+                        except ValueError:
+                            warning('{0} could not be removed'.format(
+                                file_name))
+        elif isinstance(files, basestring):
+            if os.path.isdir(files):
+                glob_list = glob('{0}/*'.format(files))
+                for file_name in glob_list:
+                    if os.path.isfile(file_name):
+                        try:
+                            self._file_list.remove(file_name)
+                        except ValueError:
+                            warning('{0} could not be removed'.format(
+                                file_name))
+            else:
+                try:
+                    self._file_list.remove(file_name)
+                except ValueError:
+                    warning('{0} could not be removed'.format(file_name))
+        else:
+            warning('{0} is not a supported datatype.'.format(type(files)))
+        self._file_list.sort()
     
     def clean(self):
         pass

@@ -13,7 +13,7 @@ class Database(object):
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__connection = sqlite3.connect(self.__location)
         self.__hash_dictionary = {}
-        # We need to fill the hash_dictionary with values from the hash table.
+        # We need to fill the hash_dictionary.
 
     def add_hash(self, file_name):
         # More psuedo code than actually working (so don't use it!)

@@ -17,7 +17,7 @@ Version 0.2 - Fly By Night
  * Mono Compiler Support
  * Better Documentation
  * HTML/TXT Logging System
-
+ * pkg-config support
  
 Contributors:
 	Tres Walsh      <tres.walsh@mnmlstc.com>    (SAHChandler)

@@ -13,7 +13,17 @@ class Database(object):
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__connection = sqlite3.connect(self.__location)
         self.__hash_dictionary = {}
+        self.__run()
         # We need to fill the hash_dictionary with values from the hash table.
+
+    def __run(self):
+        try:
+            os.makedirs('.buildit')
+            if sys.platform == 'win32':
+                subprocess.call('attrib +h .buildit')
+        except:
+            pass
+        self.update_hash()
 
     def add_hash(self, file_name):
         # More psuedo code than actually working (so don't use it!)
@@ -30,7 +40,15 @@ class Database(object):
         if file_name in self.__hash_dictionary:
             del self.__hash_dictionary[file_name]
 
-    def write(self):
+    def update_hash(self):
+        file_hash = []
+        cursor = self.__connection.cursor()
+        cursor.close()
+        # A straight list -> dict conversion fails sometimes.
+        # list -> tuple -> dict seems to work.
+        self.__hash_dictionary = dict(tuple(file_hash))
+
+    def write(self, file_list):
         cursor = self.__connection.cursor()
         cursor.commit()
         cursor.close()

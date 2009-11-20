@@ -26,6 +26,7 @@ class Database(object):
             pass
         self.update_hash()
 
+    # HashDB Functionality
     def add_hash(self, file_name):
         # More psuedo code than actually working (so don't use it!)
         cursor = self.__connection.cursor()

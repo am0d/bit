@@ -14,7 +14,8 @@ class Database(object):
         self.__connection = sqlite3.connect(self.__location)
         self.__hash_dictionary = {}
         self.__run()
-        # We need to fill the hash_dictionary with values from the hash table.
+        # We need to fill the hash_dictionary.
+
 
     def __run(self):
         try:

@@ -2,7 +2,6 @@
 
 import os
 import sys
-import shutil
 import threading
 from glob import glob
 from datetime import datetime
@@ -18,8 +17,7 @@ class System(threading.Thread):
     def __init__(self, project_name, type='binary'):
         threading.Thread.__init__(self)
         self._database = Database(project_name)
-        self._compiler = Compiler(type)
-        self._parser = CommandlineParser(sys.argv)
+        self._compiler = Compiler(type) 
         self._build_steps = []
         self._file_list = []
         self._project_name = project_name

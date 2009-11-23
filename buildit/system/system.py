@@ -49,7 +49,7 @@ class System(threading.Thread):
         return 0
 
     def add(self, files):
-        if isinstance(files, (tuple,list))
+        if isinstance(files, (tuple,list)):
             for item in flatten(files):
                 if isinstance(item, basestring):
                     if os.path.isdir(item):

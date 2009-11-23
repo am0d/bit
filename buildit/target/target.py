@@ -13,6 +13,9 @@ class Target(Thread):
     def clean(self, files):
         pass
 
+    def add(self, files):
+        pass
+
     def create_link_string(self):
         pass
 

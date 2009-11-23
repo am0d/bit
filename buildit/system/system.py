@@ -49,7 +49,7 @@ class System(threading.Thread):
         return 0
 
     def add(self, files):
-        if is instance(files, (tuple,list))
+        if isinstance(files, (tuple,list)):
             for item in flatten(files):
                 if isinstance(item, basestring):
                     if os.path.isdir(item):
@@ -68,7 +68,7 @@ class System(threading.Thread):
             else:
                 self._file_list.append(files)
         else:
-            warning('{0} is not a supported datatype.'format(type(files)))
+            warning('{0} is not a supported datatype'.format(type(files)))
         self._file_list.sort()
 
     def remove(self, files):
@@ -113,7 +113,7 @@ class System(threading.Thread):
         pass
 
     @property
-    def name(self)
+    def name(self):
         return uname(self)
 
     @property

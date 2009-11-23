@@ -44,7 +44,7 @@ class Compiler(object):
         percentage = 100 * float(counter)/float(list_length)
         percentage = str(percentage).split('.')
         percentage = percentage.pop(0)
-        return percentage)
+        return percentage
 
     def command(self, percentage, file_name):
         command('[{0:>3%] {1}: {2}'.format(percentage, 

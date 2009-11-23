@@ -13,5 +13,6 @@ setup(name='buildit',
       packages=['buildit',
                 'buildit.system',
                 'buildit.compiler',
+                'buildit.target',
                ]
      )

@@ -12,7 +12,7 @@ from buildit.utils import lookup_error, flatten, fix_strings
 from buildit.utils import name as uname
 from buildit.cprint import error, warning, info
 
-class System(threading.Thread):
+class Platform(threading.Thread):
 
     def __init__(self, project_name, type='binary'):
         threading.Thread.__init__(self)

@@ -1,6 +1,11 @@
-class Target:
+import threading.Thread
+
+class Target(Thread):
     def __init__(self):
-        pass
+        Thread.__init__(self)
+
+    def run(self):
+        self.build([])
 
     def build(self, files):
         pass

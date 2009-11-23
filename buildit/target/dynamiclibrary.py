@@ -1,4 +1,4 @@
-import buildit.target.Target
+from buildit.target.target import Target
 
 class DynamicLibrary(Target):
     pass

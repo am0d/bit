@@ -1,4 +1,6 @@
-import buildit.target.Target
+from buildit.target.target import Target
 
 class Executable(Target):
-    pass
+    def printout(self):
+        print "Hello"
+

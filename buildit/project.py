@@ -14,6 +14,7 @@ class Project:
 
     def add_target(self, target):
         self.targets.append(target)
+        print "Added new target"
         return target
 
     def require_lib(self, lib):

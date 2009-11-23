@@ -9,7 +9,7 @@ from buildit.cprint import command as print_command
 
 class Compiler(object):
 
-    def __init__(self, type):
+    def __init__(self, type=""):
         self._compile_steps = []
         self.type = type
         self._language = 'generic' 
@@ -35,7 +35,35 @@ class Compiler(object):
 
     # Leave the implementation up to each compiler
     def compile_files(self):
-        pass
+        counter = 1
+        file_count = len(self._file_list.files_to_compile)
+        file_list = self._file_list.files_to_compile
+        for file in file_list:
+            percentage = self._percentage(counter, file_count)
+            out_file = '{0}/{1}.o'.format(self.object_directory, file)
+            object_directory = out_file.split('/')
+            object_directory.pop()
+            if len(object_directory) > 1:
+                object_directory = '/'.join(object_directory)
+            else:
+                object_directory = object_directory.pop()
+            info_file = file.split('/')
+            info_file = info_file.pop()
+            try:
+                os.makedirs(object_directory)
+            except OSError:
+                pass
+            self._info_string(percentage, info_file)
+            run_string = self.build_compile_string(out_file, in_file)
+            try:
+                return_value = subprocess.call(run_string) 
+            except OSError:
+                return_value = os.system(run_string)
+            if not return_value == 0:
+                return return_value
+            self._file_list.have_compiled(file)
+            counter += 1
+        return 0
 
     def link_files(self):
         pass
@@ -45,6 +73,9 @@ class Compiler(object):
         percentage = str(percentage).split('.')
         percentage = percentage.pop(0)
         return percentage
+
+    def build_compile_string(self, out_file, in_file):
+        pass
 
     def command(self, percentage, file_name):
         command('[{0:>3%] {1}: {2}'.format(percentage, 

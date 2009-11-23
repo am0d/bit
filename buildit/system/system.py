@@ -48,6 +48,9 @@ class System(threading.Thread):
     def build(self):
         return 0
 
+    def post_build(self):
+        return 0
+
     def add(self, files):
         if isinstance(files, (tuple,list)):
             for item in flatten(files):

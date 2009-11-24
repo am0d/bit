@@ -1,8 +1,9 @@
 from threading import Thread
 
 class Target(Thread):
-    def __init__(self):
+    def __init__(self, name):
         Thread.__init__(self)
+        self.name = name
 
     def run(self):
         self.build([])

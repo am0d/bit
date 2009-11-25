@@ -32,7 +32,9 @@ class Database(object):
         cursor = self.__connection.cursor()
         hash = file_hash(file_name)
         cursor.execute('insert into hashes values (?, ?)', file_name, hash)
+        self.__connection.commit()
         cursor.close()
+
 
     def get_hash(self, file_name):
         if file_name in self.__hash_dictionary:
@@ -48,6 +50,7 @@ class Database(object):
         cursor.execute('select * from hashes')
         for file, hash in cursor:
             file_hash.append((file, hash))
+        self.__connection.commit()
         cursor.close()
         # A straight list -> dict conversion fails sometimes.
         # list -> tuple -> dict seems to work.

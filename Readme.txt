@@ -10,8 +10,8 @@ Roadmap
 Version 0.2 - Fly By Night
 ------------------
 
- * SQLite backend for dependency tracking
- * Static, Shared and Binaries for all C/C++ compilers.
+ * Database backend to replace flatfiles.
+ * Static, Shared, and Binaries for all C/C++ compilers.
  * Lua Support
  * MSVC Support
  * Mono Compiler Support

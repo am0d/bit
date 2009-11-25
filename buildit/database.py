@@ -1,5 +1,4 @@
 # File Database Class
-# Scons does this as well, from what I understand.
 import anydbm
 
 from buildit.utils import file_hash
@@ -10,8 +9,8 @@ class Database(object):
         self.__project_name = project_name
         self.__language = None
         self.__location = '.buildit/{0}'.format(self.__project_name)
-        self.hashdb = anydb.open(self.__location, 'c')
-        
+        self.hashdb = anydb.open('{0}.hash'.format(self.__location), 'c')
+        self.depsdb = anydb.open('{0}.deps'.format(self.__location), 'c')
         self.__run()
         # We need to fill the hash_dictionary.
 
@@ -39,10 +38,7 @@ class Database(object):
             del self.__hash_dictionary[file_name]
 
     def update_hash(self):
-        file_hash = []
-        # A straight list -> dict conversion fails sometimes.
-        # list -> tuple -> dict seems to work.
-        self.__hash_dictionary = dict(tuple(file_hash))
+        pass
 
     def write(self, file_list):
         pass

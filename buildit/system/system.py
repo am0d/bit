@@ -14,7 +14,7 @@ from buildit.cprint import error, warning, info
 
 class System(threading.Thread):
 
-    def __init__(self, project_name, type='binary'):
+    def __init__(self, project_name):
         threading.Thread.__init__(self)
         self._database = Database(project_name)
         self._compiler = Compiler(type) 
@@ -23,6 +23,7 @@ class System(threading.Thread):
         self._project_name = project_name
         self._build_directory = ''
         self._object_directory = ''
+        self._type = 'binary'
 
         self.build_directory = 'build/{0}'.format(self.name)
         self.object_directory = 'object/{0}'.format(self.name)
@@ -109,8 +110,27 @@ class System(threading.Thread):
             warning('{0} is not a supported datatype.'.format(type(files)))
         self._file_list.sort()
     
+    def require(self, required_system):
+        required_system.run()
+
     def clean(self):
         pass
+
+    @property
+    def static(self):
+        self._type = 'static'
+        self.compiler.type = self._type
+
+
+    @property
+    def dynamic(self):
+        self._type = 'dynamic'
+        self.compiler.type = self._type
+
+    @property
+    def binary(self):
+        self._type = 'binary'
+        self.compiler.type = self._type
 
     @property
     def name(self):
@@ -126,6 +146,7 @@ class System(threading.Thread):
         self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
         self._compiler.file_list = self._file_list
+        self._compiler.type = self._type
 
     @property
     def build_directory(self):

@@ -30,7 +30,8 @@ class Database(object):
         hash = file_hash(file_name)
 
     def get_hash(self, file_name):
-        return self.hashdb[file_name]
+        # Ensure that the hash returned is a string.
+        return str(self.hashdb[file_name])
 
     def update_hash(self, file_name):
         self.hashdb[file_name] = file_hash(file_name)
@@ -38,7 +39,8 @@ class Database(object):
 
     def write_hash(self, file_list):
         for file_name in file_list:
-            self.hashdb[file_name] = file_hash(file_name)
+            # Ensure that the hash stored is a string.
+            self.hashdb[file_name] = str(file_hash(file_name))
         self.hashdb.sync()
 
     def write_deps(self, file_list):

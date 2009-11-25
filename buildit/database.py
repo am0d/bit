@@ -11,7 +11,7 @@ class Database(object):
         self.__project_name = project_name
         self.__language = None
         self.__location = '.buildit/{0}'.format(self.__project_name)
-        self.__connection = sqlite3.connect(self.__location)
+        self.__connection = ''
         self.__hash_dictionary = {}
         self.__run()
         # We need to fill the hash_dictionary.
@@ -22,8 +22,9 @@ class Database(object):
             os.makedirs('.buildit')
             if sys.platform == 'win32':
                 subprocess.call('attrib +h .buildit')
-        except:
+        except OSError:
             pass
+        self.__connection = sqlite3.connect(self.__location)
         self.update_hash()
 
     # HashDB Functionality
@@ -34,7 +35,6 @@ class Database(object):
         cursor.execute('insert into hashes values (?, ?)', file_name, hash)
         self.__connection.commit()
         cursor.close()
-
 
     def get_hash(self, file_name):
         if file_name in self.__hash_dictionary:

@@ -31,7 +31,7 @@ class Database(object):
         # More psuedo code than actually working (so don't use it!)
         cursor = self.__connection.cursor()
         hash = file_hash(file_name)
-        cursor.commit()
+        cursor.execute('insert into hashes values (?, ?)', file_name, hash)
         cursor.close()
 
     def get_hash(self, file_name):
@@ -45,6 +45,9 @@ class Database(object):
     def update_hash(self):
         file_hash = []
         cursor = self.__connection.cursor()
+        cursor.execute('select * from hashes')
+        for file, hash in cursor:
+            file_hash.append((file, hash))
         cursor.close()
         # A straight list -> dict conversion fails sometimes.
         # list -> tuple -> dict seems to work.
@@ -52,7 +55,6 @@ class Database(object):
 
     def write(self, file_list):
         cursor = self.__connection.cursor()
-        cursor.commit()
         cursor.close()
 
     @property

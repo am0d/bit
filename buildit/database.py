@@ -1,7 +1,6 @@
 # File Database Class
 # Scons does this as well, from what I understand.
-
-import sqlite3
+import anydbm
 
 from buildit.utils import file_hash
 
@@ -11,8 +10,8 @@ class Database(object):
         self.__project_name = project_name
         self.__language = None
         self.__location = '.buildit/{0}'.format(self.__project_name)
-        self.__connection = ''
-        self.__hash_dictionary = {}
+        self.hashdb = anydb.open(self.__location, 'c')
+        
         self.__run()
         # We need to fill the hash_dictionary.
 
@@ -24,17 +23,12 @@ class Database(object):
                 subprocess.call('attrib +h .buildit')
         except OSError:
             pass
-        self.__connection = sqlite3.connect(self.__location)
         self.update_hash()
 
     # HashDB Functionality
     def add_hash(self, file_name):
         # More psuedo code than actually working (so don't use it!)
-        cursor = self.__connection.cursor()
         hash = file_hash(file_name)
-        cursor.execute('insert into hashes values (?, ?)', file_name, hash)
-        self.__connection.commit()
-        cursor.close()
 
     def get_hash(self, file_name):
         if file_name in self.__hash_dictionary:
@@ -46,19 +40,12 @@ class Database(object):
 
     def update_hash(self):
         file_hash = []
-        cursor = self.__connection.cursor()
-        cursor.execute('select * from hashes')
-        for file, hash in cursor:
-            file_hash.append((file, hash))
-        self.__connection.commit()
-        cursor.close()
         # A straight list -> dict conversion fails sometimes.
         # list -> tuple -> dict seems to work.
         self.__hash_dictionary = dict(tuple(file_hash))
 
     def write(self, file_list):
-        cursor = self.__connection.cursor()
-        cursor.close()
+        pass
 
     @property
     def language(self):

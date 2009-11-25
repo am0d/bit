@@ -30,18 +30,21 @@ class Database(object):
         hash = file_hash(file_name)
 
     def get_hash(self, file_name):
-        if file_name in self.__hash_dictionary:
-            return self.__hash_dictionary[file_name]
+        return self.hashdb[file_name]
 
-    def remove_hash(self, file_name):
-        if file_name in self.__hash_dictionary:
-            del self.__hash_dictionary[file_name]
+    def update_hash(self, file_name):
+        self.hashdb[file_name] = file_hash(file_name)
+        self.hashdb.sync()
 
-    def update_hash(self):
-        pass
+    def write_hash(self, file_list):
+        for file_name in file_list:
+            self.hashdb[file_name] = file_hash(file_name)
+        self.hashdb.sync()
 
-    def write(self, file_list):
-        pass
+    def write_deps(self, file_list):
+        #for file_name in file_list:
+        #    self.depsdb[file_name]
+        self.depsdb.sync()
 
     @property
     def language(self):

@@ -113,7 +113,7 @@ class System(threading.Thread):
         else:
             warning('{0} is not a supported datatype.'.format(type(files)))
         self._file_list.sort()
-    
+
     def require(self, required_system):
         required_system.run()
 

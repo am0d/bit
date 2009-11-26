@@ -1,6 +1,7 @@
 # Base System Class
 
 import os
+import gc
 import sys
 import threading
 from glob import glob
@@ -24,6 +25,8 @@ class System(threading.Thread):
         self._build_directory = ''
         self._object_directory = ''
         self._type = 'binary'
+        if not gc.isenabled():
+            gc.enable()
 
         self.build_directory = 'build/{0}'.format(self.name)
         self.object_directory = 'object/{0}'.format(self.name)

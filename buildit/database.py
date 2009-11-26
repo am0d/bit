@@ -14,6 +14,9 @@ class Database(object):
         self.__run()
         # We need to fill the hash_dictionary.
 
+    def __del__(self):
+        self.hashdb.close()
+        self.depsdb.close()
 
     def __run(self):
         try:

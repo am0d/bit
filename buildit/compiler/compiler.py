@@ -9,9 +9,9 @@ from buildit.cprint import command as print_command
 
 class Compiler(object):
 
-    def __init__(self, type):
+    def __init__(self):
         self._compile_steps = []
-        self.type = type
+        self._type = 'binary'
         self._language = 'generic' 
         self._project_name = ''
         self._compile_flags = ''
@@ -47,7 +47,7 @@ class Compiler(object):
         return percentage
 
     def command(self, percentage, file_name):
-        command('[{0:>3%] {1}: {2}'.format(percentage, 
+        print_command('[{0:>3%] {1}: {2}'.format(percentage, 
             self.name.upper(), file_name))
 
     def add_flags(self, flags):
@@ -58,6 +58,14 @@ class Compiler(object):
 
     def add_link_flags(self, flags):
         self._link_flags += format_options(flags)
+
+    @property
+    def type(self):
+        pass
+
+    @type.setter
+    def type(self, value):
+        self._type = value
 
     @property
     def language(self):

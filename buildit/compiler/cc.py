@@ -17,8 +17,8 @@ class CC(Compiler):
 
     def compile_files(self):
         counter = 1
-        file_count = len(self._file_list.files_to_compile)
-        file_list = self._file_list.files_to_compile
+        file_count = 0 #len(self._file_list.files_to_compile)
+        file_list = [] #self._file_list.files_to_compile
         for file in file_list:
             percentage = self._percentage(counter, file_count)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
@@ -50,8 +50,8 @@ class CC(Compiler):
 
     def link_files(self):
         build_string = ''
-        command('[LINK] {0}'.format(self.project_name))
-        for file_name in self._file_list.files_to_link:
+        command('[LINK] {0}'.format(self._project_name))
+        for file_name in []: #self._file_list.files_to_link:
             build_string += ' "{0}/{1}"'.format(self.object_directory, 
                     file_name)
         for item in self._link_flags:
@@ -62,7 +62,7 @@ class CC(Compiler):
             pass
         run_string = '{0} -o "{1}/{2}" {3}'.format(
                 self.executable, self.build_directory,
-                self.project_name, build_string)
+                self._project_name, build_string)
         try:
             return_value = subprocess.call(run_string)
         except OSError:

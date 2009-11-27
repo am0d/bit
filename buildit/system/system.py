@@ -50,8 +50,11 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        return_value = self.compiler.run(self.project_name)
+        return_value = self.compiler.run(self._project_name)
         return return_value
+
+    def post_build(self):
+        return 0
 
     def add(self, files):
         if isinstance(files, (tuple,list)):

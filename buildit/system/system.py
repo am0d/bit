@@ -17,7 +17,6 @@ class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._database = Database(project_name)
         self._compiler = Compiler() 
         self._build_steps = []
         self._file_list = []
@@ -50,7 +49,7 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        return_value = self.compiler.run(self.project_name)
+        return_value = self.compiler.run
         return return_value
 
     def add(self, files):
@@ -152,6 +151,7 @@ class System(threading.Thread):
         self._compiler.build_directory = self._build_directory
         self._compiler.file_list = self._file_list
         self._compiler.type = self._type
+        self._compiler._project_name = self._project_name
 
     @property
     def build_directory(self):

@@ -96,6 +96,10 @@ class CC(Compiler):
     @property
     def extensions(self):
         return ['.c']
+    
+    @property
+    def enable_c(self):
+        pass
 
     @property
     def header_files(self):

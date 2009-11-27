@@ -3,17 +3,20 @@
 import os
 import subprocess
 
+from buildit.language.generic import Generic
+from buildit.database import Database
+
 from buildit.utils import which, flatten, fix_strings
 from buildit.utils import name as uname
 from buildit.cprint import command as print_command
 
 class Compiler(object):
 
-    def __init__(self):
+    def __init__(self, project_name='PROJECT'):
         self._compile_steps = []
         self._type = 'binary'
-        self._language = 'generic' 
-        self._project_name = ''
+        self._language = Generic()
+        self._project_name = project_name
         self._compile_flags = ''
         self._link_flags = ''
         self._executable = which('echo')
@@ -22,8 +25,9 @@ class Compiler(object):
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
 
-    def run(self, project_name='PROJECT'):
-        self._project_name = project_name
+    @property
+    def run(self):
+        self.database = Database(self._project_name, self._language)
         for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:

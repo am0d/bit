@@ -1,5 +1,7 @@
 # File Database Class
 import anydbm
+import os
+import sys
 
 from buildit.utils import file_hash
 
@@ -9,23 +11,34 @@ class Database(object):
         self.__project_name = project_name
         self.__language = None
         self.__location = '.buildit/{0}'.format(self.__project_name)
-        self.__hashdb = anydb.open('{0}.hash'.format(self.__location), 'c')
-        self.__depsdb = anydb.open('{0}.deps'.format(self.__location), 'c')
-        self.__run()
-        # We need to fill the hash_dictionary.
-
-    def __del__(self):
-        self.__hashdb.close()
-        self.__depsdb.close()
-
-    def __run(self):
         try:
             os.makedirs('.buildit')
             if sys.platform == 'win32':
                 subprocess.call('attrib +h .buildit')
         except OSError:
             pass
-        self.update_hash()
+        try:
+            self.__hashdb = anydbm.open('{0}.hash'.format(self.__location), 'c')
+            self.__depsdb = anydbm.open('{0}.deps'.format(self.__location), 'c')
+        except anydbm.error:
+            print 'Error opening configuration files'
+
+        self.__run()
+        # We need to fill the hash_dictionary.
+
+    def __del__(self):
+        try:
+            self.__hashdb.close()
+        except AttributeError:
+            pass
+        try:
+            self.__depsdb.close()
+        except AttributeError:
+            pass
+
+    def __run(self):
+        #self.update_hash()
+        pass
 
     # HashDB Functionality
     def add_hash(self, file_name):

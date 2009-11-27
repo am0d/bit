@@ -1,10 +1,8 @@
 # Basic C Language Dependency Tracking
 
-from buildit.dependency.dependency import Dependency
+from buildit.language.generic import Generic
 
-class C(Dependency):
+class C(Generic):
 
-    def __init__(self, name, directories=[]):
-        Dependency.__init__(self, name, directories)
-        self.header = 'CLANG'
-        self._magic_word = '#include'
+    def __init__(self):
+        Generic.__init__(self)

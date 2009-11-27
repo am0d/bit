@@ -5,6 +5,7 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
+from buildit.language.c import C 
 from buildit.utils import which, file_hash, format_options, fix_strings
 from buildit.cprint import command
 
@@ -13,7 +14,7 @@ class CC(Compiler):
     def __init__(self):
         Compiler.__init__(self)
         self._executable = which('cc') 
-        self._language = 'C'
+        self._language = C()
 
     def compile_files(self):
         counter = 1
@@ -97,5 +98,5 @@ class CC(Compiler):
         return ['.c']
 
     @property
-    def never_compile(self):
+    def header_files(self):
         return ['.h']

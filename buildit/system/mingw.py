@@ -6,5 +6,4 @@ class MinGW(Unix):
 
     def __init__(self, project_name):
         Unix.__init__(self, project_name)
-        self.compiler.executable = 'gcc'
-    
+        self.compiler.executable = 'gcc' 

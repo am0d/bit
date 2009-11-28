@@ -3,6 +3,7 @@
 import os
 import gc
 import sys
+import shutil
 import threading
 from glob import glob
 from datetime import datetime
@@ -57,7 +58,7 @@ class System(threading.Thread):
         return 0
 
     def pause(self):
-        raw_input('Press a key to continue...\n')
+        raw_input('Press Enter to continue...')
 
     def add(self, files):
         if isinstance(files, (tuple,list)):

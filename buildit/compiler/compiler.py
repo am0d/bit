@@ -40,6 +40,7 @@ class Compiler(object):
             for extension in self.extensions:
                 if not file_name.endswith(extension):
                     self._file_list.remove(file_name)
+                    break
         return 0
 
     # Leave the implementation up to each compiler

@@ -15,8 +15,8 @@ class Database(object):
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__run()
         try:
-            self.__hashdb = anydb.open('{0}.hash'.format(self.__location), 'c')
-            self.__depsdb = anydb.open('{0}.deps'.format(self.__location), 'c')
+            self.__hashdb = anydbm.open('{0}.hash'.format(self.__location), 'c')
+            self.__depsdb = anydbm.open('{0}.deps'.format(self.__location), 'c')
         except anydbm.error:
             error('Could not open dependency databases')
 

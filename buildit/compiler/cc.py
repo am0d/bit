@@ -107,6 +107,7 @@ class CC(Compiler):
 
     def add_include_directory(self, directory):
         self._compile_flags += format_options(directory, '-I', True)
+        self._link_flags += format_options(directory, '-I', True)
 
     def add_library_directory(self, directory):
         self._link_flags += format_options(directory, '-L', True)

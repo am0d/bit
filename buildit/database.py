@@ -2,6 +2,7 @@
 import os
 import sys
 import anydbm
+import subprocess
 
 from buildit.utils import file_hash, error
 
@@ -13,8 +14,8 @@ class Database(object):
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__run()
         try:
-            self.__hashdb = anydb.open('{0}.hash'.format(self.__location), 'c')
-            self.__depsdb = anydb.open('{0}.deps'.format(self.__location), 'c')
+            self.__hashdb = anydbm.open('{0}.hash'.format(self.__location), 'c')
+            self.__depsdb = anydbm.open('{0}.deps'.format(self.__location), 'c')
         except anydbm.error:
             error('Could not open dependency databases')
 
@@ -35,11 +36,10 @@ class Database(object):
                 subprocess.call('attrib +h .buildit')
         except OSError:
             pass
-        self.update_hash()
 
     def get_hash(self, file_name):
         # Ensure that the hash returned is a string.
-        return str(self.hashdb[file_name])
+        return str(self.__hashdb[file_name])
 
     def update_hash(self, file_name):
         self.__hashdb[file_name] = file_hash(file_name)

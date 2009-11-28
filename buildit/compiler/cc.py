@@ -8,12 +8,12 @@ import subprocess
 from buildit.compiler.compiler import Compiler
 from buildit.language.c import C
 from buildit.utils import format_options, fix_strings, file_hash
-from buildit.cprint import command
+from buildit.cprint import command as print_command
 
 class CC(Compiler):
 
-    def __init__(self):
-        Compiler.__init__(self)
+    def __init__(self, project_name='PROJECT'):
+        Compiler.__init__(self, project_name)
         self.executable = 'cc'
         self._language = C()
 
@@ -23,10 +23,11 @@ class CC(Compiler):
         for file in self._file_list:
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            if os.path.exists(out_file) and hash == get_hash(file):
+            if os.path.exists(out_file) and \
+                    hash == self.database.get_hash(file):
                 self._link_list.append(out_file)
                 continue
-            percentage = self.percentage(counter, file_count)
+            percentage = self._percentage(counter, file_count)
             object_directory = out_file.split('/')
             object_directory.pop()
             if len(object_directory) > 1:
@@ -39,7 +40,7 @@ class CC(Compiler):
                 os.makedirs(object_directory)
             except OSError:
                 pass
-            self._info_string(precentage, info_file)
+            self.command(percentage, info_file)
             if self._type == 'dynamic':
                 self.add_compile_flags('-fPIC')
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable,
@@ -50,14 +51,14 @@ class CC(Compiler):
                 return_value = os.system(run_string) # Worst case scenario!
             if not return_value == 0:
                 return return_value
-            self.database.update_hash(file) # Let's place the hash in the database!
+            self.database.update_hash(file) # Let's write the hash
             self._link_list.append(file)
             counter += 1
         return 0
 
     def link_files(self):
         build_string = ''
-        command('[LINK] {0}'.format(self.project_name))
+        print_command('[LINK] {0}'.format(self._project_name))
         # Let's determine the final output!
         if self.type == 'binary':
             ending = ''
@@ -67,9 +68,9 @@ class CC(Compiler):
                 ending = '.mac'
             else:
                 ending = '.elf'
-            self.project_name = '{0}{1}'.format(self.project_name, ending)
+            self._project_name = '{0}{1}'.format(self._project_name, ending)
         elif self.type == 'static':
-            self.project_name = 'lib{0}.a'.format(self.project_name)
+            self._project_name = 'lib{0}.a'.format(self._project_name)
             self.add_link_flags('-static')
         elif self.type == 'dynamic':
             ending = ''
@@ -79,12 +80,12 @@ class CC(Compiler):
                 ending = '.dylib'
             else:
                 ending = '.so'
-            self.project_name = '{0}{1}'.format(self.project_name, ending)
+            self._project_name = '{0}{1}'.format(self._project_name, ending)
             self.add_link_flags('-shared')
         else:
             return 1006 # Somehow our type was messed with :X
         for file in self._link_list:
-            build_string += ' "{0}/{1}"'.format(self.object_directory, file)
+            build_string += ' "{0}"'.format(file)
         for item in self._link_flags:
             build_string += item
         try:
@@ -92,7 +93,7 @@ class CC(Compiler):
         except OSError:
             pass
         run_string = '{0} -o "{1}/{2}" {3}'.format(self.executable,
-                self.build_directory, self.project_name, build_string)
+                self.build_directory, self._project_name, build_string)
         try:
             return_value = subprocess.call(run_string)
         except OSError:

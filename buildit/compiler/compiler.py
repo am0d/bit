@@ -21,6 +21,7 @@ class Compiler(object):
         self._link_flags = ''
         self._executable = which('echo')
         self._file_list = []
+        self._link_list = []
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
@@ -38,7 +39,7 @@ class Compiler(object):
     def setup_files(self):
         for file_name in self._file_list:
             for extension in self.extensions:
-                if not file_name.endswith(extension)
+                if not file_name.endswith(extension):
                     self._file_list.remove(file_name)
         return 0
 
@@ -56,7 +57,7 @@ class Compiler(object):
         return percentage
 
     def command(self, percentage, file_name):
-        print_command('[{0:>3%] {1}: {2}'.format(percentage, 
+        print_command('[{0:>3}%] {1}: {2}'.format(percentage, 
             self.name.upper(), file_name))
 
     def add_flags(self, flags):
@@ -70,7 +71,7 @@ class Compiler(object):
 
     @property
     def type(self):
-        pass
+        return self._type
 
     @type.setter
     def type(self, value):
@@ -82,7 +83,7 @@ class Compiler(object):
 
     @property 
     def executable(self):
-        return self._exectuable
+        return self._executable
 
     @executable.setter
     def executable(self, value):
@@ -99,15 +100,11 @@ class Compiler(object):
 
     @property
     def object_directory(self):
-        self._object_directory
+        return self._object_directory
 
     @object_directory.setter
     def object_directory(self, value):
         self._object_directory = value
-
-    @property
-    def output_extension(self):
-        return '.txt'
 
     @property
     def extensions(self):

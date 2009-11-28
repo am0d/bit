@@ -17,7 +17,7 @@ class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._compiler = Compiler() 
+        self._compiler = Compiler(project_name) 
         self._build_steps = []
         self._file_list = []
         self._project_name = project_name
@@ -52,6 +52,9 @@ class System(threading.Thread):
         return_value = self.compiler.run
         return return_value
 
+    def post_build(self):
+        return 0
+
     def add(self, files):
         if isinstance(files, (tuple,list)):
             for item in flatten(files):
@@ -73,6 +76,8 @@ class System(threading.Thread):
                 self._file_list.append(files)
         else:
             warning('{0} is not a supported datatype'.format(type(files)))
+        if sys.platform == 'win32':
+            self._file_list = fix_strings(self._file_list)
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 

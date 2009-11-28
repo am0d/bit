@@ -9,7 +9,7 @@ class CXX(CC):
     def __init__(self):
         CC.__init__(self)
         self._clang_enabled = False
-        self._executable = which('c++')
+        self.executable = 'c++'
         self._language = CPP()
 
     @property
@@ -20,7 +20,7 @@ class CXX(CC):
             return ['.c', '.cpp', '.cxx', '.c++', '.C']
 
     @property
-    def header_files(self):
+    def module_extension(self):
         return ['.h', '.hpp', '.hxx', '.h++']
 
     @property 

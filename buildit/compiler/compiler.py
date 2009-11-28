@@ -6,7 +6,7 @@ import subprocess
 from buildit.language.generic import Generic
 from buildit.database import Database
 
-from buildit.utils import which, flatten, fix_strings
+from buildit.utils import which, flatten, fix_strings, file_hash
 from buildit.utils import name as uname
 from buildit.cprint import command as print_command
 
@@ -36,14 +36,18 @@ class Compiler(object):
         return 0
 
     def setup_files(self):
+        for file_name in self._file_list:
+            for extension in self.extensions:
+                if not file_name.endswith(extension)
+                    self._file_list.remove(file_name)
         return 0
 
     # Leave the implementation up to each compiler
     def compile_files(self):
-        pass
+        return 0
 
     def link_files(self):
-        pass
+        return 0
 
     def _percentage(self, counter, list_length):
         percentage = 100 * float(counter)/float(list_length)
@@ -78,7 +82,7 @@ class Compiler(object):
 
     @property 
     def executable(self):
-        return which('echo')
+        return self._exectuable
 
     @executable.setter
     def executable(self, value):

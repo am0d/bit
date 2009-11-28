@@ -19,7 +19,7 @@ def file_hash(file_name):
         h = hashlib.sha512()
         h.update(f.read())
         f.close()
-        return h.hexdigest()
+        return str(h.hexdigest())
     except IOError:
         error('Could not hash: {0}'.format(file_name))
 
@@ -52,7 +52,8 @@ def flatten(list_name, containers=(list, tuple)):
 def fix_strings(file_list): #Really should only be used internally
     if isinstance(file_list, list) or isinstance(file_list, tuple):
         if sys.platform == 'win32':
-           file_list = [file_name.replace('\\', '/') for file_name in file_list ]
+           file_list = [file_name.replace('\\', '/') 
+                   for file_name in file_list ]
         file_list.sort()
     return file_list
 
@@ -77,7 +78,8 @@ def lookup_error(value):
                     1002 : 'Compiler Error',
                     1003 : 'Linker Error',
                     1004 : 'File IO Error',
-                    1005 : 'Unable to remove directory'
+                    1005 : 'Unable to remove directory',
+                    1006 : 'Unknown Output Type'
                   }
     return error_value.get(value, 'Unknown Error')
 

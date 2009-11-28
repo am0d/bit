@@ -20,6 +20,7 @@ class Compiler(object):
         self._compile_flags = ''
         self._link_flags = ''
         self._executable = which('echo')
+        self._file_list = []
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)

@@ -2,12 +2,7 @@
 import os
 import sys
 import anydbm
-<<<<<<< HEAD
-import os
-import sys
-=======
 import subprocess
->>>>>>> 71ac5712c02e7a2974cf946e2dbcbabd4a92e149
 
 from buildit.utils import file_hash, error
 

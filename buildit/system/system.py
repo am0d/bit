@@ -134,7 +134,7 @@ class System(threading.Thread):
             if os.path.exists(self.object_directory):
                 shutil.rmtree(self.object_directory)
         except OSError:
-            error('Failed to clean {0}'.format(self._project_name)
+            error('Failed to clean {0}'.format(self._project_name))
             return 1005
         return 0
         

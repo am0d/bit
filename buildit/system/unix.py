@@ -12,7 +12,7 @@ class Unix(System):
         System.__init__(self, project_name)
         self.compiler = CC(project_name)
 
-    def pkg_config(package, config_script='pkg'):
+    def pkg_config(self, package, config_script='pkg'):
         if not config_script == 'pkg':
             package = ''
         config = commands.getstatusoutput('{0}-config --cflags {1}'.format(

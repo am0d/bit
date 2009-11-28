@@ -113,7 +113,7 @@ class CC(Compiler):
         self._link_flags += format_options(directory, '-L', True)
 
     def add_library(self, library):
-        self._link_flags += format_options(directory, '-l')
+        self._link_flags += format_options(library, '-l')
 
     @property
     def extensions(self):

@@ -38,7 +38,7 @@ class Compiler(object):
     def setup_files(self):
         for file_name in self._file_list:
             for extension in self.extensions:
-                if not file_name.endswith(extension)
+                if not file_name.endswith(extension):
                     self._file_list.remove(file_name)
         return 0
 

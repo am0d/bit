@@ -17,7 +17,6 @@ class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._database = Database(project_name)
         self._compiler = Compiler() 
         self._build_steps = []
         self._file_list = []
@@ -50,7 +49,7 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        return_value = self.compiler.run(self._project_name)
+        return_value = self.compiler.run
         return return_value
 
     def post_build(self):
@@ -78,6 +77,7 @@ class System(threading.Thread):
         else:
             warning('{0} is not a supported datatype'.format(type(files)))
         self._file_list.sort()
+        self.compiler._file_list = self._file_list
 
     def remove(self, files):
         if isinstance(files, (tuple, list)):
@@ -116,6 +116,7 @@ class System(threading.Thread):
         else:
             warning('{0} is not a supported datatype.'.format(type(files)))
         self._file_list.sort()
+        self.compiler._file_list = self._file_list
 
     def require(self, required_system):
         required_system.run()
@@ -127,7 +128,6 @@ class System(threading.Thread):
     def static(self):
         self._type = 'static'
         self.compiler.type = self._type
-
 
     @property
     def dynamic(self):
@@ -153,8 +153,9 @@ class System(threading.Thread):
         # Update the information we need to.
         self._compiler.object_directory = self._object_directory
         self._compiler.build_directory = self._build_directory
-        self._compiler.file_list = self._file_list
+        self._compiler._file_list = self._file_list
         self._compiler.type = self._type
+        self._compiler._project_name = self._project_name
 
     @property
     def build_directory(self):

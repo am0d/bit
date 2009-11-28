@@ -1,16 +1,36 @@
 # File Database Class
+import os
+import sys
 import anydbm
 import os
 import sys
 
-from buildit.utils import file_hash
+from buildit.utils import file_hash, error
 
 class Database(object):
 
-    def __init__(self, project_name, hash_type='sha512'):
+    def __init__(self, project_name, language):
         self.__project_name = project_name
-        self.__language = None
+        self.__language = language
         self.__location = '.buildit/{0}'.format(self.__project_name)
+        self.__run()
+        try:
+            self.__hashdb = anydb.open('{0}.hash'.format(self.__location), 'c')
+            self.__depsdb = anydb.open('{0}.deps'.format(self.__location), 'c')
+        except anydbm.error:
+            error('Could not open dependency databases')
+
+    def __del__(self):
+        try:
+            self.__hashdb.close()
+        except AttributeError:
+            pass
+        try:
+            self.__depsdb.close()
+        except AttributeError:
+            pass
+
+    def __run(self):
         try:
             os.makedirs('.buildit')
             if sys.platform == 'win32':
@@ -40,11 +60,6 @@ class Database(object):
         #self.update_hash()
         pass
 
-    # HashDB Functionality
-    def add_hash(self, file_name):
-        # More psuedo code than actually working (so don't use it!)
-        hash = file_hash(file_name)
-
     def get_hash(self, file_name):
         # Ensure that the hash returned is a string.
         return str(self.hashdb[file_name])
@@ -53,9 +68,8 @@ class Database(object):
         self.__hashdb[file_name] = file_hash(file_name)
         self.__hashdb.sync()
 
-    def write_hash(self, file_list):
+    def write_hashes(self, file_list):
         for file_name in file_list:
-            # Ensure that the hash stored is a string.
             self.__hashdb[file_name] = str(file_hash(file_name))
         self.__hashdb.sync()
 

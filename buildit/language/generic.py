@@ -1,5 +1,6 @@
-from buildit.dependency.dependency import Dependency
+# Abstract Language
 
-class Generic(Dependency):
-    def parse_line(self, line, current_file):
-        return ''
+class Generic(object):
+
+    def __init__(self):
+        pass

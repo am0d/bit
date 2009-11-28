@@ -1,10 +1,8 @@
-# C++ Language Dependency
+# C++ Language Information
 
-from buildit.dependency.c import C
+from buildit.language.c import C
 
 class CPP(C):
 
-    def __init__(self, name, directories=[]):
-        C.__init__(self, name, directories)
-        self.header = 'CPP'
-        self._magic_word = '#include'
+    def __init__(self):
+        C.__init__(self)

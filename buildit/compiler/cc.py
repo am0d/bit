@@ -26,7 +26,7 @@ class CC(Compiler):
             if os.path.exists(out_file) and hash == get_hash(file):
                 self._link_list.append(out_file)
                 continue
-            percentage = self.percentage(counter, file_count)
+            percentage = self._percentage(counter, file_count)
             object_directory = out_file.split('/')
             object_directory.pop()
             if len(object_directory) > 1:
@@ -39,7 +39,7 @@ class CC(Compiler):
                 os.makedirs(object_directory)
             except OSError:
                 pass
-            self._info_string(precentage, info_file)
+            self.command(percentage, info_file)
             if self._type == 'dynamic':
                 self.add_compile_flags('-fPIC')
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable,

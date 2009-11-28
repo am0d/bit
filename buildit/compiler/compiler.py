@@ -57,7 +57,7 @@ class Compiler(object):
         return percentage
 
     def command(self, percentage, file_name):
-        print_command('[{0:>3%] {1}: {2}'.format(percentage, 
+        print_command('[{0:>3\%}] {1}: {2}'.format(percentage, 
             self.name.upper(), file_name))
 
     def add_flags(self, flags):

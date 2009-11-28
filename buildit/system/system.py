@@ -17,7 +17,7 @@ class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._compiler = Compiler() 
+        self._compiler = Compiler(project_name) 
         self._build_steps = []
         self._file_list = []
         self._project_name = project_name
@@ -35,6 +35,7 @@ class System(threading.Thread):
         self._build_steps.append(self.post_build)
 
     def run(self):
+        self.parse_options()
         start_time = datetime.now()
         for function in self._build_steps:
             return_value = function()
@@ -54,6 +55,9 @@ class System(threading.Thread):
 
     def post_build(self):
         return 0
+
+    def pause(self):
+        raw_input('Press a key to continue...\n')
 
     def add(self, files):
         if isinstance(files, (tuple,list)):
@@ -76,6 +80,8 @@ class System(threading.Thread):
                 self._file_list.append(files)
         else:
             warning('{0} is not a supported datatype'.format(type(files)))
+        if sys.platform == 'win32':
+            self._file_list = fix_strings(self._file_list)
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 
@@ -122,7 +128,23 @@ class System(threading.Thread):
         required_system.run()
 
     def clean(self):
-        pass
+        try:
+            if os.path.exists(self.build_directory):
+                shutil.rmtree(self.build_directory)
+            if os.path.exists(self.object_directory):
+                shutil.rmtree(self.object_directory)
+        except OSError:
+            error('Failed to clean {0}'.format(self._project_name)
+            return 1005
+        return 0
+        
+    def parse_options(self):
+        for arg in sys.argv[1:]:
+            if arg == '--clean':
+                self._build_steps = [self.clean]
+            elif arg == '--rebuild':
+                self._build_steps.insert(0, self.clean)
+
 
     @property
     def static(self):

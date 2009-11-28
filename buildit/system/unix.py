@@ -10,7 +10,7 @@ class Unix(System):
 
     def __init__(self, project_name):
         System.__init__(self, project_name)
-        self.compiler = CC()
+        self.compiler = CC(project_name)
 
     def pkg_config(package, config_script='pkg'):
         if not config_script == 'pkg':

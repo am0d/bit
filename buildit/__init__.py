@@ -5,6 +5,7 @@
 # System Modules
 from buildit.system.system import System
 from buildit.system.unix import Unix
+from buildit.system.mingw import MinGW
 
 # Compiler Modules
 from buildit.compiler.cc import CC

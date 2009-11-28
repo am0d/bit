@@ -2,8 +2,12 @@
 import os
 import sys
 import anydbm
+<<<<<<< HEAD
 import os
 import sys
+=======
+import subprocess
+>>>>>>> 71ac5712c02e7a2974cf946e2dbcbabd4a92e149
 
 from buildit.utils import file_hash, error
 
@@ -37,32 +41,10 @@ class Database(object):
                 subprocess.call('attrib +h .buildit')
         except OSError:
             pass
-        try:
-            self.__hashdb = anydbm.open('{0}.hash'.format(self.__location), 'c')
-            self.__depsdb = anydbm.open('{0}.deps'.format(self.__location), 'c')
-        except anydbm.error:
-            print 'Error opening configuration files'
-
-        self.__run()
-        # We need to fill the hash_dictionary.
-
-    def __del__(self):
-        try:
-            self.__hashdb.close()
-        except AttributeError:
-            pass
-        try:
-            self.__depsdb.close()
-        except AttributeError:
-            pass
-
-    def __run(self):
-        #self.update_hash()
-        pass
 
     def get_hash(self, file_name):
         # Ensure that the hash returned is a string.
-        return str(self.hashdb[file_name])
+        return str(self.__hashdb[file_name])
 
     def update_hash(self, file_name):
         self.__hashdb[file_name] = file_hash(file_name)

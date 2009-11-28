@@ -38,7 +38,7 @@ def which(program_name):
             exe_file = os.path.join(path, program_name)
             if is_exe(exe_file):
                 return exe_file
-    return which('echo')
+    return 'echo'
 
 def flatten(list_name, containers=(list, tuple)):
     if isinstance(list_name, containers):

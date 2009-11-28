@@ -1,6 +1,4 @@
-from buildit import Unix
-from buildit import CXX
-
+from buildit import *
 
 hello = Unix('Hello World')
 hello.add('src')

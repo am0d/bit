@@ -3,6 +3,7 @@
 import os
 import gc
 import sys
+import shutil
 import threading
 from glob import glob
 from datetime import datetime
@@ -57,7 +58,7 @@ class System(threading.Thread):
         return 0
 
     def pause(self):
-        raw_input('Press a key to continue...\n')
+        raw_input('Press Enter to continue...')
 
     def add(self, files):
         if isinstance(files, (tuple,list)):
@@ -134,7 +135,7 @@ class System(threading.Thread):
             if os.path.exists(self.object_directory):
                 shutil.rmtree(self.object_directory)
         except OSError:
-            error('Failed to clean {0}'.format(self._project_name)
+            error('Failed to clean {0}'.format(self._project_name))
             return 1005
         return 0
         

@@ -31,9 +31,7 @@ class System(threading.Thread):
         self.build_directory = 'build/{0}'.format(self.name)
         self.object_directory = 'object/{0}'.format(self.name)
 
-        self._build_steps.append(self.pre_build)
         self._build_steps.append(self.build)
-        self._build_steps.append(self.post_build)
 
     def run(self):
         self.parse_options()
@@ -47,15 +45,15 @@ class System(threading.Thread):
         info('{0}: {1}'.format(self._project_name.upper(), 
             (end_time - start_time)))
 
-    def pre_build(self):
-        return 0
-
     def build(self):
         return_value = self.compiler.run
         return return_value
 
-    def post_build(self):
-        return 0
+    def append(self, function):
+        self._build_steps.append(function)
+
+    def prepend(self, function):
+        self._build_steps.insert(function, 0)
 
     def pause(self):
         raw_input('Press Enter to continue...')

@@ -126,7 +126,7 @@ class System(threading.Thread):
         self.compiler._file_list = self._file_list
 
     def require(self, required_system):
-        required_system.run()
+        self._build_steps.insert(0, required_system.run())
 
     def clean(self):
         try:

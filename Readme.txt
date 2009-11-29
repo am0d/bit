@@ -10,8 +10,8 @@ Roadmap
 Version 0.2 - Fly By Night
 ------------------
 
- * Database backend to replace flatfiles.
- * Static, Shared, and Binaries for all C/C++ compilers.
+ * Database backend to replace flatfiles. (Completed November 27th 2009)
+ * Static, Shared, and Binaries for all C/C++ compilers. (Completed November 27th 2009)
  * Lua Support
  * MSVC Support
  * Mono Compiler Support

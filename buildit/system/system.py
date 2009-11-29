@@ -58,12 +58,17 @@ class System(threading.Thread):
     def pause(self):
         raw_input('Press Enter to continue...')
 
-    def add(self, files):
+    def add(self, files, recurse=False):
         if isinstance(files, (tuple,list)):
             for item in flatten(files):
                 if isinstance(item, basestring):
                     if os.path.isdir(item):
-                        glob_list = glob('{0}/*'.format(item))
+                        glob_list = []
+                        if recurse:
+                            for root, dir, files in os.walk(item):
+                                glob_list += glob('{0}/*'.format(root))
+                        else:
+                            glob_list = glob('{0}/*'.format(item))
                         for file_name in glob_list:
                             if os.path.isfile(file_name):
                                 self._file_list.append(file_name)
@@ -71,7 +76,12 @@ class System(threading.Thread):
                         self._file_list.append(item)
         elif isinstance(files, basestring):
             if os.path.isdir(files):
-                glob_list = glob('{0}/*'.format(files))
+                glob_list = []
+                if recurse:
+                    for root, dir, file_names in os.walk(files):
+                        glob_list += glob('{0}/*'.format(root))
+                else:
+                    glob_list = glob('{0}/*'.format(files))
                 for file_name in glob_list:
                     if os.path.isfile(file_name):
                         self._file_list.append(file_name)

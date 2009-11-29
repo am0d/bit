@@ -120,7 +120,6 @@ class CC(Compiler):
         self.add_compile_flags('-std=c99')
         self.add_link_flags('-std=c99')
         
-
     @property
     def extensions(self):
         return ['.c']

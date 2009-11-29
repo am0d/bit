@@ -17,13 +17,16 @@ class Unix(System):
             package = ''
         config = commands.getstatusoutput('{0}-config --cflags {1}'.format(
             config_script, package))
+        config = list(config)
         return_value = config.pop(0)
         if not return_value == 0:
             error('Could not add {0} to configuration'.format(package))
         else:
             self.compiler.add_compile_flags(config.pop())
-        config = commands.getstatusoutput('{0}-config --libs {1}'.format(
-            config_script, package))
+        # Some CFlags need to be passed to the linker.
+        conf = '{0}-config --cflags --libs {1}'.format(script, package))
+        config = commands.getstatusoutput(conf)
+        config = list(config)
         return_value = config.pop(0)
         if not return_value == 0:
             error('Could not add {0} to configuration'.format(package))

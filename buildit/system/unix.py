@@ -12,11 +12,11 @@ class Unix(System):
         System.__init__(self, project_name)
         self.compiler = CC(project_name)
 
-    def pkg_config(self, package, config_script='pkg'):
-        if not config_script == 'pkg':
+    def pkg_config(self, package, script='pkg'):
+        if not script == 'pkg':
             package = ''
         config = commands.getstatusoutput('{0}-config --cflags {1}'.format(
-            config_script, package))
+            script, package))
         config = list(config)
         return_value = config.pop(0)
         if not return_value == 0:
@@ -24,7 +24,7 @@ class Unix(System):
         else:
             self.compiler.add_compile_flags(config.pop())
         # Some CFlags need to be passed to the linker.
-        conf = '{0}-config --cflags --libs {1}'.format(script, package))
+        conf = '{0}-config --cflags --libs {1}'.format(script, package)
         config = commands.getstatusoutput(conf)
         config = list(config)
         return_value = config.pop(0)

@@ -47,5 +47,9 @@ class Unix(System):
         self.compiler.add_flags(flag)
 
     @property
+    def C99(self):
+        self.compiler.C99
+
+    @property
     def enable_c(self):
         self.compiler.enable_c

@@ -116,6 +116,12 @@ class CC(Compiler):
         self._link_flags += format_options(library, '-l')
 
     @property
+    def C99(self):
+        self.add_compile_flags('-std=c99')
+        self.add_link_flags('-std=c99')
+        
+
+    @property
     def extensions(self):
         return ['.c']
 

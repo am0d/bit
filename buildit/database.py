@@ -39,7 +39,7 @@ class Database(object):
 
     def get_hash(self, file_name):
         # Ensure that the hash returned is a string.
-        return str(self.__hashdb[file_name])
+        return str(self.__hashdb.get(file_name, ''))
 
     def update_hash(self, file_name):
         self.__hashdb[file_name] = file_hash(file_name)

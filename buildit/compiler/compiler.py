@@ -7,6 +7,7 @@ from buildit.language.generic import Generic
 from buildit.database import Database
 
 from buildit.utils import which, flatten, fix_strings, file_hash
+from buildit.utils import format_options
 from buildit.utils import name as uname
 from buildit.cprint import command as print_command
 

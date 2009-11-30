@@ -38,13 +38,6 @@ class Compiler(object):
         return 0
 
     def setup_files(self):
-        for file_name in self._file_list:
-            for extension in self.extensions:
-                if not file_name.endswith(extension):
-                    try:
-                        self._file_list.remove(file_name)
-                    except ValueError: # This might happen.
-                        pass
         return 0
 
     # Leave the implementation up to each compiler

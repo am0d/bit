@@ -19,18 +19,19 @@ class CC(Compiler):
 
     def compile_files(self):
         counter = 1
+        compile_list = []
         for file in self._file_list:
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
             self._link_list.append(out_file)
             if os.path.exists(out_file) and \
                     hash == self.database.get_hash(file):
-                self._file_list.remove(file)
-            else:
                 continue
+            else:
+                compile_list.append(file)
 
-        file_count = len(self._file_list)
-        for file in self._file_list:
+        file_count = len(compile_list)
+        for file in compile_list:
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
             percentage = self._percentage(counter, file_count)
             object_directory = out_file.split('/')

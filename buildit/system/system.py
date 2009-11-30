@@ -68,7 +68,7 @@ class System(threading.Thread):
                             for root, dir, files in os.walk(item):
                                 for extension in self.compiler.extensions:
                                     glob_list += glob('{0}/*.{1}'.format(root,
-                                        extension)
+                                        extension))
                         else:
                             for extension in self.compiler.extensions:
                                 glob_list = glob('{0}/*.{1}'.format(item, 

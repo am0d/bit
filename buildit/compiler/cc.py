@@ -57,7 +57,6 @@ class CC(Compiler):
             if not return_value == 0:
                 return return_value
             self.database.update_hash(file) # Let's write the hash
-            self._link_list.append(file)
             counter += 1
         return 0
 

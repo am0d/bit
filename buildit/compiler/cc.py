@@ -17,49 +17,8 @@ class CC(Compiler):
         self.executable = 'cc'
         self._language = C()
 
-    def compile_files(self):
-        counter = 1
-        compile_list = []
-        for file in self._file_list:
-            hash = file_hash(file)
-            out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            self._link_list.append(out_file)
-            if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
-                continue
-            else:
-                compile_list.append(file)
-
-        file_count = len(compile_list)
-        for file in compile_list:
-            out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            percentage = self._percentage(counter, file_count)
-            object_directory = out_file.split('/')
-            object_directory.pop()
-            if len(object_directory) > 1:
-                object_directory = '/'.join(object_directory)
-            else:
-                object_directory = object_directory.pop()
-            info_file = file.split('/')
-            info_file = info_file.pop()
-            try:
-                os.makedirs(object_directory)
-            except OSError:
-                pass
-            self.command(percentage, info_file)
-            if self._type == 'dynamic':
-                self.add_compile_flags('-fPIC')
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable,
-                    out_file, file, self._compile_flags)
-            try:
-                return_value = subprocess.call(run_string)
-            except OSError:
-                return_value = os.system(run_string) # Worst case scenario!
-            if not return_value == 0:
-                return return_value
-            self.database.update_hash(file) # Let's write the hash
-            counter += 1
-        return 0
+    def compile_string(self, output_file, input_file):
+        return '-o "{0}" -c "{1}"'.format(output_file, input_file)
 
     def link_files(self):
         build_string = ''

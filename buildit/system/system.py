@@ -67,12 +67,12 @@ class System(threading.Thread):
                         if recurse:
                             for root, dir, files in os.walk(item):
                                 for extension in self.compiler.extensions:
-                                    glob_list += glob('{0}/*.{1}'.format(root,
-                                        extension))
+                                    glob_list.append(glob('{0}/*{1}'.format(root,
+                                        extension)))
                         else:
                             for extension in self.compiler.extensions:
-                                glob_list = glob('{0}/*.{1}'.format(item, 
-                                    extension))
+                                glob_list.append(glob('{0}/*{1}'.format(item, 
+                                    extension)))
                         for file_name in glob_list:
                             if os.path.isfile(file_name):
                                 self._file_list.append(file_name)
@@ -83,12 +83,13 @@ class System(threading.Thread):
                 glob_list = []
                 if recurse:
                     for root, dir, file_names in os.walk(files):
+                        print root + ' ' + dir + ' ' + files
                         for extension in self.compiler.extensions:
-                            glob_list += glob('{0}/*.{1}'.format(root, 
-                                extension))
+                            glob_list.append(glob('{0}/*{1}'.format(root, 
+                                extension)))
                 else:
                     for extension in self.compiler.extensions:
-                        glob_list = glob('{0}/*.{1}'.format(files, extension))
+                        glob_list = glob('{0}/*{1}'.format(files, extension))
                 for file_name in glob_list:
                     if os.path.isfile(file_name):
                         self._file_list.append(file_name)

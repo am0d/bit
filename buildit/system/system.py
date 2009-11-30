@@ -73,6 +73,7 @@ class System(threading.Thread):
                             for extension in self.compiler.extensions:
                                 glob_list.append(glob('{0}/*{1}'.format(item, 
                                     extension)))
+                        glob_list = flatten(glob_list)
                         for file_name in glob_list:
                             if os.path.isfile(file_name):
                                 self._file_list.append(file_name)

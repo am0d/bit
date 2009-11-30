@@ -84,7 +84,6 @@ class System(threading.Thread):
                 glob_list = []
                 if recurse:
                     for root, dir, file_names in os.walk(files):
-                        print root + ' ' + dir + ' ' + files
                         for extension in self.compiler.extensions:
                             glob_list.append(glob('{0}/*{1}'.format(root, 
                                 extension)))

@@ -1,26 +1,19 @@
-# Unix Based C Compiler
-
 import os
 import sys
-import shutil
 import subprocess
-
 from buildit.compiler.compiler import Compiler
 from buildit.language.c import C
-from buildit.utils import format_options, fix_strings, file_hash
+from buildit.utils import format_options
 from buildit.cprint import command as print_command
 
-class CC(Compiler):
-
+class MSVC(Compiler):
     def __init__(self, project_name='PROJECT'):
         Compiler.__init__(self, project_name)
-        self.executable = 'cc'
+        self.executable = 'cl'
         self._language = C()
 
     def compile_string(self, output_file, input_file):
-        if self._type == 'dynamic':
-            self.add_compile_flags('-fPIC')
-        return '-o "{0}" -c "{1}"'.format(output_file, input_file)
+        return '/nologo /Fo"{0}" /c "{1}"'.format(output_file, input_file)
 
     def link_files(self):
         build_string = ''
@@ -47,19 +40,20 @@ class CC(Compiler):
             else:
                 ending = '.so'
             self._project_name = '{0}{1}'.format(self._project_name, ending)
-            self.add_link_flags('-shared')
+            self.add_link_flags('/LD')
         else:
             return 1006 # Somehow our type was messed with :X
-        for file in self._link_list:
-            build_string += ' "{0}"'.format(file)
         for item in self._link_flags:
             build_string += item
+        for file in self._link_list:
+            build_string += ' "{0}"'.format(file)
         try:
             os.makedirs(self.build_directory)
         except OSError:
             pass
-        run_string = '{0} -o "{1}/{2}" {3}'.format(self.executable,
+        run_string = '{0} /nologo /Fe"{1}/{2}" /link {3}'.format(self.executable,
                 self.build_directory, self._project_name, build_string)
+        print run_string
         try:
             return_value = subprocess.call(run_string)
         except OSError:
@@ -69,11 +63,10 @@ class CC(Compiler):
         return 0
 
     def add_define(self, define):
-        self._compile_flags += format_options(define, '-D')
+        self._compile_flags += format_options(define, '/D')
 
     def add_include_directory(self, directory):
-        self._compile_flags += format_options(directory, '-I', True)
-        self._link_flags += format_options(directory, '-I', True)
+        self._compile_flags += format_options(directory, '/I', True)
 
     def add_library_directory(self, directory):
         self._link_flags += format_options(directory, '-L', True)

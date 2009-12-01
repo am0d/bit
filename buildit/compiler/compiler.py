@@ -65,8 +65,6 @@ class Compiler(object):
             except OSError:
                 pass
             self.command(percentage, info_file)
-            if self._type == 'dynamic':
-                self.add_compile_flags('-fPIC')
             run_string = '{0} {1} {2}'.format(self.executable,
                     self.compile_string(out_file, file), self._compile_flags)
             try:

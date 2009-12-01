@@ -3,7 +3,7 @@ import sys
 import subprocess
 from buildit.compiler.compiler import Compiler
 from buildit.language.c import C
-from buildit.utils import format_options
+from buildit.utils import format_options, which
 from buildit.cprint import command as print_command
 
 class MSVC(Compiler):
@@ -51,7 +51,7 @@ class MSVC(Compiler):
             os.makedirs(self.build_directory)
         except OSError:
             pass
-        run_string = '{0} /nologo /Fe"{1}/{2}" /link {3}'.format(self.executable,
+        run_string = '{0} /nologo /OUT:"{1}/{2}" {3}'.format(which('link'),
                 self.build_directory, self._project_name, build_string)
         print run_string
         try:

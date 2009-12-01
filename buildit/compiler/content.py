@@ -20,7 +20,7 @@ class Content(Compiler):
             hash = file_hash(file)
             out_file = '{0}/{1}'.format(self.build_directory, file)
             if os.path.exists(out_file) and \
-                hash == self.database.get_hash(file)
+                hash == self.database.get_hash(file):
                 continue
             percentage = self._percentage(counter, file_count)
             build_directory = out_file.split('/')

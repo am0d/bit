@@ -49,6 +49,9 @@ class Unix(System):
     def add_flag(self, flag):
         self.compiler.add_flags(flag)
 
+    def add_link_flag(self, flag):
+        self.compiler.add_link_flags(flag)
+
     @property
     def C99(self):
         self.compiler.C99

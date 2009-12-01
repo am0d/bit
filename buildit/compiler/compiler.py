@@ -43,14 +43,17 @@ class Compiler(object):
     # Leave the implementation up to each compiler
     def compile_files(self):
         counter = 1
-        file_count = len(self._file_list)
+        compile_list = []
         for file in self._file_list:
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
             if os.path.exists(out_file) and \
                     hash == self.database.get_hash(file):
                 self._link_list.append(out_file)
-                continue
+            else:
+                compile_list.append(file)
+        file_count = len(compile_list)
+        for file in compile_list:
             percentage = self._percentage(counter, file_count)
             object_directory = out_file.split('/')
             object_directory.pop()

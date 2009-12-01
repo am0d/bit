@@ -53,7 +53,6 @@ class MSVC(Compiler):
             pass
         run_string = '{0} /nologo /OUT:"{1}/{2}" {3}'.format(which('link'),
                 self.build_directory, self._project_name, build_string)
-        print run_string
         try:
             return_value = subprocess.call(run_string)
         except OSError:

@@ -29,7 +29,7 @@ class MSVC(Compiler):
             self.add_link_flags('/LD')
         elif self.type == 'static':
             self._project_name = '{0}.lib'.format(self._project_name)
-            command = 'lib'
+            command = which('lib')
         else:
             return 1006 # Somehow our type was messed with :X
         for item in self._link_flags:

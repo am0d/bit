@@ -19,7 +19,7 @@ class MSVC(Compiler):
         build_string = ''
         print_command('[LINK] {0}'.format(self._project_name))
         # Let's determine the final output!
-        command = which('link')
+        self.executable = 'link'
         if self.type == 'binary':
             ending = '.exe'
             self._project_name = '{0}{1}'.format(self._project_name, ending)
@@ -29,7 +29,7 @@ class MSVC(Compiler):
             self.add_link_flags('/LD')
         elif self.type == 'static':
             self._project_name = '{0}.lib'.format(self._project_name)
-            command = 'lib'
+            self.executable = 'lib'
         else:
             return 1006 # Somehow our type was messed with :X
         for item in self._link_flags:
@@ -40,7 +40,7 @@ class MSVC(Compiler):
             os.makedirs(self.build_directory)
         except OSError:
             pass
-        run_string = '{0} /nologo /OUT:"{1}/{2}" {3}'.format(command,
+        run_string = '{0} /nologo /OUT:"{1}/{2}" {3}'.format(self.executable,
                 self.build_directory, self._project_name, build_string)
         try:
             return_value = subprocess.call(run_string)

@@ -55,6 +55,7 @@ class Compiler(object):
         file_count = len(compile_list)
         for file in compile_list:
             percentage = self._percentage(counter, file_count)
+            out_file = '{0}/{1}.o'.format(self.object_directory, file)
             object_directory = out_file.split('/')
             object_directory.pop()
             if len(object_directory) > 1:

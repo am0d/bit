@@ -13,12 +13,19 @@ from buildit.utils import name as uname
 class Content(Compiler):
     def __init__(self, project_name='PROJECT'):
         Compiler.__init__(self, project_name)
+        self.executable = 'echo'
 
     def compile_files(self):
         counter = 1
         file_count = len(self._file_list)
         for file in self._file_list:
             hash = file_hash(file)
+            file = file.split('/')
+            content = file.pop(0)
+            if len(file) > 1:
+                file = '/'.join(file)
+            else:
+                file = file.pop()
             out_file = '{0}/{1}'.format(self.build_directory, file)
             if os.path.exists(out_file) and \
                 hash == self.database.get_hash(file):
@@ -38,6 +45,7 @@ class Content(Compiler):
                 pass
             self.command(percentage, info_file)
             try:
+                file = '{0}/{1}'.format(content, file)
                 shutil.copy2(file, out_file)
             except:
                 error('Could not copy: {0}'.format(info_file))
@@ -46,4 +54,4 @@ class Content(Compiler):
 
     @property
     def extensions(self):
-        return ['*'] # Allows the glob to automatically grab everything for content
+        return ['.*'] # Allows the glob to automatically grab everything for content

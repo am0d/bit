@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 
+from buildit.compiler.compiler import Compiler
 from buildit.database import Database
 
 from buildit.utils import flatten, fix_strings, file_hash

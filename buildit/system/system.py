@@ -44,6 +44,7 @@ class System(threading.Thread):
         end_time = datetime.now()
         info('{0}: {1}'.format(self._project_name.upper(), 
             (end_time - start_time)))
+        return 0
 
     def build(self):
         return_value = self.compiler.run

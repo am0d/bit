@@ -5,6 +5,6 @@ from buildit.compiler.content import Content as ContentC
 
 class Content(System):
 
-    def __init__(self, project_name):
-        System.__init__(self, project_name)
-        self.compiler = ContentC(project_name)
+    def __init__(self):
+        System.__init__(self, 'Content')
+        self.compiler = ContentC()

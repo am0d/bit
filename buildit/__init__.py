@@ -9,7 +9,7 @@ from buildit.system.mingw import MinGW
 from buildit.system.content import Content
 
 # Compiler Modules
-from buildit.compiler.content import Content
+from buildit.compiler.content import ContentC
 from buildit.compiler.cc import CC
 from buildit.compiler.cxx import CXX
 from buildit.compiler.tcc import TCC

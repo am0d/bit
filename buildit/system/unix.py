@@ -1,6 +1,8 @@
 # Basic Unix-Based C/C++ System
+import os
+import subprocess
 
-import commands
+from subprocess import Popen
 
 from buildit.compiler.cc import CC
 from buildit.system.system import System
@@ -15,23 +17,23 @@ class Unix(System):
     def pkg_config(self, package, script='pkg'):
         if not script == 'pkg':
             package = ''
-        config = commands.getstatusoutput('{0}-config --cflags {1}'.format(
-            script, package))
-        config = list(config)
-        return_value = config.pop(0)
-        if not return_value == 0:
-            error('Could not add {0} to configuration'.format(package))
-        else:
-            self.compiler.add_compile_flags(config.pop())
+        process = Popen('{0}-config {1} --cflags'.format(script, package), 
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errput = process.communicate()
+        if not output:
+            error('{0}: {1}'.format(package,errput))
+            return
+        output = output.replace('\r\n', '')
+        self.compiler.add_compile_flags(output)
         # Some CFlags need to be passed to the linker.
-        conf = '{0}-config --cflags --libs {1}'.format(script, package)
-        config = commands.getstatusoutput(conf)
-        config = list(config)
-        return_value = config.pop(0)
-        if not return_value == 0:
-            error('Could not add {0} to configuration'.format(package))
-        else:
-            self.compiler.add_link_flags(config.pop())
+        process = Popen('{0}-config {1} --cflags --libs'.format(script, package), 
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errput = process.communicate()
+        if not output:
+            error('{0}: {1}'.format(package,errput))
+            return
+        output = output.replace('\r\n', '')
+        self.compiler.add_link_flags(output)
 
 
     def add_define(self, define):

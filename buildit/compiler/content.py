@@ -28,8 +28,11 @@ class Content(Compiler):
             else:
                 file = file.pop()
             out_file = '{0}/{1}'.format(self.build_directory, file)
-            if filecmp.cmp(check_file, out_file):
-                continue
+            try:
+                if filecmp.cmp(check_file, out_file):
+                    continue
+            except OSError:
+                pass
             percentage = self._percentage(counter, file_count)
             build_directory = out_file.split('/')
             build_directory.pop()

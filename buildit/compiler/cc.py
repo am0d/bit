@@ -17,16 +17,22 @@ class CC(Compiler):
         self.executable = 'cc'
         self._language = C()
 
+    def setup_files(self):
+        for file in self._file_list:
+            out_file = '{0}/{1}.o'.format(self.object_directory, file)
+            hash = file_hash(file)
+            if os.path.exists(out_file) and \
+                hash == self.database.get_hash(file):
+                self._link_list.append(out_file)
+                self._file_list.remove(file)
+        return 0
+           
+
     def compile_files(self):
         counter = 1
         file_count = len(self._file_list)
         for file in self._file_list:
-            hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
-                self._link_list.append(out_file)
-                continue
             percentage = self._percentage(counter, file_count)
             object_directory = out_file.split('/')
             object_directory.pop()

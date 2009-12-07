@@ -42,48 +42,7 @@ class Compiler(object):
 
     # Leave the implementation up to each compiler
     def compile_files(self):
-        counter = 1
-        compile_list = []
-        for file in self._file_list:
-            hash = file_hash(file)
-            out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
-                self._link_list.append(out_file)
-            else:
-                compile_list.append(file)
-        file_count = len(compile_list)
-        for file in compile_list:
-            percentage = self._percentage(counter, file_count)
-            out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            object_directory = out_file.split('/')
-            object_directory.pop()
-            if len(object_directory) > 1:
-                object_directory = '/'.join(object_directory)
-            else:
-                object_directory = object_directory.pop()
-            info_file = file.split('/')
-            info_file = info_file.pop()
-            try:
-                os.makedirs(object_directory)
-            except OSError:
-                pass
-            self.command(percentage, info_file)
-            run_string = '{0} {1} {2}'.format(self.executable,
-                    self.compile_string(out_file, file), self._compile_flags)
-            try:
-                return_value = subprocess.call(run_string)
-            except OSError:
-                return_value = os.system(run_string) # Worst case scenario!
-            if not return_value == 0:
-                return return_value
-            self.database.update_hash(file) # Let's write the hash
-            self._link_list.append(out_file)
-            counter += 1
         return 0
-
-    def compile_string(self, output_file, input_file):
-        pass
 
     def link_files(self):
         return 0

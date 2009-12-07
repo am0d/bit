@@ -42,7 +42,7 @@ class Database(object):
         return str(self.__hashdb.get(file_name, ''))
 
     def update_hash(self, file_name):
-        self.__hashdb[file_name] = file_hash(file_name)
+        self.__hashdb[file_name] = str(file_hash(file_name))
         self.__hashdb.sync()
 
     def write_hashes(self, file_list):

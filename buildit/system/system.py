@@ -44,6 +44,7 @@ class System(threading.Thread):
         end_time = datetime.now()
         info('{0}: {1}'.format(self._project_name.upper(), 
             (end_time - start_time)))
+        return 0
 
     def build(self):
         return_value = self.compiler.run
@@ -141,7 +142,7 @@ class System(threading.Thread):
         self.compiler._file_list = self._file_list
 
     def require(self, required_system):
-        self._build_steps.insert(0, required_system.run())
+        self._build_steps.insert(0, required_system.run)
 
     def clean(self):
         try:

@@ -5,6 +5,7 @@ import anydbm
 import subprocess
 
 from buildit.utils import file_hash, error
+from buildit.utils import flatten
 
 class Database(object):
 
@@ -49,6 +50,17 @@ class Database(object):
         for file_name in file_list:
             self.__hashdb[file_name] = str(file_hash(file_name))
         self.__hashdb.sync()
+
+    def get_deps(self, file_name):
+        return self.__depsdb.get(file_name, '').split('|')[1:]
+
+    def add_deps(self, file_name, dependents):
+        if file_name not in self.__depsdb:
+            self.__depsdb[file_name] = ''
+        dependents = flatten(dependents)
+        for dep in dependents:
+            self.__depsdb[file_name] = '{0}|{1}'.format(
+                self.__depsdb[file_name], dep)
 
     def write_deps(self, file_list):
         #for file_name in file_list:

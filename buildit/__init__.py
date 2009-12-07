@@ -14,3 +14,4 @@ from buildit.compiler.cc import CC
 from buildit.compiler.cxx import CXX
 from buildit.compiler.tcc import TCC
 from buildit.compiler.llvmgcc import LLVMGCC
+from buildit.compiler.msvc import MSVC

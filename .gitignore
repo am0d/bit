@@ -9,3 +9,4 @@
 build
 .buildit
 uml
+*.obj

@@ -1,0 +1,49 @@
+System Module
+=============
+Tres Walsh <tres.walsh@mnmlstc.com>
+
+Description
+-----------
+
+System is the base "project" class. System should *never* be used as part of a project, but instead to implement new types, such as the Unix Project type. System is a child class from threading.Thread. 
+
+Initialization
+--------------
+`x = System('Project Name')` will suffice to instantiate the object.
+
+
+Arguments
+---------
+System takes a string which is known internally as the project name. This is what the name of your project should be.
+
+Functions
+---------
+
+add_link_flag
+^^^^^^^^^^^^^
+[horizontal]
+*Arguments*:: String or List of Strings
+Adds an argument to `compiler` for use in it's `link_files` step.
+
+add_flag
+^^^^^^^^
+[horizontal]
+*Arguments*:: String or List of Strings
+Adds an argument to the `compiler` for use in it's compiler_files step.
+
+Properties
+----------
+
+compiler
+^^^^^^^^
+Each System has a built-in `Compiler` type. Internally, the compiler variable is self._compiler, however it is best to use the self.compiler property, as several pieces of information must propogate to the compiler.
+
+build_directory
+^^^^^^^^^^^^^^^
+The build_directory is where the output of the compiler is placed. It is effectively a wrapper to the compiler's  build_directory, and setting the build_directory, sets the compiler's build_directory as well.
+
+object_directory
+^^^^^^^^^^^^^^^^
+The object_directory is where the intermediate object files are placed. Not all systems use this, as some compilers output directly to the binary file. 
+
+(C) copyright 2009 Tres Walsh

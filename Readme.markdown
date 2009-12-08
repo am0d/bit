@@ -4,7 +4,7 @@ buildit is an easy to use, easy to modify, and easy to understand build system.
 It supports dependency tracking, multiple projects, and an easy to use API.
 
 Information
-===========
+-----------
 Currently only python 2.6.x is supported, though there are plans to add in Python 3.x support. No python versions before that will be supported. buildit is not guaranteed to run on other Python implementations.
 
 Installation Instructions

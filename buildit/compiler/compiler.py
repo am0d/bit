@@ -51,7 +51,11 @@ class Compiler(object):
                     hash == self.database.get_hash(file):
                 self._link_list.append(out_file)
             else:
-                compile_list.append(file)
+                if file not in compile_list:
+                    compile_list.append(file)
+                for dep in self.database.get_deps(file):
+                    if dep not in compile_list:
+                        compile_list.append(dep)
         file_count = len(compile_list)
         for file in compile_list:
             percentage = self._percentage(counter, file_count)

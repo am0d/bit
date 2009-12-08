@@ -6,6 +6,7 @@ import subprocess
 
 from buildit.utils import file_hash, error
 from buildit.utils import flatten
+from buildit.language.generic import Generic
 
 class Database(object):
 

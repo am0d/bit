@@ -46,4 +46,4 @@ object_directory
 ^^^^^^^^^^^^^^^^
 The object_directory is where the intermediate object files are placed. Not all systems use this, as some compilers output directly to the binary file. 
 
-(C) copyright 2009 Tres Walsh
+(C) Copyright 2009 Tres Walsh

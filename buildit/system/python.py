@@ -7,4 +7,3 @@ class Python(System):
     def __init__(self, project_name):
         System.__init__(self, project_name)
         self.compiler = PYC()
-    

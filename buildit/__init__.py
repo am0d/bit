@@ -7,6 +7,7 @@ from buildit.system.system import System
 from buildit.system.unix import Unix
 from buildit.system.mingw import MinGW
 from buildit.system.content import Content
+from buildit.system.python import Python
 
 # Compiler Modules
 from buildit.compiler.content import Content as ContentC

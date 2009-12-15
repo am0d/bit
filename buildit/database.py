@@ -10,9 +10,8 @@ from buildit.language.generic import Generic
 
 class Database(object):
 
-    def __init__(self, project_name, language):
+    def __init__(self, project_name):
         self.__project_name = project_name
-        self.__language = language
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__run()
         try:
@@ -44,7 +43,7 @@ class Database(object):
         return str(self.__hashdb.get(file_name, ''))
 
     def update_hash(self, file_name):
-        self.__hashdb[file_name] = file_hash(file_name)
+        self.__hashdb[file_name] = str(file_hash(file_name))
         self.__hashdb.sync()
 
     def write_hashes(self, file_list):
@@ -67,6 +66,9 @@ class Database(object):
         #for file_name in file_list:
         #    self.depsdb[file_name]
         self.__depsdb.sync()
+
+    def find_deps(self, language, file_list):
+        pass
 
     @property
     def language(self):

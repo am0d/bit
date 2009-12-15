@@ -2,10 +2,10 @@
 
 import os
 import shutil
+import filecmp
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.database import Database
 
 from buildit.utils import flatten, fix_strings, file_hash
 from buildit.utils import name as uname
@@ -19,6 +19,7 @@ class Content(Compiler):
         counter = 1
         file_count = len(self._file_list)
         for file in self._file_list:
+            check_file = file
             hash = file_hash(file)
             file = file.split('/')
             content = file.pop(0)
@@ -27,9 +28,11 @@ class Content(Compiler):
             else:
                 file = file.pop()
             out_file = '{0}/{1}'.format(self.build_directory, file)
-            if os.path.exists(out_file) and \
-                hash == self.database.get_hash(file):
-                continue
+            try:
+                if filecmp.cmp(check_file, out_file):
+                    continue
+            except OSError:
+                pass
             percentage = self._percentage(counter, file_count)
             build_directory = out_file.split('/')
             build_directory.pop()

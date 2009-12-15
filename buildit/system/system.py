@@ -133,9 +133,9 @@ class System(threading.Thread):
                                 file_name))
             else:
                 try:
-                    self._file_list.remove(file_name)
+                    self._file_list.remove(files)
                 except ValueError:
-                    warning('{0} could not be removed'.format(file_name))
+                    warning('{0} could not be removed'.format(files))
         else:
             warning('{0} is not a supported datatype.'.format(type(files)))
         self._file_list.sort()

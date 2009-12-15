@@ -9,9 +9,8 @@ from buildit.utils import flatten
 
 class Database(object):
 
-    def __init__(self, project_name, language):
+    def __init__(self, project_name):
         self.__project_name = project_name
-        self.__language = language
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__run()
         try:
@@ -66,6 +65,9 @@ class Database(object):
         #for file_name in file_list:
         #    self.depsdb[file_name]
         self.__depsdb.sync()
+
+    def find_deps(self, language, file_list):
+        pass
 
     @property
     def language(self):

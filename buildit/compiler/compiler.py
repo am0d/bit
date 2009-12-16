@@ -30,7 +30,7 @@ class Compiler(object):
 
     @property
     def run(self):
-        self.database = Database(self._project_name, self._language)
+        self.database = Database(self._project_name)
         for function in self._compile_steps:
             return_value = function()
             if not return_value == 0:
@@ -45,6 +45,9 @@ class Compiler(object):
         return 0
 
     def link_files(self):
+        return 0
+
+    def parse_deps(self):
         return 0
 
     def _percentage(self, counter, list_length):

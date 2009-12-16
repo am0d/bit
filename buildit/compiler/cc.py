@@ -123,12 +123,12 @@ class CC(Compiler):
         
     @property
     def extensions(self):
-        return ['.c']
+        return ['.c'] + self.module_extensions
 
     @property
     def enable_c(self):
         pass
 
     @property
-    def module_extension(self):
+    def module_extensions(self):
         return ['.h']

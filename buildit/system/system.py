@@ -154,6 +154,9 @@ class System(threading.Thread):
             error('Failed to clean {0}'.format(self._project_name))
             return 1005
         return 0
+
+    def parse_deps(self):
+        return self.compiler.parse_deps()
         
     def parse_options(self):
         for arg in sys.argv[1:]:
@@ -161,6 +164,9 @@ class System(threading.Thread):
                 self._build_steps = [self.clean]
             elif arg == '--rebuild':
                 self._build_steps.insert(0, self.clean)
+            elif arg == '--parse-deps':
+                #todo change the way that this is triggered
+                self._build_steps.append(self.parse_deps)
 
 
     @property

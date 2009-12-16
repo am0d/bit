@@ -15,12 +15,12 @@ class CXX(CC):
     @property
     def extensions(self):
         if not self._clang_enabled:
-            return ['.cpp', '.cc', '.cxx', '.c++', '.C']
+            return ['.cpp', '.cc', '.cxx', '.c++', '.C']+ self.module_extensions
         else:
-            return ['.c', '.cc', '.cpp', '.cxx', '.c++', '.C']
+            return ['.c', '.cc', '.cpp', '.cxx', '.c++', '.C'] + self.module_extensions
 
     @property
-    def module_extension(self):
+    def module_extensions(self):
         return ['.h', '.hpp', '.hxx', '.h++']
 
     @property 

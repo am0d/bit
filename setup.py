@@ -4,9 +4,9 @@
 from distutils.core import setup
 
 setup(name='buildit',
-      version='0.1',
+      version='0.2',
       license='BSD',
-      description='Minimalistic Build System',
+      description='A Minimal Build System',
       author='Tres Walsh',
       author_email='tres.walsh@mnmlstc.com',
       url='http://treswalsh.com',

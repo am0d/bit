@@ -10,7 +10,6 @@ from buildit.system.content import Content
 from buildit.system.python import Python
 
 # Compiler Modules
-from buildit.compiler.content import Content as ContentC
 from buildit.compiler.cc import CC
 from buildit.compiler.cxx import CXX
 from buildit.compiler.tcc import TCC

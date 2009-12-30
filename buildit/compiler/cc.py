@@ -17,18 +17,27 @@ class CC(Compiler):
         self.executable = 'cc'
         self._language = C()
 
-    def compile_files(self):
-        counter = 1
-        file_count = len(self._file_list)
+    def setup_files(self):
+        self.__file_count = len(self._file_list)
         for file in self._file_list:
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
             if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
+                    hash = self.database.get_hash(file):
+                try:
+                    self._file_list.remove(file)
+                except ValueError:
+                    pass
                 self._link_list.append(out_file)
-                file_count -= 1
+                self.__file_count -= 1
                 continue
-            percentage = self._percentage(counter, file_count)
+        self._file_list.sort()
+
+    def compile_files(self):
+        counter = 1
+        for file in self._file_list:
+            out_file = '{0}/{1}.o'.format(self.object_directory, file)
+            percentage = self._percentage(counter, self.__file_count)
             object_directory = out_file.split('/')
             object_directory.pop()
             if len(object_directory) > 1:
@@ -39,20 +48,19 @@ class CC(Compiler):
             info_file = info_file.pop()
             try:
                 os.makedirs(object_directory)
-            except OSError:
+            except OSError: # It's alright if the directory already exists.
                 pass
             self.command(percentage, info_file)
-            if self._type == 'dynamic':
-                self.add_compile_flags('-fPIC')
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable,
-                    out_file, file, self._compile_flags)
+            if self._type = 'dynamic':
+                self.add_compiler.flags('-fPIC')
+            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, out_file, file, self._compile_flags)
             try:
                 return_value = subprocess.call(run_string)
             except OSError:
-                return_value = os.system(run_string) # Worst case scenario!
+                return_value = os.system(run_string) # Terrible hack, but a fix will exist eventually
             if not return_value == 0:
                 return return_value
-            self.database.update_hash(file) # Let's write the hash
+            self.database.update_hash(file) # Fix up that hash, yo!
             self._link_list.append(file)
             counter += 1
         return 0
@@ -60,28 +68,16 @@ class CC(Compiler):
     def link_files(self):
         build_string = ''
         print_command('[LINK] {0}'.format(self._project_name))
-        # Let's determine the final output!
-        if self.type == 'binary':
-            ending = ''
-            if sys.platform == 'win32':
-                ending = '.exe'
-            elif sys.platform == 'darwin':
-                ending = '.mac'
-            else:
-                ending = '.elf'
-            self._project_name = '{0}{1}'.format(self._project_name, ending)
+        # We need to determine the final output
+        if self.type =='binary':
+            self.project_name = '{0}{1}'.format(self._project_name, 
+                    self._output_extension)
         elif self.type == 'static':
             self._project_name = 'lib{0}.a'.format(self._project_name)
             self.add_link_flags('-static')
         elif self.type == 'dynamic':
-            ending = ''
-            if sys.platform == 'win32':
-                ending = '.dll'
-            elif sys.platform == 'darwin':
-                ending = '.dylib'
-            else:
-                ending = '.so'
-            self._project_name = '{0}{1}'.format(self._project_name, ending)
+            self._project_name = 'lib{0}{1}'.format(self._project_name, 
+                    self._output_extension)
             self.add_link_flags('-shared')
         else:
             return 1006 # Somehow our type was messed with :X
@@ -91,9 +87,9 @@ class CC(Compiler):
             build_string += item
         try:
             os.makedirs(self.build_directory)
-        except OSError:
+        except:
             pass
-        run_string = '{0} -o "{1}/{2}" {3}'.format(self.executable,
+        run_string = '{0} -o "{1}/{2}" {3}'.format(self.executable, 
                 self.build_directory, self._project_name, build_string)
         try:
             return_value = subprocess.call(run_string)

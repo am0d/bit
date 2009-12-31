@@ -10,3 +10,5 @@ build
 .buildit
 uml
 *.obj
+*.html
+html

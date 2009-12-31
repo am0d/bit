@@ -13,7 +13,7 @@ To install buildit, merely run setup.py install as root
 
 Building The Documentation
 --------------------------
-To build the documentation properly please install [AsciiDoc](http://www.methods.co.nz/asciidoc/). An HTML version will be available, however it is not guaranteed to always be as up to date as building from source. 
+To build the documentation [markdown2](http://code.google.com/p/python-markdown2/) is required. In the doc directory, just run `build.py`.
 
 Roadmap
 =======

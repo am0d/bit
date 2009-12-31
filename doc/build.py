@@ -30,7 +30,6 @@ if __name__ == '__main__':
         if file.endswith('.txt'):
             file = generate_docfile(file)
         try:
-            shutil.copyfile(file, '../html')
+            shutil.copyfile(file, '../html/')
         except:
             pass
-            

@@ -23,7 +23,7 @@ class CC(Compiler):
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
             if os.path.exists(out_file) and \
-                    hash = self.database.get_hash(file):
+                    hash == self.database.get_hash(file):
                 try:
                     self._file_list.remove(file)
                 except ValueError:
@@ -51,7 +51,7 @@ class CC(Compiler):
             except OSError: # It's alright if the directory already exists.
                 pass
             self.command(percentage, info_file)
-            if self._type = 'dynamic':
+            if self._type == 'dynamic':
                 self.add_compiler.flags('-fPIC')
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, out_file, file, self._compile_flags)
             try:

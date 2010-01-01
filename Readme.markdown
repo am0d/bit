@@ -13,7 +13,7 @@ To install buildit, merely run setup.py install as root
 
 Building The Documentation
 --------------------------
-To build the documentation [markdown2](http://code.google.com/p/python-markdown2/) is required. In the doc directory, just run `build.py`.
+To build the documentation [markdown2](http://code.google.com/p/python-markdown2/) is required. In the doc directory, just run `build.py` in the documentation directory.
 
 Roadmap
 =======

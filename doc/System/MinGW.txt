@@ -1,0 +1,15 @@
+Module: MinGW
+=============
+
+Description
+-----------
+
+`MinGW` is a modified version of `Unix`. The only difference is it has the ability to compile resource files (`.rc` extension) with the use of the `resource` function.
+
+Functions
+---------
+
+#### resource
+parameters: `file_name` 
+- - -
+description: Compiles the given `.rc` file and places the resulting object file in the `_link_list`. (There is currently a bug, that manifests on a first run where the `rc` file is not compiled at all. Running the script a second time removes this problem.)

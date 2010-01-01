@@ -16,6 +16,7 @@ class Compiler(object):
     def __init__(self, project_name='PROJECT'):
         self._compile_steps = []
         self._type = 'binary'
+        self._output_extension = '' # We normally won't have one.
         self._language = Generic()
         self._project_name = project_name
         self._compile_flags = ''
@@ -68,6 +69,14 @@ class Compiler(object):
 
     def add_link_flags(self, flags):
         self._link_flags += format_options(flags)
+
+    @property
+    def output_extension(self):
+        return self._output_extension
+
+    @output.setter
+    def output_extension(self, value):
+        self._output_extension = value
 
     @property
     def type(self):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # buildit install script
- 
+
 from distutils.core import setup
 
 setup(name='buildit',

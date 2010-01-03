@@ -1,13 +1,10 @@
-Module: System
-==============
+# Module: System
 
-Description
------------
+## Description
 
 `System` is the base "project" class in buildit. If you are implementing new language support then you should derive from `System`. Otherwise, it is best to implement a new `Compiler`, or to derive from another `System` such as `MSVC` or `Unix`. 
 
-Functions
----------
+## Functions
 
 #### add
 #### remove

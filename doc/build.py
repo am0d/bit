@@ -8,7 +8,32 @@ import shutil
 import markdown2
 
 def generate_docfile(file_name):
-    return file_name
+    txt_file = file_name
+    file_name = file_name.split('.')
+    file_name.pop()
+    file_name.append('html')
+    file_name = '.'.join(file_name)
+    file_name = '../html/{0}'.format(file_name)
+    write_dir = file_name.split('/')
+    write_dir.pop()
+    write_dir = '/'.join(write_dir)
+    try: os.makedirs(write_dir)
+    except: pass
+    html = markdown2.Markdown()
+    file = open(file_name, 'w')
+    header = open('templates/header.txt')
+    for line in header:
+        file.write(line)
+    header.close()
+    txt_file = open(txt_file)
+    for line in txt_file:
+        file.write(html.convert(line))
+    txt_file.close()
+    footer = open('templates/footer.txt')
+    for line in footer:
+        file.write(line)
+    footer.close()
+    file.close()
 
 def fix_paths(file_list):
     if sys.platform == 'win32':
@@ -24,12 +49,9 @@ if __name__ == '__main__':
     file_list = []
     for root, dir, files in os.walk('.'):
         for file in files:
+            if 'templates' in root: continue
             file_list.append('{0}/{1}'.format(root, file))
     file_list = fix_paths(file_list)
     for file in file_list:
         if file.endswith('.txt'):
-            file = generate_docfile(file)
-        try:
-            shutil.copyfile(file, '../html/')
-        except:
-            pass
+            generate_docfile(file)

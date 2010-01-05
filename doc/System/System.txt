@@ -7,5 +7,12 @@
 ## Functions
 
 #### add
+parameters: `files`, `recurse` (False)
+
+description: Takes a list, directory, and adds it to the list of files to be compiled. set recurse to true to autoglob the directory and all subdirectories (backend may change in future versions)
+
 #### remove
+parameters: `files`
+
+description: Takes a list, directory, or filename, and removes it from the list of files to be compiled.
 

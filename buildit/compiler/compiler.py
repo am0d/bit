@@ -71,7 +71,7 @@ class Compiler(object):
     def output_extension(self):
         return self._output_extension
 
-    @output.setter
+    @output_extension.setter
     def output_extension(self, value):
         self._output_extension = value
 

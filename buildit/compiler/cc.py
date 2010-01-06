@@ -32,6 +32,7 @@ class CC(Compiler):
                 self.__file_count -= 1
                 continue
         self._file_list.sort()
+        return 0
 
     def compile_files(self):
         counter = 1

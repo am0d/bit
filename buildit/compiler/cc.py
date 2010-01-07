@@ -19,18 +19,23 @@ class CC(Compiler):
 
     def setup_files(self):
         self.__file_count = len(self._file_list)
+        compile_list = []
         for file in self._file_list:
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
-            if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
-                try:
-                    self._file_list.remove(file)
-                except ValueError:
-                    pass
-                self._link_list.append(out_file)
-                self.__file_count -= 1
-                continue
+            if not os.path.exists(out_file) or \
+                    not hash == self.database.get_hash(file):
+                if file not in compile_list:
+                    compile_list.append(file)
+                # for dep in self.database.get_files_depending_on(file):
+                    # should really be recursive, not iterative, since we
+                    # should also add all the files that depend on each of
+                    # these files as well!
+                    # if dep not in compile_list:
+                        # compile_list.append(dep)
+                else:
+                    self._link_list.append(out_file)
+        self._file_list = compile_list
         self._file_list.sort()
         return 0
 

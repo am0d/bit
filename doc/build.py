@@ -41,6 +41,7 @@ def generate_docfile(file_name):
         file.write(line)
     footer.close()
     file.close()
+    
 
 def fix_paths(file_list):
     if sys.platform == 'win32':
@@ -62,3 +63,6 @@ if __name__ == '__main__':
     for file in file_list:
         if file.endswith('.txt'):
             generate_docfile(file)
+    for root, dir, files in os.walk('.'):
+        if 'templates' in root: continue
+        shutil.copy('style.css', '../html/{0}'.format(root))

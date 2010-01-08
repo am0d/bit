@@ -4,4 +4,3 @@
         <style type="text/css">@import url("style.css");</style>
     </head>
     <body>
-        <img src="banner.png" alt="buildit" />

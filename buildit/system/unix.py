@@ -17,7 +17,6 @@ class Unix(System):
     def pkg_config(self, package, script='pkg'):
         if not script == 'pkg':
             package = ''
-        # Some CFlags need to be passed to the linker.
         process = Popen(['{0}-config'.format(script), '{0}'.format(package), 
                          '--cflags', '--libs'], stdout=subprocess.PIPE, 
                          stderr=subprocess.PIPE, universal_newlines=True)

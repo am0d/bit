@@ -17,26 +17,17 @@ class Unix(System):
     def pkg_config(self, package, script='pkg'):
         if not script == 'pkg':
             package = ''
-        process = Popen(['{0}-config'.format(script), '{0}'.format(package), 
-                         '--cflags'], stdout=subprocess.PIPE, 
-                         stderr=subprocess.PIPE)
-        output, errput = process.communicate()
-        if not output:
-            error('{0}: {1}'.format(package,errput))
-            return
-        output = output.replace('\r\n', '')
-        self.compiler.add_compile_flags(output)
         # Some CFlags need to be passed to the linker.
         process = Popen(['{0}-config'.format(script), '{0}'.format(package), 
                          '--cflags', '--libs'], stdout=subprocess.PIPE, 
-                         stderr=subprocess.PIPE)
+                         stderr=subprocess.PIPE, universal_newlines=True)
         output, errput = process.communicate()
         if not output:
             error('{0}: {1}'.format(package,errput))
             return
-        output = output.replace('\r\n', '')
+        output = output.replace('\n', ' ')
+        self.compiler.add_compile_flags(output)
         self.compiler.add_link_flags(output)
-
 
     def add_define(self, define):
         self.compiler.add_define(define)

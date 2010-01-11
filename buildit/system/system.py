@@ -7,6 +7,7 @@ import shutil
 import threading
 from glob import glob
 from datetime import datetime
+from optparse import OptionParser
 
 from buildit.compiler.compiler import Compiler
 from buildit.database import Database
@@ -144,29 +145,35 @@ class System(threading.Thread):
     def require(self, required_system):
         self._build_steps.insert(0, required_system.run)
 
+    # Until we can get this to work properly, we'll just have it do nothing
     def clean(self):
-        try:
-            if os.path.exists(self.build_directory):
-                shutil.rmtree(self.build_directory)
-            if os.path.exists(self.object_directory):
-                shutil.rmtree(self.object_directory)
-        except OSError:
-            error('Failed to clean {0}'.format(self._project_name))
-            return 1005
+    #    try:
+    #        if os.path.exists(self.build_directory):
+    #            shutil.rmtree(self.build_directory)
+    #        if os.path.exists(self.object_directory):
+    #            shutil.rmtree(self.object_directory)
+    #    except OSError:
+    #        error('Failed to clean {0}'.format(self._project_name))
+    #        return 1005
+        return 0
+    
+    def change_base_directory(self, directory):
         return 0
 
-    def parse_deps(self):
-        return self.compiler.parse_deps()
-        
+    # The previous implementation wasn't working so well, 
+    # so let's rewrite it with the python stdlib :)
     def parse_options(self):
-        for arg in sys.argv[1:]:
-            if arg == '--clean':
-                self._build_steps = [self.clean]
-            elif arg == '--rebuild':
-                self._build_steps.insert(0, self.clean)
-            elif arg == '--parse-deps':
-                #todo change the way that this is triggered
-                self._build_steps.append(self.parse_deps)
+        self.parser = OptionParser()
+        self.parser.add_option('--clean', help='Cleans the project')
+        self.parser.add_option('--rebuild', help='Rebuilds the project')
+        # self.parser.add_option('-d', '--directory', dest='base_directory',
+        #                       help='Base directory the project is in')
+        self.options, self.args = self.parser.parse_args()
+        #for arg in sys.argv[1:]:
+        #    if arg == '--clean':
+        #        self._build_steps = [self.clean]
+        #    elif arg == '--rebuild':
+        #        self._build_steps.insert(0, self.clean)
 
 
     @property

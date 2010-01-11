@@ -9,8 +9,13 @@ import markdown2
 
 def generate_docfile(file_name):
     txt_file = file_name
+    name = file_name
     file_name = file_name.split('.')
     file_name.pop()
+    name = name.split('/')
+    name = name.pop()
+    name = name.split('.')
+    name = name.pop(0)
     file_name.append('html')
     file_name = '.'.join(file_name)
     file_name = '../html/{0}'.format(file_name)
@@ -23,6 +28,8 @@ def generate_docfile(file_name):
     file = open(file_name, 'w')
     header = open('templates/header.txt')
     for line in header:
+        if '<title>' in line and '</title>' in line:
+            line = line.format(name)
         file.write(line)
     header.close()
     txt_file = open(txt_file)
@@ -34,6 +41,7 @@ def generate_docfile(file_name):
         file.write(line)
     footer.close()
     file.close()
+    
 
 def fix_paths(file_list):
     if sys.platform == 'win32':
@@ -55,3 +63,6 @@ if __name__ == '__main__':
     for file in file_list:
         if file.endswith('.txt'):
             generate_docfile(file)
+    for root, dir, files in os.walk('.'):
+        if 'templates' in root: continue
+        shutil.copy('style.css', '../html/{0}'.format(root))

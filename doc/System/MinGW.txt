@@ -1,4 +1,4 @@
-# Module: MinGW
+# MinGW
 
 
 ## Description

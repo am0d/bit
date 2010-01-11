@@ -1,4 +1,4 @@
-# Module: System
+# System
 
 ## Description
 
@@ -15,4 +15,14 @@ description: Takes a list, directory, and adds it to the list of files to be com
 parameters: `files`
 
 description: Takes a list, directory, or filename, and removes it from the list of files to be compiled.
+
+#### require
+parameters: `System`
+
+description: Used to ensure a series of build are run in order. If the given `System` fails to complete properly, the `System` using require will not build.
+
+#### pause
+parameters: `None`
+
+description: Is the same as using system('pause') on windows. It *is* cross platform, and is best used for scripts that are not run through a commandline, but rather run from a desktop interface.
 

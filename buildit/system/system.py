@@ -60,6 +60,14 @@ class System(threading.Thread):
     def pause(self):
         raw_input('Press Enter to continue...')
 
+    def add_path(self, directory):
+        path_list = []
+        for path in os.environ['PATH'].split(os.pathsep):
+            path_list.append(path)
+        path_list.append(directory)
+        path_list = os.pathsep.join(path_list)
+        os.environ['PATH'] = path_list
+
     def add(self, files, recurse=False):
         if isinstance(files, (tuple,list)):
             for item in flatten(files):

@@ -2,7 +2,7 @@
 
 from buildit.system.system import System
 from buildit.compiler.msvc import MSVC as MSVCompiler
-from buildit.utils import which
+from buildit.utils import which, fix_strings
 from buildit.cprint import error
 
 class MSVC(System):
@@ -12,12 +12,26 @@ class MSVC(System):
         self.compiler = MSVCompiler()
         self.__compiler_version = 'VS90COMNTOOLS' # Used only to help figure out the install path
         self.__arch = 32 # Everyone uses 32 bit right? RIGHT?
-        self._build_steps.insert(setup_environment, 0)
+        self.__setup_environment() # It should not be part of the build steps.
 
     # Sets up our system path for MSVC (so others don't have to)
-    def setup_environment(self):
-        print os.environ[self.__compiler_version]
-        return 0
+    def __setup_environment(self):
+        msvc_path = [os.environ[self.__compiler_version]]
+        self.add_path(fix_strings(msvc_path).pop())
+        path_list = []
+        for path in os.environ['LIB']:
+            path_list.append(path)
+        path_list.append(temp_string)
+        path_list = os.pathsep.join(path_list)
+        os.environ['LIB'] = path_list
+
+    def add_define(self, define): pass
+
+    def add_library(self, library, global_var=False): pass
+
+    def add_library_directory(self, directory, global_var=False): pass
+
+    def add_include_directory(self, directory, global_var=False): pass
 
     @property
     def x64(self):

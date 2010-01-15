@@ -60,14 +60,17 @@ class System(threading.Thread):
     def pause(self):
         raw_input('Press Enter to continue...')
 
-    def add_path(self, directory):
+    def add_path(self, *directories):
         path_list = []
+        directories = list(directories)
         for path in os.environ['PATH'].split(os.pathsep):
             path_list.append(path)
-        path_list.append(directory)
+        for directory in directories:
+            path_list.append(directory)
         path_list = os.pathsep.join(path_list)
         os.environ['PATH'] = path_list
 
+    # Going to clean this up with variable args in a bit :X
     def add(self, files, recurse=False):
         if isinstance(files, (tuple,list)):
             for item in flatten(files):
@@ -111,6 +114,7 @@ class System(threading.Thread):
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 
+    # Marked for cleanup
     def remove(self, files):
         if isinstance(files, (tuple, list)):
             for item in flatten(files):

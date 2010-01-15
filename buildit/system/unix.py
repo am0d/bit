@@ -28,23 +28,23 @@ class Unix(System):
         self.compiler.add_compile_flags(output)
         self.compiler.add_link_flags(output)
 
-    def add_define(self, define):
-        self.compiler.add_define(define)
+    def add_define(self, *define):
+        self.compiler.add_define(*define)
 
-    def add_include_directory(self, directory):
-        self.compiler.add_include_directory(directory)
+    def add_include_directory(self, *directory):
+        self.compiler.add_include_directory(*directory)
 
-    def add_library_directory(self, directory):
-        self.compiler.add_library_directory(directory)
+    def add_library_directory(self, *directory):
+        self.compiler.add_library_directory(*directory)
 
-    def add_library(self, library):
-        self.compiler.add_library(library)
+    def add_library(self, *library):
+        self.compiler.add_library(*library)
 
-    def add_flag(self, flag):
-        self.compiler.add_flags(flag)
+    def add_flag(self, *flag):
+        self.compiler.add_flags(*flag)
 
-    def add_link_flag(self, flag):
-        self.compiler.add_link_flags(flag)
+    def add_link_flag(self, *flag):
+        self.compiler.add_link_flags(*flag)
 
     @property
     def C99(self):

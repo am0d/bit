@@ -12,7 +12,6 @@ from optparse import OptionParser
 from buildit.compiler.compiler import Compiler
 from buildit.database import Database
 from buildit.utils import lookup_error, flatten, fix_strings
-from buildit.utils import name as uname
 from buildit.cprint import error, warning, info
 
 class System(threading.Thread):
@@ -33,6 +32,9 @@ class System(threading.Thread):
         self.object_directory = 'object/{0}'.format(self.name)
 
         self._build_steps.append(self.build)
+
+    def __str__(self):
+        return 'System'
 
     def run(self):
         self.parse_options()
@@ -161,12 +163,13 @@ class System(threading.Thread):
 
     @property
     def name(self):
-        return uname(self)
+        return self.__str__()
 
     @property
     def compiler(self):
         return self._compiler
 
+    # Currently broken in some instances
     @compiler.setter
     def compiler(self, value):
         self._compiler = value

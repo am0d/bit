@@ -13,6 +13,9 @@ class Unix(System):
     def __init__(self, project_name):
         System.__init__(self, project_name)
         self.compiler = CC(project_name)
+    
+    def __str__(self):
+        return 'Unix'
 
     def pkg_config(self, package, script='pkg'):
         if not script == 'pkg':

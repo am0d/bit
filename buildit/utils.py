@@ -82,15 +82,3 @@ def lookup_error(value):
                     1006 : 'Unknown Output Type'
                   }
     return error_value.get(value, 'Unknown Error')
-
-# This hack needs to be replaced
-def name(value):
-    name = str(value)
-    name = name.split(' ')
-    name = name[0]
-    name = name.split('.')
-    name = name.pop()
-    name = name.split('(')
-    name = name[0].replace('<', '')
-    return name
-

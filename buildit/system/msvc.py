@@ -14,6 +14,9 @@ class MSVC(System):
         self.__arch = 32 # Everyone uses 32 bit right? RIGHT?
         self.__setup_environment() # It should not be part of the build steps.
 
+    def __str__(self):
+        return 'MSVC'
+
     # Sets up our system path for MSVC (so others don't have to)
     def __setup_environment(self):
         msvc_path = [os.environ[self.__compiler_version]]

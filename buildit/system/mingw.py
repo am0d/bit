@@ -13,6 +13,9 @@ class MinGW(Unix):
         self.compiler.executable = 'gcc'
         self.resource_compiler = 'windres'
 
+    def __str__(self):
+        return 'MinGW'
+
     def resource(self, file_name):
         file_out = file_name.split('.')
         file_out.pop()

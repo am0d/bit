@@ -70,87 +70,43 @@ class System(threading.Thread):
         path_list = os.pathsep.join(path_list)
         os.environ['PATH'] = path_list
 
-    # Going to clean this up with variable args in a bit :X
-    def add(self, files, recurse=False):
-        if isinstance(files, (tuple,list)):
-            for item in flatten(files):
-                if isinstance(item, basestring):
-                    if os.path.isdir(item):
-                        glob_list = []
-                        if recurse:
-                            for root, dir, files in os.walk(item):
-                                for extension in self.compiler.extensions:
-                                    glob_list +=glob('{0}/*{1}'.format(root,
-                                        extension))
-                        else:
-                            for extension in self.compiler.extensions:
-                                glob_list +=glob('{0}/*{1}'.format(item, 
-                                    extension))
-                        for file_name in glob_list:
-                            if os.path.isfile(file_name):
-                                self._file_list.append(file_name)
-                    else:
-                        self._file_list.append(item)
-        elif isinstance(files, basestring):
-            if os.path.isdir(files):
+    def add(self, *files):
+        files = flatten(list(files))
+        for file in files:
+            if os.path.isdir(file):
                 glob_list = []
-                if recurse:
-                    for root, dir, file_names in os.walk(files):
-                        for extension in self.compiler.extensions:
-                            glob_list += glob('{0}/*{1}'.format(root, 
-                                extension))
-                else:
+                for root, dir, file_names in os.walk(file):
                     for extension in self.compiler.extensions:
-                        glob_list += glob('{0}/*{1}'.format(files, extension))
+                        glob_list += glob('{0}/*{1}'.format(root, extension)
+                if sys.platform == 'win32':
+                    glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
-                    if os.path.isfile(file_name):
-                        self._file_list.append(file_name)
+                    self._file_list.append(file_name)
             else:
-                self._file_list.append(files)
-        else:
-            warning('{0} is not a supported datatype'.format(type(files)))
-        if sys.platform == 'win32':
-            self._file_list = fix_strings(self._file_list)
+                self._file_list.append(file)
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 
-    # Marked for cleanup
-    def remove(self, files):
-        if isinstance(files, (tuple, list)):
-            for item in flatten(files):
-                if isinstance(item, basestring):
-                    if os.path.isdir(item):
-                        glob_list = glob('{0}/*'.format(item))
-                        for file_name in glob_list:
-                            if os.path.isfile(file_name):
-                                try:
-                                    self._file_list.remove(file_name)
-                                except ValueError:
-                                    warning('{0} could not be removed'.format(
-                                        file_name))
-                    else:
-                        try:
-                            self._file_list.remove(file_name)
-                        except ValueError:
-                            warning('{0} could not be removed'.format(
-                                file_name))
-        elif isinstance(files, basestring):
-            if os.path.isdir(files):
-                glob_list = glob('{0}/*'.format(files))
+    def remove(self, *files):
+        files = flatten(list(files))
+        for file in files:
+            if os.path.isdir(file):
+                glob_list = []
+                for root, dir, file_names in os.walk(file):
+                    for extension in self.compiler.extensions:
+                        glob_list += glob('{0}/*{1}'.format(root, extension)
+                if sys.platform == 'win32':
+                    glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
-                    if os.path.isfile(file_name):
-                        try:
-                            self._file_list.remove(file_name)
-                        except ValueError:
-                            warning('{0} could not be removed'.format(
-                                file_name))
+                    try:
+                        self._file_list.remove(file_name)
+                    except ValueError:
+                        warning('{0} could not be removed'.format(file_name))
             else:
                 try:
-                    self._file_list.remove(files)
+                    self._file_list.remove(file)
                 except ValueError:
-                    warning('{0} could not be removed'.format(files))
-        else:
-            warning('{0} is not a supported datatype.'.format(type(files)))
+                    warning('{0} could not be removed'.format(file))
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 

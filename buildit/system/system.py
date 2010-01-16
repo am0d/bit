@@ -115,35 +115,40 @@ class System(threading.Thread):
     def require(self, required_system):
         self._build_steps.insert(0, required_system.run)
 
-    # Until we can get this to work properly, we'll just have it do nothing
     def clean(self):
-    #    try:
-    #        if os.path.exists(self.build_directory):
-    #            shutil.rmtree(self.build_directory)
-    #        if os.path.exists(self.object_directory):
-    #            shutil.rmtree(self.object_directory)
-    #    except OSError:
-    #        error('Failed to clean {0}'.format(self._project_name))
-    #        return 1005
+        clean_list = [self.object_directory, self.build_directory]
+        for item in clean_list:
+            if os.path.exists(item) and not item == '.':
+                try:
+                    shutil.rmtree(item)
+                except OSError:
+                    pass
         return 0
-    
+
+    def rebuild(self):
+        if os.path.exists('.buildit'):
+            try:
+                shutil.rmtree('.buildit')
+            except OSError:
+                pass
+        return 0
+
     def change_base_directory(self, directory):
         return 0
 
-    # The previous implementation wasn't working so well, 
-    # so let's rewrite it with the python stdlib :)
     def parse_options(self):
         self.parser = OptionParser()
-        self.parser.add_option('--clean', help='Cleans the project')
-        self.parser.add_option('--rebuild', help='Rebuilds the project')
+        self.parser.add_option('--clean', action='store_true', dest='clean',
+                               help='Cleans the project')
+        self.parser.add_option('--rebuild', action='store_true', dest='rebuild',
+                               help='Rebuilds the project')
         # self.parser.add_option('-d', '--directory', dest='base_directory',
         #                       help='Base directory the project is in')
         self.options, self.args = self.parser.parse_args()
-        #for arg in sys.argv[1:]:
-        #    if arg == '--clean':
-        #        self._build_steps = [self.clean]
-        #    elif arg == '--rebuild':
-        #        self._build_steps.insert(0, self.clean)
+        if self.options.rebuild:
+            self._build_steps.insert(0, self.rebuild)
+        if self.options.clean:
+            self._build_steps.insert(0, self.clean)
 
 
     @property

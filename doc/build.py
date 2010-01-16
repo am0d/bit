@@ -5,6 +5,8 @@ import os
 import sys
 import shutil
 
+from glob import glob
+
 import markdown2
 
 def generate_docfile(file_name):
@@ -41,7 +43,6 @@ def generate_docfile(file_name):
         file.write(line)
     footer.close()
     file.close()
-    
 
 def fix_paths(file_list):
     if sys.platform == 'win32':

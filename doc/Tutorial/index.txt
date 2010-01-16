@@ -1,0 +1,28 @@
+# Tutorial
+
+## Index
+<div class="index_table">
+<a name="index"><a/>
+   &nbsp;<a href="#overview">Overview</a>
+   &nbsp;<a href="#requirements">Requirements</a> 
+   &nbsp;<a href="#installation">Installation</a>
+   &nbsp;<a href="#usage">Usage</a>
+   &nbsp;<a href="#examples">Examples</a>
+</div>
+## Overview
+<a name="overview"></a>
+This tutorial was written to provide you, the user, with the basics required to utilize buildit in your build system. 
+
+## Requirements
+<a name="requirements"><a/>
+A basic [CPython](http://python.org "Python") or [IronPython](http://ironpython.net "IronPython") 2.6 installation is all that is required. There are plans to eventually port buildit to Python 3, however, nothing before Python 2.6 will be targeted.
+
+## Installation
+<a name="installation"></a>
+From a commandline (with administrative rights), running `setup.py install` will be sufficient to install buildit. If you are on Windows, and prefer to not use the commandline, placing buildit in your `<Python Installation>/Lib/site-packages/` directory will suffice.
+
+## Usage
+<a name="usage"></a>
+
+## Examples
+<a name="examples"></a>

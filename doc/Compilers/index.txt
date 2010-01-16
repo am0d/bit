@@ -3,6 +3,6 @@
 <a class="header" href="CC.html">Unix C</a>
 <a class="header" href="CXX.html">Unix C++</a>
 
-<a class="header" href="MSVC.html">Miscrosoft Visual C++</a>
+<a class="header" href="MSVC.html">Microsoft Visual C++</a>
 
 <a class="header" href="Content.html">Content</a>

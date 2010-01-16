@@ -1,6 +1,5 @@
 # MinGW
 
-
 ## Description
 
 `MinGW` is a modified version of `Unix`. The only difference is it has the ability to compile resource files (`.rc` extension) with the use of the `resource` function.

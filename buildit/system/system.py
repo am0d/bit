@@ -79,9 +79,8 @@ class System(threading.Thread):
                 glob_list = []
                 for root, dir, file_names in os.walk(file):
                     for extension in self.compiler.extensions:
-                        glob_list += glob('{0}/*{1}'.format(root, extension)
-                if sys.platform == 'win32':
-                    glob_list = fix_strings(glob_list)
+                        glob_list += glob('{0}/*{1}'.format(root, extension))
+                glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
                     self._file_list.append(file_name)
             else:
@@ -96,9 +95,8 @@ class System(threading.Thread):
                 glob_list = []
                 for root, dir, file_names in os.walk(file):
                     for extension in self.compiler.extensions:
-                        glob_list += glob('{0}/*{1}'.format(root, extension)
-                if sys.platform == 'win32':
-                    glob_list = fix_strings(glob_list)
+                        glob_list += glob('{0}/*{1}'.format(root, extension))
+                glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
                     try:
                         self._file_list.remove(file_name)

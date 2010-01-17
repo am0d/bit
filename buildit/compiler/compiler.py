@@ -60,14 +60,20 @@ class Compiler(object):
         print_command('[{0:>3}%] {1}: {2}'.format(percentage, 
             self.name.upper(), file_name))
 
-    def add_flags(self, flags):
-        self._compile_flags += format_options(flags)
+    def add_flags(self, *flags):
+        flags = list(flags)
+        for flag in flags:
+            self._compile_flags += format_options(flag)
 
-    def add_compile_flags(self, flags):
-        self._compile_flags += format_options(flags)
+    def add_compile_flags(self, *flags):
+        flags = list(flags)
+        for flag in flags:
+            self._compile_flags += format_options(flag)
 
-    def add_link_flags(self, flags):
-        self._link_flags += format_options(flags)
+    def add_link_flags(self, *flags):
+        flags = list(flags)
+        for flag in flags:
+            self._link_flags += format_options(flag)
 
     @property
     def output_extension(self):

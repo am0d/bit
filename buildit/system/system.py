@@ -132,6 +132,7 @@ class System(threading.Thread):
         return 0
 
     def change_base_directory(self, directory):
+        os.chdir(directory)
         return 0
 
     def parse_options(self):
@@ -142,14 +143,16 @@ class System(threading.Thread):
         self.parser.add_option('-r', '--rebuild', 
                                action='store_true', dest='rebuild',
                                help='Rebuilds the project')
-        # self.parser.add_option('-d', '--directory', dest='base_directory',
-        #                       help='Base directory the project is in')
+        self.parser.add_option('-d', '--directory', dest='base_directory',
+                               default='.', 
+                               help='Base directory the project is in')
         self.options, self.args = self.parser.parse_args()
         if self.options.rebuild:
             self._build_steps.insert(0, self.rebuild)
         if self.options.clean:
-            self._build_steps.insert(0, self.clean)
-
+            self._build_steps = [self.clean]
+        self.change_base_directory(self.options.base_directory)
+        
     @property
     def static(self):
         self._type = 'static'

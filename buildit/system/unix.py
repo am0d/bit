@@ -17,52 +17,32 @@ class Unix(System):
     def __str__(self):
         return 'Unix'
 
+    def __config_script_flags(self, script, package, argument):
+        process = Popen(['{0}-config'.format(script), package, argument], 
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
+                        universal_newlines=True)
+        output, errput = process.communicate()
+        if not output:
+            error('{0}: {1}'.format(package, errput)
+            return
+        output = output.replace('\n', '')
+        return output
+
     def add_pkg(self, *scripts):
         scripts = flatten(list(scripts))
         for script in scripts:
-            process = Popen(['{0}-config'.format(script), '--cflags'], 
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
-                         universal_newlines=True)
-            output, errput = process.communicate()
-            if not output:
-                error('{0}: {1}'.format(package, errput))
-                return
-            output = output.replace('\n', ' ')
-            self.compiler.add_compile_flags(output)
-            # We run through this again because doing 
-            # everything at once causes compilers to spit out errors :/
-            process = Popen(['{0}-config'.format(script), 
-                         '--cflags', '--libs'], stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE, universal_newlines=True)
-            output, errput = process.communicate()
-            if not output:
-                error('{0}: {1}'.format(package, errput))
-                return
-            output = output.replace('\n', ' ')
-            self.compiler.add_link_flags(output)
+            cflags = self.__config_script_flags(script, '', '--cflags')
+            linker_flags = self.__config_script_flags(script, '', '--libs')
+            self.compiler.add_compile_flags(cflags)
+            self.compiler.add_link_flags(cflags, linker_flags)
 
     def pkg_config(self, *packages):
         packages = flatten(list(packages))
         for package in packages:
-            process = Popen(['pkg-config', '{0}'.format(package), '--cflags'], 
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
-                         universal_newlines=True)
-            output, errput = process.communicate()
-            if not output:
-                error('{0}: {1}'.format(package,errput))
-                return
-            output = output.replace('\n', ' ')
-            self.compiler.add_compile_flags(output)
-            # See add_pkg for why we do this.
-            process = Popen(['pkg-config', '{0}'.format(package), 
-                         '--cflags', '--libs'], stdout=subprocess.PIPE, 
-                         stderr=subprocess.PIPE, universal_newlines=True)
-            output, errput = process.communicate()
-            if not output:
-                error('{0}: {1}'.format(package,errput))
-                return
-            output = output.replace('\n', ' ')
-            self.compiler.add_link_flags(output)
+            cflags = self.__config_script_flags('pkg', package, '--cflags')
+            linker_flags = self.__config_script_flags('pkg', package, '--libs')
+            self.compiler.add_compile_flags(cflags)
+            self.compiler.add_link_flags(cflags, linker_flags)
 
     def add_define(self, *defines):
         self.compiler.add_define(*defines)

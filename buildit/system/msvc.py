@@ -28,13 +28,17 @@ class MSVC(System):
         path_list = os.pathsep.join(path_list)
         os.environ['LIB'] = path_list
 
-    def add_define(self, define): pass
+    def add_define(self, *defines): 
+        self.compiler.add_define(*defines)
 
-    def add_library(self, library, global_var=False): pass
+    def add_library(self, *libraries):
+        self.compiler.add_library*libraries)
 
-    def add_library_directory(self, directory, global_var=False): pass
+    def add_library_directory(self, *directories):
+        self.compiler.add_library_directory(*directories)
 
-    def add_include_directory(self, directory, global_var=False): pass
+    def add_include_directory(self, *directories):
+        self.compiler.add_include_directory(*directories)
 
     @property
     def x64(self):
@@ -58,4 +62,4 @@ class MSVC(System):
 
     @property
     def vs2010(self):
-        self.__compiler_version = 'VS100COMNTOOLS' # Not considered accurate right now XD
+        self.__compiler_version = 'VS100COMNTOOLS'

@@ -57,7 +57,8 @@ class CC(Compiler):
             self.command(percentage, info_file)
             if self._type == 'dynamic':
                 self.add_compiler.flags('-fPIC')
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, out_file, file, self._compile_flags)
+            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, 
+                         out_file, file, self._compile_flags)
             try:
                 return_value = subprocess.call(run_string)
             except OSError:

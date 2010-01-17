@@ -20,6 +20,17 @@ class Unix(System):
     def add_pkg(self, *scripts):
         scripts = flatten(list(scripts))
         for script in scripts:
+            process = Popen(['{0}-config'.format(script), '--cflags'], 
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
+                         universal_newlines=True)
+            output, errput = process.communicate()
+            if not output:
+                error('{0}: {1}'.format(package, errput))
+                return
+            output = output.replace('\n', ' ')
+            self.compiler.add_compile_flags(output)
+            # We run through this again because doing 
+            # everything at once causes compilers to spit out errors :/
             process = Popen(['{0}-config'.format(script), 
                          '--cflags', '--libs'], stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE, universal_newlines=True)
@@ -28,12 +39,21 @@ class Unix(System):
                 error('{0}: {1}'.format(package, errput))
                 return
             output = output.replace('\n', ' ')
-            self.compiler.add_compile_flags(output)
             self.compiler.add_link_flags(output)
 
     def pkg_config(self, *packages):
         packages = flatten(list(packages))
         for package in packages:
+            process = Popen(['pkg-config', '{0}'.format(package), '--cflags'], 
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, 
+                         universal_newlines=True)
+            output, errput = process.communicate()
+            if not output:
+                error('{0}: {1}'.format(package,errput))
+                return
+            output = output.replace('\n', ' ')
+            self.compiler.add_compile_flags(output)
+            # See add_pkg for why we do this.
             process = Popen(['pkg-config', '{0}'.format(package), 
                          '--cflags', '--libs'], stdout=subprocess.PIPE, 
                          stderr=subprocess.PIPE, universal_newlines=True)
@@ -42,7 +62,6 @@ class Unix(System):
                 error('{0}: {1}'.format(package,errput))
                 return
             output = output.replace('\n', ' ')
-            self.compiler.add_compile_flags(output)
             self.compiler.add_link_flags(output)
 
     def add_define(self, *defines):

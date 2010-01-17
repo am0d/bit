@@ -17,6 +17,9 @@ class CC(Compiler):
         self.executable = 'cc'
         self._language = C()
 
+    def __str__(self):
+        return 'CC'
+
     def setup_files(self):
         self.__file_count = len(self._file_list)
         for file in self._file_list:

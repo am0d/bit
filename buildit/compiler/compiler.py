@@ -8,7 +8,6 @@ from buildit.database import Database
 
 from buildit.utils import which, flatten, fix_strings, file_hash
 from buildit.utils import format_options
-from buildit.utils import name as uname
 from buildit.cprint import command as print_command
 
 class Compiler(object):
@@ -28,6 +27,9 @@ class Compiler(object):
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
+
+    def __str__(self):
+        return 'Compiler'
 
     @property
     def run(self):
@@ -118,4 +120,4 @@ class Compiler(object):
 
     @property
     def name(self):
-        return uname(self)
+        return self.__str__()

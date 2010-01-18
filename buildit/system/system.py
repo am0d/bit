@@ -18,7 +18,8 @@ class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._compiler = Compiler(project_name) 
+        self._compiler = Compiler(project_name)
+        self.parser = OptionParser(conflict_handler='resolve')
         self._build_steps = []
         self._file_list = []
         self._project_name = project_name
@@ -64,7 +65,7 @@ class System(threading.Thread):
 
     def add_path(self, *directories):
         path_list = []
-        directories = list(directories)
+        directories = flatten(list(directories))
         for path in os.environ['PATH'].split(os.pathsep):
             path_list.append(path)
         for directory in directories:
@@ -136,15 +137,14 @@ class System(threading.Thread):
         return 0
 
     def parse_options(self):
-        self.parser = OptionParser(conflict_handler='resolve')
-        self.parser.add_option('-c', '--clean', 
+        self.parser.add_option('-c', '--clean',
                                action='store_true', dest='clean',
                                help='Cleans the project')
-        self.parser.add_option('-r', '--rebuild', 
+        self.parser.add_option('-r', '--rebuild',
                                action='store_true', dest='rebuild',
                                help='Rebuilds the project')
         self.parser.add_option('-d', '--directory', dest='base_directory',
-                               default='.', 
+                               default='.',
                                help='Base directory the project is in')
         self.options, self.args = self.parser.parse_args()
         if self.options.rebuild:
@@ -152,7 +152,7 @@ class System(threading.Thread):
         if self.options.clean:
             self._build_steps = [self.clean]
         self.change_base_directory(self.options.base_directory)
-        
+
     @property
     def static(self):
         self._type = 'static'

@@ -20,13 +20,25 @@ class MSVC(System):
     # Sets up our system path for MSVC (so others don't have to)
     def __setup_environment(self):
         msvc_path = [os.environ[self.__compiler_version]]
-        self.add_path(fix_strings(msvc_path).pop())
+        msvc_path = fix_strings(msvc_path)
+        msvc_path = msvc_path.split('/')
+        msvc_path.pop(), msvc_path.pop(), msvc_path.pop()
+        self.add_path('{0}/VC/Bin'.format(msvc_path))
+        self.add_path('{0}/Common7/ID'.format(msvc_path))
         path_list = []
-        for path in os.environ['LIB']:
+        for path in os.environ['LIB'].split(os.pathsep):
             path_list.append(path)
-        path_list.append(temp_string)
+        lib_string = '/amd64' if self.__arch == 64 else ''
+        path_list.append('{0}/VC/lib{1}'.format(msvc_path, lib_string)
         path_list = os.pathsep.join(path_list)
         os.environ['LIB'] = path_list
+        path_list = []
+        for path in os.environ['INCLUDE'].split(os.pathsep):
+            path_list.append(path)
+        path_list.append('{0}/VC/include'.format(msvc_path))
+        path_list.append('{0}/VC/atlmfc/include'.format(msvc_path))
+        path_list = os.pathsep.join(path_list)
+        os.environ['INCLUDE'] = path_list
 
     def add_define(self, *defines): 
         self.compiler.add_define(*defines)

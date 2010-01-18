@@ -10,7 +10,7 @@ class MSVC(Compiler):
     def __init__(self, project_name='PROJECT'):
         Compiler.__init__(self, project_name)
         self._clang_enabled = False
-        self._no_exceptions = False
+        self.__exception_handler = False
         self.executable = 'cl'
         self._language = CXX()
 
@@ -52,7 +52,7 @@ class MSVC(Compiler):
             except OSError:
                 pass
             self.command(percentage, info_file)
-            if not no_exceptions:
+            if self.__exception_handler:
                 self._compile_flags += ' /EHa'
             run_string = '{0} /nologo /Fo "{1}" /c "{2}" {3}'.format(
                 self.executable, out_file, file, self._compile_flags)
@@ -86,8 +86,7 @@ class MSVC(Compiler):
             self.executable = 'lib'
         else:
             return 1006 # Somehow our type was messed with :X
-        for item in self._link_flags:
-            build_string += item
+        build_string += ''.join(self._link_flags)
         for file in self._link_list:
             build_string += ' "{0}"'.format(file)
         try:
@@ -104,22 +103,30 @@ class MSVC(Compiler):
             return return_value
         return 0
 
-    def add_define(self, define):
+    def add_define(self, *defines):
         self._compile_flags += format_options(define, '/D')
 
-    def add_include_directory(self, directory):
-        self._compile_flags += format_options(directory, '/I', True)
+    def add_include_directory(self, *directories):
+        directories = flatten(list(directories))
+        for directory in directories:
+            self._compile_flags += format_options(directory, '/I', True)
 
-    def add_library_directory(self, directory):
-        self._link_flags += format_options(directory, '-L', True)
+    def add_library_directory(self, *directories):
+        directories = flatten(list(directories))
+        path_list = []
+        for path in os.environ['LIB'].split(os.pathsep):
+            path_list.append(path)
+        for directory in directories:
+            path_list.append(directory)
+        path_list = os.pathsep.join(path_list)
+        os.environ['LIB'] = path_list
 
     def add_library(self, library):
         self._link_flags += format_options(library, '-l')
 
     @property
     def C99(self):
-        self.add_compile_flags('-std=c99')
-        self.add_link_flags('-std=c99')
+        pass
         
     @property
     def extensions(self):
@@ -133,8 +140,8 @@ class MSVC(Compiler):
         self._clang_enabled = True
 
     @property
-    def no_exceptions(self):
-        self._no_exceptions = True
+    def exceptio_handler(self):
+        self.__exception_hadnler = True
 
     @property
     def module_extension(self):

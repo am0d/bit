@@ -8,12 +8,14 @@ import subprocess
 from buildit.compiler.compiler import Compiler
 
 from buildit.utils import flatten, fix_strings, file_hash
-from buildit.utils import name as uname
 
 class Content(Compiler):
     def __init__(self, project_name='PROJECT'):
         Compiler.__init__(self, project_name)
         self.executable = 'echo'
+
+    def __str__(self):
+        return 'Content'
 
     def compile_files(self):
         counter = 1

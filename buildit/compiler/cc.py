@@ -17,6 +17,9 @@ class CC(Compiler):
         self.executable = 'cc'
         self._language = C()
 
+    def __str__(self):
+        return 'CC'
+
     def setup_files(self):
         self.__file_count = len(self._file_list)
         compile_list = []
@@ -59,7 +62,8 @@ class CC(Compiler):
             self.command(percentage, info_file)
             if self._type == 'dynamic':
                 self.add_compiler.flags('-fPIC')
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, out_file, file, self._compile_flags)
+            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, 
+                         out_file, file, self._compile_flags)
             try:
                 return_value = subprocess.call(run_string)
             except OSError:
@@ -105,18 +109,26 @@ class CC(Compiler):
             return return_value
         return 0
 
-    def add_define(self, define):
-        self._compile_flags += format_options(define, '-D')
+    def add_define(self, *defines):
+        defines = list(defines)
+        for define in defines:
+            self._compile_flags += format_options(define, '-D')
 
-    def add_include_directory(self, directory):
-        self._compile_flags += format_options(directory, '-I', True)
-        self._link_flags += format_options(directory, '-I', True)
+    def add_include_directory(self, *directories):
+        directories = list(directories)
+        for directory in directories:
+            self._compile_flags += format_options(directory, '-I', True)
+            self._link_flags += format_options(directory, '-I', True)
 
-    def add_library_directory(self, directory):
-        self._link_flags += format_options(directory, '-L', True)
+    def add_library_directory(self, *directories):
+        directories = list(directories)
+        for directory in directories:
+            self._link_flags += format_options(directory, '-L', True)
 
-    def add_library(self, library):
-        self._link_flags += format_options(library, '-l')
+    def add_library(self, *libraries):
+        libraries = list(libraries)
+        for library in libraries:
+            self._link_flags += format_options(library, '-l')
 
     @property
     def C99(self):

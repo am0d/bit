@@ -12,6 +12,9 @@ class CXX(CC):
         self.executable = 'c++'
         self._language = CPP()
 
+    def __str__(self):
+        return 'CXX'
+
     @property
     def extensions(self):
         if not self._clang_enabled:

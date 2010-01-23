@@ -8,7 +8,6 @@ from buildit.database import Database
 
 from buildit.utils import which, flatten, fix_strings, file_hash
 from buildit.utils import format_options
-from buildit.utils import name as uname
 from buildit.cprint import command as print_command
 
 class Compiler(object):
@@ -28,6 +27,9 @@ class Compiler(object):
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
+
+    def __str__(self):
+        return 'Compiler'
 
     @property
     def run(self):
@@ -61,14 +63,20 @@ class Compiler(object):
         print_command('[{0:>3}%] {1}: {2}'.format(percentage, 
             self.name.upper(), file_name))
 
-    def add_flags(self, flags):
-        self._compile_flags += format_options(flags)
+    def add_flags(self, *flags):
+        flags = list(flags)
+        for flag in flags:
+            self._compile_flags += format_options(flag)
 
-    def add_compile_flags(self, flags):
-        self._compile_flags += format_options(flags)
+    def add_compile_flags(self, *flags):
+        flags = list(flags)
+        for flag in flags:
+            self._compile_flags += format_options(flag)
 
-    def add_link_flags(self, flags):
-        self._link_flags += format_options(flags)
+    def add_link_flags(self, *flags):
+        flags = list(flags)
+        for flag in flags:
+            self._link_flags += format_options(flag)
 
     @property
     def output_extension(self):
@@ -121,4 +129,4 @@ class Compiler(object):
 
     @property
     def name(self):
-        return uname(self)
+        return self.__str__()

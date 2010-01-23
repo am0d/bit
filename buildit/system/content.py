@@ -8,3 +8,6 @@ class Content(System):
     def __init__(self):
         System.__init__(self, 'Content')
         self.compiler = ContentC()
+
+    def __str__(self):
+        return 'Content'

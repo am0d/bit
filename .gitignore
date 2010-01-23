@@ -1,14 +1,7 @@
 *.pyc
 *.swp
 *.out
-*.exe
-*.o
-*.elf
-*.mach
 *~
 build
 .buildit
-uml
-*.obj
-*.html
 html

@@ -12,14 +12,14 @@ from optparse import OptionParser
 from buildit.compiler.compiler import Compiler
 from buildit.database import Database
 from buildit.utils import lookup_error, flatten, fix_strings
-from buildit.utils import name as uname
 from buildit.cprint import error, warning, info
 
 class System(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
-        self._compiler = Compiler(project_name) 
+        self._compiler = Compiler(project_name)
+        self.parser = OptionParser(conflict_handler='resolve')
         self._build_steps = []
         self._file_list = []
         self._project_name = project_name
@@ -33,6 +33,9 @@ class System(threading.Thread):
         self.object_directory = 'object/{0}'.format(self.name)
 
         self._build_steps.append(self.build)
+
+    def __str__(self):
+        return 'System'
 
     def run(self):
         self.parse_options()
@@ -60,121 +63,95 @@ class System(threading.Thread):
     def pause(self):
         raw_input('Press Enter to continue...')
 
-    def add(self, files, recurse=False):
-        if isinstance(files, (tuple,list)):
-            for item in flatten(files):
-                if isinstance(item, basestring):
-                    if os.path.isdir(item):
-                        glob_list = []
-                        if recurse:
-                            for root, dir, files in os.walk(item):
-                                for extension in self.compiler.extensions:
-                                    glob_list +=glob('{0}/*{1}'.format(root,
-                                        extension))
-                        else:
-                            for extension in self.compiler.extensions:
-                                glob_list +=glob('{0}/*{1}'.format(item, 
-                                    extension))
-                        for file_name in glob_list:
-                            if os.path.isfile(file_name):
-                                self._file_list.append(file_name)
-                    else:
-                        self._file_list.append(item)
-        elif isinstance(files, basestring):
-            if os.path.isdir(files):
+    def add_path(self, *directories):
+        path_list = []
+        directories = flatten(list(directories))
+        for path in os.environ['PATH'].split(os.pathsep):
+            path_list.append(path)
+        for directory in directories:
+            path_list.append(directory)
+        path_list = os.pathsep.join(path_list)
+        os.environ['PATH'] = path_list
+
+    def add(self, *files):
+        files = flatten(list(files))
+        for file in files:
+            if os.path.isdir(file):
                 glob_list = []
-                if recurse:
-                    for root, dir, file_names in os.walk(files):
-                        for extension in self.compiler.extensions:
-                            glob_list += glob('{0}/*{1}'.format(root, 
-                                extension))
-                else:
+                for root, dir, file_names in os.walk(file):
                     for extension in self.compiler.extensions:
-                        glob_list += glob('{0}/*{1}'.format(files, extension))
+                        glob_list += glob('{0}/*{1}'.format(root, extension))
+                glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
-                    if os.path.isfile(file_name):
-                        self._file_list.append(file_name)
+                    self._file_list.append(file_name)
             else:
-                self._file_list.append(files)
-        else:
-            warning('{0} is not a supported datatype'.format(type(files)))
-        if sys.platform == 'win32':
-            self._file_list = fix_strings(self._file_list)
+                self._file_list.append(file)
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 
-    def remove(self, files):
-        if isinstance(files, (tuple, list)):
-            for item in flatten(files):
-                if isinstance(item, basestring):
-                    if os.path.isdir(item):
-                        glob_list = glob('{0}/*'.format(item))
-                        for file_name in glob_list:
-                            if os.path.isfile(file_name):
-                                try:
-                                    self._file_list.remove(file_name)
-                                except ValueError:
-                                    warning('{0} could not be removed'.format(
-                                        file_name))
-                    else:
-                        try:
-                            self._file_list.remove(file_name)
-                        except ValueError:
-                            warning('{0} could not be removed'.format(
-                                file_name))
-        elif isinstance(files, basestring):
-            if os.path.isdir(files):
-                glob_list = glob('{0}/*'.format(files))
+    def remove(self, *files):
+        files = flatten(list(files))
+        for file in files:
+            if os.path.isdir(file):
+                glob_list = []
+                for root, dir, file_names in os.walk(file):
+                    for extension in self.compiler.extensions:
+                        glob_list += glob('{0}/*{1}'.format(root, extension))
+                glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
-                    if os.path.isfile(file_name):
-                        try:
-                            self._file_list.remove(file_name)
-                        except ValueError:
-                            warning('{0} could not be removed'.format(
-                                file_name))
+                    try:
+                        self._file_list.remove(file_name)
+                    except ValueError:
+                        warning('{0} could not be removed'.format(file_name))
             else:
                 try:
-                    self._file_list.remove(files)
+                    self._file_list.remove(file)
                 except ValueError:
-                    warning('{0} could not be removed'.format(files))
-        else:
-            warning('{0} is not a supported datatype.'.format(type(files)))
+                    warning('{0} could not be removed'.format(file))
         self._file_list.sort()
         self.compiler._file_list = self._file_list
 
     def require(self, required_system):
         self._build_steps.insert(0, required_system.run)
 
-    # Until we can get this to work properly, we'll just have it do nothing
     def clean(self):
-    #    try:
-    #        if os.path.exists(self.build_directory):
-    #            shutil.rmtree(self.build_directory)
-    #        if os.path.exists(self.object_directory):
-    #            shutil.rmtree(self.object_directory)
-    #    except OSError:
-    #        error('Failed to clean {0}'.format(self._project_name))
-    #        return 1005
+        clean_list = [self.object_directory, self.build_directory]
+        for item in clean_list:
+            if os.path.exists(item) and not item == '.':
+                try:
+                    shutil.rmtree(item)
+                except OSError:
+                    pass
         return 0
-    
+
+    def rebuild(self):
+        if os.path.exists('.buildit'):
+            try:
+                shutil.rmtree('.buildit')
+            except OSError:
+                pass
+        return 0
+
     def change_base_directory(self, directory):
+        os.chdir(directory)
         return 0
 
-    # The previous implementation wasn't working so well, 
-    # so let's rewrite it with the python stdlib :)
     def parse_options(self):
-        self.parser = OptionParser()
-        self.parser.add_option('--clean', help='Cleans the project')
-        self.parser.add_option('--rebuild', help='Rebuilds the project')
-        # self.parser.add_option('-d', '--directory', dest='base_directory',
-        #                       help='Base directory the project is in')
+        self.parser.add_option('-c', '--clean',
+                               action='store_true', dest='clean',
+                               help='Cleans the project')
+        self.parser.add_option('-r', '--rebuild',
+                               action='store_true', dest='rebuild',
+                               help='Rebuilds the project')
+        self.parser.add_option('-d', '--directory', dest='base_directory',
+                               default='.',
+                               help='Base directory the project is in')
         self.options, self.args = self.parser.parse_args()
-        #for arg in sys.argv[1:]:
-        #    if arg == '--clean':
-        #        self._build_steps = [self.clean]
-        #    elif arg == '--rebuild':
-        #        self._build_steps.insert(0, self.clean)
-
+        if self.options.rebuild:
+            self._build_steps.insert(0, self.rebuild)
+        if self.options.clean:
+            self._build_steps = [self.clean]
+        self.change_base_directory(self.options.base_directory)
 
     @property
     def static(self):
@@ -193,12 +170,13 @@ class System(threading.Thread):
 
     @property
     def name(self):
-        return uname(self)
+        return self.__str__()
 
     @property
     def compiler(self):
         return self._compiler
 
+    # Currently broken in some instances
     @compiler.setter
     def compiler(self, value):
         self._compiler = value

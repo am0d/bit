@@ -7,18 +7,15 @@ It supports dependency tracking, multiple projects, and an easy to use API.
 Roadmap
 =======
 
-Version 0.2 - Fly By Night
+Version 0.1 - Rush
 ------------------
 
- * SQLite backend for dependency tracking
- * Static, Shared and Binaries for all C/C++ compilers.
- * Lua Support
- * MSVC Support
- * Mono Compiler Support
- * Better Documentation
- * HTML/TXT Logging System
- * pkg-config support
- 
+ * Able to build multiple projects from one script
+ * Able to use multiple compilers with one project
+ * Dependency tracking
+ * Able to build binaries (Done - 2009-11-02)
+ * C/C++ Support (Done - 2009-11-02)
+
 Contributors:
 	Tres Walsh      <tres.walsh@mnmlstc.com>    (SAHChandler)
 	Damien Schoof   <damien.schoof@gmail.com>   (a_m0d)

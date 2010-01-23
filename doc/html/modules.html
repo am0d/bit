@@ -4,7 +4,7 @@
     <head>
         <title>Buildit Documentation - Modules</title>
         <link rel="icon" href=favicon.ico" />
-        <style type="text/css">@import url("documentation.css");</style>
+        <style type="text/css">@import url("oblivion.css");</style>
     </head>
     <body>
         <h2>Modules Index</h2>
@@ -21,15 +21,15 @@
         <br />
         <h2><a class="header2" href="system.html">System</a></h2>
         <div class="text">
-            System houses the basic "Machine" for each project. It is the central information center. It is where the compiler, database, filesystem, commandline parser and any other fututre features come together. Think of a System as a mini virtual computer. It has file system information, programs, and instructions on how to run those programs.
+            System houses the basic "Machine" for each project. It is the central information center. It is where the compiler, dependency database, file database, and any other fututre features come together. Think of a System as a mini virtual computer. It has file system information, programs, and instructions on how to run those programs.
         </div>
         <h2><a class="header2" href="compiler.html">Compiler</a></h2>
         <div class="text">
             Compiler holds the supported compilers for buildit. If you are making a new one make sure to extend off of <code>Compiler</code>, as it holds a majority of common functions.
         </div>
-        <h2><a class="header2" href="language.html">Languages</a></h2>
+        <h2><a class="header2" href="dependency.html">Dependency</a></h2>
         <div class="text">
-            Language contains information for dependency information for the file database. Not all languages require dependency information (such as UnrealScript), so adding Language support is not always necessary for every new compiler (Though it can help with dependency handling).
+            Dependency contains different rules for each language supported by buildit.
         </div>
         <h2><a class="header2" href="miscellaneous.html">Miscellaneous</a></h2>
         <div class="text">

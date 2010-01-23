@@ -1,9 +1,11 @@
 from threading import Thread
+from buildit.utils import flatten
 
 class Target(Thread):
     def __init__(self, name):
         Thread.__init__(self)
         self.name = name
+        self._files = []
 
     def run(self):
         self.build([])
@@ -15,7 +17,8 @@ class Target(Thread):
         pass
 
     def add(self, files):
-        pass
+        self._files.append(files)
+        self._files = flatten(self._files)
 
     def create_link_string(self):
         pass

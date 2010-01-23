@@ -6,7 +6,7 @@ class Project:
         self.name = name
         self.platforms = []
         self.targets = []
-        self.require_libraries = []
+        self.required_libraries = []
 
     def add_platform(self, platform):
         self.platforms.append(platform)
@@ -14,11 +14,10 @@ class Project:
 
     def add_target(self, target):
         self.targets.append(target)
-        print "Added new target"
         return target
 
     def require_lib(self, lib):
-        if isinstanceof(lib, (tuple, list)):
+        if isinstance(lib, (tuple, list)):
             libraries = flatten(lib)
         else:
             libraries = [lib]

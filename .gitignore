@@ -3,6 +3,7 @@
 *.out
 *.exe
 *.o
+*.obj
 *.elf
 *.mach
 *~

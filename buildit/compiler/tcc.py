@@ -9,4 +9,4 @@ class TCC(CC):
         self.executable = 'tcc'
 
     def __str__(self):
-        return 'TCC"
+        return 'TCC'

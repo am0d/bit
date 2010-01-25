@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 from buildit.compiler.compiler import Compiler
-from buildit.language.cxx import CXX
+from buildit.language.cpp import CPP
 from buildit.utils import format_options fix_strings, file_hash
 from buildit.cprint import command as print_command
 
@@ -23,7 +23,7 @@ class MSVC(Compiler):
             hash = file_hash(file)
             out_file = '{0}/{1}.obj'.format(self.object_directory, file)
             if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file)
+                    hash == self.database.get_hash(file):
                 try: 
                     self._file_list.remove(file)
                 except ValueError:

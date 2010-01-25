@@ -23,7 +23,7 @@ class Unix(System):
                         universal_newlines=True)
         output, errput = process.communicate()
         if not output:
-            error('{0}: {1}'.format(package, errput)
+            error('{0}: {1}'.format(package, errput))
             return
         output = output.replace('\n', '')
         return output

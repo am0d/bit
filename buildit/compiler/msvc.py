@@ -3,7 +3,7 @@ import sys
 import subprocess
 from buildit.compiler.compiler import Compiler
 from buildit.language.cpp import CPP
-from buildit.utils import format_options fix_strings, file_hash
+from buildit.utils import format_options, fix_strings, file_hash
 from buildit.cprint import command as print_command
 
 class MSVC(Compiler):

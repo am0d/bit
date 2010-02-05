@@ -73,6 +73,17 @@ class System(threading.Thread):
         path_list = os.pathsep.join(path_list)
         os.environ['PATH'] = path_list
 
+    def add_directory(self, *directories):
+        directories = flatten(list(directories))
+        for directory in directories:
+            glob_list = []
+            for extension in self.compiler.extensions:
+                glob_list += glob('{0}/*{1}'.format(directory, extension)
+            for file_name in glob_list:
+                self._file_list.append(file_name)
+        self._file_list.sort()
+        self.compiler._file_list = self._file_list
+
     def add(self, *files):
         files = flatten(list(files))
         for file in files:

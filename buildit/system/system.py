@@ -78,7 +78,7 @@ class System(threading.Thread):
         for directory in directories:
             glob_list = []
             for extension in self.compiler.extensions:
-                glob_list += glob('{0}/*{1}'.format(directory, extension)
+                glob_list += glob('{0}/*{1}'.format(directory, extension))
             for file_name in glob_list:
                 self._file_list.append(file_name)
         self._file_list.sort()

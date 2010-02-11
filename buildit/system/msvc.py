@@ -29,7 +29,7 @@ class MSVC(System):
         for path in os.environ['LIB'].split(os.pathsep):
             path_list.append(path)
         lib_string = '/amd64' if self.__arch == 64 else ''
-        path_list.append('{0}/VC/lib{1}'.format(msvc_path, lib_string)
+        path_list.append('{0}/VC/lib{1}'.format(msvc_path, lib_string))
         path_list = os.pathsep.join(path_list)
         os.environ['LIB'] = path_list
         path_list = []
@@ -44,7 +44,7 @@ class MSVC(System):
         self.compiler.add_define(*defines)
 
     def add_library(self, *libraries):
-        self.compiler.add_library*libraries)
+        self.compiler.add_library(*libraries)
 
     def add_library_directory(self, *directories):
         self.compiler.add_library_directory(*directories)

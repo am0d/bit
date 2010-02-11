@@ -1,5 +1,6 @@
 # Windows Based C/C++ System (GCC BASED)
 
+import os
 import subprocess
 
 from buildit.system.unix import Unix
@@ -18,7 +19,15 @@ class MinGW(Unix):
 
     def resource(self, *files):
         files = flatten(list(files))
-        for file_name in files: 
+        for file_name in files:
+            directory = file_name.split('/')
+            directory.pop()
+            directory = '/'.join(directory)
+            directory = '{0}/{1}'.format(self.object_directory, directory)
+            try:
+                os.makedirs(directory)
+            except OSError:
+                pass
             file_out = '{0}/{1}.o'.format(self.object_directory, file_name)
             run_string = '{0} {1} {2}'.format(self.resource_compiler, 
                 file_name, file_out)

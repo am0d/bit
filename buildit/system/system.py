@@ -1,7 +1,6 @@
 # Base System Class
 
 import os
-import gc
 import sys
 import shutil
 import threading
@@ -26,8 +25,7 @@ class System(threading.Thread):
         self._build_directory = ''
         self._object_directory = ''
         self._type = 'binary'
-        if not gc.isenabled():
-            gc.enable()
+        self._complete = False
 
         self.build_directory = 'build/{0}'.format(self.name)
         self.object_directory = 'object/{0}'.format(self.name)
@@ -48,6 +46,7 @@ class System(threading.Thread):
         end_time = datetime.now()
         info('{0}: {1}'.format(self._project_name.upper(), 
             (end_time - start_time)))
+        self._complete = True
         return 0
 
     def build(self):
@@ -62,6 +61,9 @@ class System(threading.Thread):
 
     def pause(self):
         raw_input('Press Enter to continue...')
+
+    def is_complete(self):
+        return self._complete
 
     def add_path(self, *directories):
         path_list = []

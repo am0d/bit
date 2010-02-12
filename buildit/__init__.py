@@ -1,6 +1,4 @@
-# A very terrible hack, but some people probably won't want to do something
-# like from buildit.compiler.compiler import Compiler. 
-# This just saves them the trouble
+# Imports out modules locally, and creates our GPL instance :)
 
 # System Modules
 from buildit.system.system import System
@@ -14,3 +12,8 @@ from buildit.compiler.cxx import CXX
 from buildit.compiler.tcc import TCC
 from buildit.compiler.llvmgcc import LLVMGCC
 from buildit.compiler.msvc import MSVC
+
+# Global Project Lookup
+from buildit.gpl import GPL
+
+gpl = GPL()

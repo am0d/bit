@@ -6,7 +6,6 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.language.c import C
 from buildit.utils import format_options, fix_strings, file_hash
 from buildit.cprint import command as print_command
 
@@ -15,10 +14,13 @@ class CC(Compiler):
     def __init__(self, project_name='PROJECT'):
         Compiler.__init__(self, project_name)
         self.executable = 'cc'
-        self._language = C()
+        self._cxx_support = False
+        self._clang_enabled = False
 
     def __str__(self):
-        return 'CC'
+        if not self._cxx_support:
+            return 'CC'
+        return 'CXX'
 
     def setup_files(self):
         self.__file_count = len(self._file_list)
@@ -137,14 +139,30 @@ class CC(Compiler):
         self.add_compile_flags('-std=c99')
         self.add_link_flags('-std=c99')
         
+    def CXX(self):
+        self.executable = 'c++'
+        self._cxx_support = True
+
     @property
     def extensions(self):
-        return ['.c'] + self.user_extensions
+        if not self._cxx_support:
+            item =  ['.c']
+        else:
+            item = ['.cpp', '.cc', '.cxx', '.c++', '.C']
+            if self._clang_enabled:
+                item.append('.c')
+        return item + self.user_extensions
+            
 
     @property
     def enable_c(self):
-        pass
+        if self._cxx_support:
+            self._clang_enabled = True
 
     @property
     def dependency_extension(self):
-        return ['.h'] + self.user_dependencies
+        if not self._cxx_support:
+            item = ['.h'] 
+        else:
+            item = ['.h', '.hpp', '.hxx', '.h++']
+        return item + self.user_dependencies

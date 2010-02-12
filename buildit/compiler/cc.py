@@ -147,4 +147,4 @@ class CC(Compiler):
 
     @property
     def dependency_extension(self):
-        return ['.h']
+        return ['.h'] + self.user_dependencies

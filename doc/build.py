@@ -7,7 +7,7 @@ import shutil
 
 from glob import glob
 
-import markdown2
+import textile
 
 def generate_docfile(file_name):
     txt_file = file_name
@@ -26,7 +26,6 @@ def generate_docfile(file_name):
     write_dir = '/'.join(write_dir)
     try: os.makedirs(write_dir)
     except: pass
-    html = markdown2.Markdown()
     file = open(file_name, 'w')
     header = open('templates/header.txt')
     for line in header:
@@ -36,7 +35,7 @@ def generate_docfile(file_name):
     header.close()
     txt_file = open(txt_file)
     for line in txt_file:
-        file.write(html.convert(line))
+        file.write(textile.textile(line))
     txt_file.close()
     footer = open('templates/footer.txt')
     for line in footer:

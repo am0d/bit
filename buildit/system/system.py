@@ -133,9 +133,18 @@ class System(threading.Thread):
                     shutil.rmtree(item)
                 except OSError:
                     pass
+        if os.path.exists('.buildit'):
+            try:
+                shutil.rmtree('.buildit')
+            except OSError:
+                pass
         return 0
 
+    def parse_deps(self):
+        return self.compiler.parse_deps()
+
     def rebuild(self):
+        # Just delete the databases and everything should work out >:D
         if os.path.exists('.buildit'):
             try:
                 shutil.rmtree('.buildit')
@@ -148,16 +157,17 @@ class System(threading.Thread):
         return 0
 
     def parse_options(self):
-        self.parser.add_option('-c', '--clean',
-                               action='store_true', dest='clean',
-                               help='Cleans the project')
-        self.parser.add_option('-r', '--rebuild',
-                               action='store_true', dest='rebuild',
-                               help='Rebuilds the project')
+        self.parser.add_option('-c', '--clean', action='store_true', 
+                               dest='clean', help='Cleans the project')
+        self.parser.add_option('-r', '--rebuild', action='store_true', 
+                               dest='rebuild', help='Rebuilds the project')
         self.parser.add_option('-d', '--directory', dest='base_directory',
-                               default='.',
-                               help='Base directory the project is in')
+                               default='.', help='Changes the base directory')
+        self.parser.add_option('-p', '--parse-deps', dest='parse_deps',
+                               action='store_true', help='Parse dependencies')
         self.options, self.args = self.parser.parse_args()
+        if self.options.parse_deps:
+            self._build_steps.insert(0, self.parse_deps)
         if self.options.rebuild:
             self._build_steps.insert(0, self.rebuild)
         if self.options.clean:

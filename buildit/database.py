@@ -9,9 +9,8 @@ from buildit.utils import flatten
 
 class Database(object):
 
-    def __init__(self, project_name, language):
+    def __init__(self, project_name):
         self.__project_name = project_name
-        self.__language = language
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__run()
         try:
@@ -33,8 +32,9 @@ class Database(object):
     def __run(self):
         try:
             os.makedirs('.buildit')
+            # Keep the folder hidden on windows.
             if sys.platform == 'win32':
-                subprocess.call('attrib +h .buildit')
+                subprocess.call(['attrib', '+h', '.buildit'])
         except OSError:
             pass
 
@@ -60,18 +60,7 @@ class Database(object):
         dependents = flatten(dependents)
         for dep in dependents:
             self.__depsdb[file_name] = '{0}|{1}'.format(
-                self.__depsdb[file_name], dep)
+            self.__depsdb[file_name], dep)
 
-    def write_deps(self, file_list):
-        #for file_name in file_list:
-        #    self.depsdb[file_name]
+    def write_deps(self):
         self.__depsdb.sync()
-
-    @property
-    def language(self):
-        return self.__language
-
-    @language.setter
-    def language(self, value):
-        if isinstance(value, object):
-            self.__language = value

@@ -59,10 +59,17 @@ class CC(Compiler):
                 self.add_compiler.flags('-fPIC')
             run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, 
                          out_file, file, self._compile_flags)
+            # Unfortunately, due to some bizarre bugs, properly calling this on 
+            # Unix systems will not work properly, hence the os.systenm call.
+            # subprocess *does* work on windows however. 
+            # (A simple run_string.split(' ') should have worked, 
+            # but alas it does not. 
+            # g++ does not care for quoted files via a list :/
             try:
                 return_value = subprocess.call(run_string)
             except OSError:
-                return_value = os.system(run_string) # Terrible hack, but a fix will exist eventually
+                return_value = os.system(run_string)
+
             if not return_value == 0:
                 return return_value
             self.database.update_hash(file) # Fix up that hash, yo!
@@ -132,12 +139,12 @@ class CC(Compiler):
         
     @property
     def extensions(self):
-        return ['.c']
+        return ['.c'] + self.user_extensions
 
     @property
     def enable_c(self):
         pass
 
     @property
-    def module_extension(self):
+    def dependency_extension(self):
         return ['.h']

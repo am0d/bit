@@ -23,6 +23,8 @@ class Compiler(object):
         self._executable = which('echo')
         self._file_list = []
         self._link_list = []
+        self.user_extensions = []
+        self.user_dependencies = []
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
@@ -50,6 +52,9 @@ class Compiler(object):
     def link_files(self):
         return 0
 
+    def parse_deps(self):
+        return 0
+
     def _percentage(self, counter, list_length):
         percentage = 100 * float(counter)/float(list_length)
         percentage = str(percentage).split('.')
@@ -61,19 +66,41 @@ class Compiler(object):
             self.name.upper(), file_name))
 
     def add_flags(self, *flags):
-        flags = list(flags)
+        flags = flatten(list(flags))
         for flag in flags:
             self._compile_flags += format_options(flag)
 
     def add_compile_flags(self, *flags):
-        flags = list(flags)
+        flags = flatten(list(flags))
         for flag in flags:
             self._compile_flags += format_options(flag)
 
     def add_link_flags(self, *flags):
-        flags = list(flags)
+        flags = flatten(list(flags))
         for flag in flags:
             self._link_flags += format_options(flag)
+
+    def add_file_extension(self, *extensions):
+        extensions = flatten(list(extensions))
+        for extension in extensions:
+            extension = extension.split('.')
+            if len(extension) > 1:
+                extension.pop(0)
+                extension = '.'.join(extension)
+            else:
+                extension = extension.pop()
+            self.user_extensions.append('.{0}'.format(extension))
+
+    def add_dependency_extension(self, *extensions):
+        extensions = flatten(list(extensions))
+        for extension in extensions:
+            extension = extension.split('.')
+            if len(extension) > 1:
+                extension.pop(0)
+                extension = '.'.join(extension)
+            else:
+                extension = extension.pop()
+            self.user_dependencies.append('.{0}'.format(extension))
 
     @property
     def output_extension(self):
@@ -122,7 +149,11 @@ class Compiler(object):
 
     @property
     def extensions(self):
-        return ['.txt']
+        return ['.txt'] + self.user_extensions
+
+    @property
+    def dependency_extensions(self):
+        return ['.txt'] + self.user_dependencies
 
     @property
     def name(self):

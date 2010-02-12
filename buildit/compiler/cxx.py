@@ -1,7 +1,6 @@
 # Unix Based CXX Compiler
 
 from buildit.compiler.cc import CC
-from buildit.language.cpp import CPP
 from buildit.utils import which
 
 class CXX(CC):
@@ -10,7 +9,6 @@ class CXX(CC):
         CC.__init__(self)
         self._clang_enabled = False
         self.executable = 'c++'
-        self._language = CPP()
 
     def __str__(self):
         return 'CXX'

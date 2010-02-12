@@ -8,4 +8,14 @@ class GPL(object):
     def __init__(self):
         if not gc.isenabled():
             gc.enable()
-        project_lookup = {}
+        self.__project_lookup = {}
+        self.__project_list = []
+
+    def run_t(self):
+        pass
+
+    def run(self):
+        pass
+
+    def add_project(self, name, instance):
+        pass

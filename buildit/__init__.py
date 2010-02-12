@@ -16,4 +16,4 @@ from buildit.compiler.msvc import MSVC
 # Global Project Lookup
 from buildit.gpl import GPL
 
-gpl = GPL()
+buildit = GPL()

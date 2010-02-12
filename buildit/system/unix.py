@@ -67,5 +67,9 @@ class Unix(System):
         self.compiler.C99
 
     @property
+    def CXX(self):
+        self.compiler.CXX
+
+    @property
     def enable_c(self):
         self.compiler.enable_c

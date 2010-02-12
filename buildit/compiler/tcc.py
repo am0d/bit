@@ -10,3 +10,8 @@ class TCC(CC):
 
     def __str__(self):
         return 'TCC'
+
+    # Disable C++ support
+    @property
+    def CXX(self):
+        pass

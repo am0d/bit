@@ -1,5 +1,6 @@
 # LLVM Clang Compiler
-
+# As soon as C++ support is stable, this be change wildly 
+# to differentiate from CC
 from buildit.compiler.cc import CC
 
 class Clang(CC):

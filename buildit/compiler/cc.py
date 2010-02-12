@@ -138,7 +138,8 @@ class CC(Compiler):
     def C99(self):
         self.add_compile_flags('-std=c99')
         self.add_link_flags('-std=c99')
-        
+    
+    @property 
     def CXX(self):
         self.executable = 'c++'
         self._cxx_support = True

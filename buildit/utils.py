@@ -9,10 +9,6 @@ import threading
 
 from buildit.cprint import error, warning
 
-def wait():
-    while threading.active_count() > 1:
-        time.sleep(1)
-
 def file_hash(file_name):
     try:
         f = open(file_name, 'rb')

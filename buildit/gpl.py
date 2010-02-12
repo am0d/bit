@@ -2,6 +2,7 @@
 # Enables our garbage collection as well, rather than System
 
 import gc
+import threading
 
 class GPL(object):
 
@@ -12,10 +13,15 @@ class GPL(object):
         self.__project_list = []
 
     def run_t(self):
-        pass
-
+        for project_in self.__project_list:
+            project.start()
+        # We should allow people to disable this part.
+        while threading.active_count() > 1:
+            time.sleep(1)
     def run(self):
-        pass
+        for project in self.__project_list:
+            project.run()
 
-    def add_project(self, name, instance):
-        pass
+    def add_project(self, instance):
+        self.__project_list.append(instance)
+        self.__project_lookup[instance._project_name] = instance

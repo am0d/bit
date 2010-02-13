@@ -1,28 +1,28 @@
-# Tutorial
+h1. Tutorial
 
-## Index
-<div class="index_table">
-<a name="index"><a/>
+h2. Index
+
+<a name="index"><a/ >
    &nbsp;<a href="#overview">Overview</a>
    &nbsp;<a href="#requirements">Requirements</a> 
    &nbsp;<a href="#installation">Installation</a>
    &nbsp;<a href="#usage">Usage</a>
    &nbsp;<a href="#examples">Examples</a>
-</div>
-## Overview
-<a name="overview"></a>
+
+h2(#overview). Overview
+
 This tutorial was written to provide you, the user, with the basics required to utilize buildit in your build system. 
 
-## Requirements
-<a name="requirements"><a/>
-A basic [CPython](http://python.org "Python") or [IronPython](http://ironpython.net "IronPython") 2.6 installation is all that is required. There are plans to eventually port buildit to Python 3, however, nothing before Python 2.6 will be targeted.
+h2(#requirements). Requirements
 
-## Installation
-<a name="installation"></a>
+A basic "CPython(Python)":http://python.org or "IronPython":http://ironpython.net 2.6 installation is all that is required. There are plans to eventually port buildit to Python 3, however, nothing before Python 2.6 will be targeted.
+
+h2(#installation). Installation
+
 From a commandline (with administrative rights), running `setup.py install` will be sufficient to install buildit. If you are on Windows, and prefer to not use the commandline, placing buildit in `site-packages` in your Python installation will suffice.
 
-## Usage
-<a name="usage"></a>
+h2(#usage). Usage
+
 buildit is run through a basic python script. You don't need to give the file any specific name. As long as it can be run by Python, you will have your build script.
 
 To get started in your script, you must put `from buildit import *`. This is the absolute minimum needed to run buildit.
@@ -31,13 +31,13 @@ The basic usage of buildit relies on "mini computers" known as systems. These sy
 
 So let's create our project instance
 
-`project = Unix('buildit_tutorial')`
+@project = Unix('buildit_tutorial')@
 
-Each `System` with the exception of `Content`, requires a project name. This partly affects what your final output will be(with several restrictions depending on the project type, and the compiler, as well as the operating system.)
+Each @System@ with the exception of @Content@, requires a project name. This partly affects what your final output will be(with several restrictions depending on the project type, and the compiler, as well as the operating system.)
 
 Next we need to add some files to the project.
 
-`project.add('src')`
+@project.add('src')@
 
 Maybe we have an include directory as well, so let's add that now.
 
@@ -45,13 +45,12 @@ Maybe we have an include directory as well, so let's add that now.
 
 Maybe we're also linking against two arbitrary libraries.
 
-`project.add_library('a', 'b')`
+@project.add_library('a', 'b')@
 
-All of these `add_*` functions use var args, so you can add as many as you want in one function call. The result is, very small buil scripts that do a lot.
+All of these @add_*@ functions use var args, so you can add as many as you want in one function call. The result is, very small buil scripts that do a lot.
 
-To run this script we have to options. We can either call `project.run()`, or `project.start()`. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual `System.run()` call. Of course, you still have the extremely large python standard library available as well. 
+To run this script we have to options. We can either call @project.run()@, or @project.start()@. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual @System.run()@ call. Of course, you still have the extremely large python standard library available as well. 
 
-## Examples
-<a name="examples"></a>
+h2(#examples). Examples
 
 Below are links to examples, with different styles, as well as uses.

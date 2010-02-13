@@ -1,79 +1,93 @@
-# System
+h1. System
 
-## Description
+h2. Description
 
-`System` is the base "project" class in buildit. If you are implementing new language support then you should derive from `System`. Otherwise, it is best to implement a new `Compiler`, or to derive from another `System` such as `MSVC` or `Unix`. 
+@System@ is the base "project" class in buildit. If you are implementing new language support then you should derive from @System@. Otherwise, it is best to implement a new @Compiler@, or to derive from another @System@ such as @MSVC@ or @Unix@. 
 
-## Functions
+h2. Functions
 
-#### add
-parameters: `files`
+h4. add
 
-description: Autoglobs directories, or adds a file to the compiler list. Only adds files with the compiler's `extensions` property. Uses var args.
+parameters: @files@
 
-#### remove
-parameters: `files`
+description: Autoglobs directories, or adds a file to the compiler list. Adds files with the compiler's @extensions@ property. Uses var args.
 
-description: Works in the opposite way of `System.add`, by removing files from the compiler list.
+h4. remove
 
-#### require
-parameters: `System`
+parameters: @files@
 
-description: Used to ensure a series of build are run in order. If the given `System` fails to complete properly, the `System` using require will not build.
+description: Works in the opposite way of @System.add@, by removing files from the compiler list.
 
-#### append
-parameters: `function`
+h4. require
 
-description: Places the given `function` after the compiler's run step. Useful if a post build step is required.
+parameters: @System@
 
-#### prepend
-parameters: `function`
+description: Used to ensure a series of builds are run in order. If the given @System@ fails to complete properly, the original @System@ using require will not build. This command is useful for stringing several projects together.
 
-description: Places the given `function` before the compiler's run step. Useful for creating prebuild steps.
+h4. append
 
-#### pause
-parameters: `None`
+parameters: @function@
 
-description: Is the same as using system('pause') on windows. It *is* cross platform, and is best used for scripts that are not run through a commandline, but rather run from a desktop interface.
+description: Places the given @function@ after the compiler's run step. Useful if a post build step is required.
 
-#### add_path
-parameters: `directories`
+h4. prepend
+
+parameters: @function@
+
+description: Places the given @function@ before the compiler's run step. Useful for creating prebuild steps.
+
+h4. pause
+
+parameters: @None@
+
+description: Is the same as using @pause@ on windows. It *is* cross platform, and is best used for scripts that are not run through a commandline, but rather run from a desktop interface.
+
+h4. add_path
+
+parameters: @directories@
 
 description: Temporarily adds any of the given directories to the system path. 
 
-## Properties
+h2. Properties
 
-#### static
-type: `get`
+h4. static
 
-description:
-
-#### dynamic
-type: `get`
+type: @get@
 
 description:
 
-#### binary
-type: `get`
+h4. dynamic
+
+type: @get@
 
 description:
 
-#### name
-type: `get`
+h4. binary
+
+type: @get@
 
 description:
 
-#### compiler
-type: `set`, `get`
+h4. name
+
+type: @get@
 
 description:
 
-#### build_directory
-type: `set`, `get`
+h4. compiler
+
+type: @set, get@
 
 description:
 
-#### object_directory
-type: `set`, `get`
+h4. build_directory
+
+type: @set, get@
+
+description:
+
+h4. object_directory
+
+type: @set, get@
 
 description:

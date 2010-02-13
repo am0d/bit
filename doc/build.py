@@ -34,8 +34,10 @@ def generate_docfile(file_name):
         file.write(line)
     header.close()
     txt_file = open(txt_file)
+    txt_string = ''
     for line in txt_file:
-        file.write(textile.textile(line))
+        txt_string += line
+    file.write(textile.textile(txt_string))
     txt_file.close()
     footer = open('templates/footer.txt')
     for line in footer:

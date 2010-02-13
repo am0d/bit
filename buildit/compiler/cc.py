@@ -36,7 +36,7 @@ class CC(Compiler):
                 self.__file_count -= 1
             else:
                 compile_list.append(file)
-        self._file_list = x
+        self._file_list = compile_list
         self._file_list.sort()
         return 0
 

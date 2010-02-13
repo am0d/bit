@@ -16,7 +16,7 @@ class GPL(object):
         self.__project_list = []
 
     def start(self, no_wait=False):
-        for project_in self.__project_list:
+        for project in self.__project_list:
             project.start()
         if not no_wait:
             while threading.active_count() > 1:

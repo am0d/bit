@@ -39,3 +39,6 @@ class GPL(object):
             del self.__project_lookup[instance._project_name]
         except KeyError:
             error('Could not remove: {0}'.format(instance._project_name))
+
+    def pause(self):
+        raw_input('Press Enter to continue...')

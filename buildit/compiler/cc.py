@@ -6,8 +6,9 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
-from buildit.utils import format_options, fix_strings, file_hash
+from buildit.utils import format_options, fix_strings, file_hash, flatten
 from buildit.cprint import command as print_command
+
 
 class CC(Compiler):
 
@@ -23,19 +24,19 @@ class CC(Compiler):
         return 'CXX'
 
     def setup_files(self):
+        self._file_list = flatten(self._file_list)
         self.__file_count = len(self._file_list)
+        compile_list = []
         for file in self._file_list:
             hash = file_hash(file)
             out_file = '{0}/{1}.o'.format(self.object_directory, file)
             if os.path.exists(out_file) and \
                     hash == self.database.get_hash(file):
-                try:
-                    self._file_list.remove(file)
-                except ValueError:
-                    pass
                 self._link_list.append(out_file)
                 self.__file_count -= 1
-                continue
+            else:
+                compile_list.append(file)
+        self._file_list = x
         self._file_list.sort()
         return 0
 
@@ -71,7 +72,6 @@ class CC(Compiler):
                 return_value = subprocess.call(run_string)
             except OSError:
                 return_value = os.system(run_string)
-
             if not return_value == 0:
                 return return_value
             self.database.update_hash(file) # Fix up that hash, yo!
@@ -114,23 +114,23 @@ class CC(Compiler):
         return 0
 
     def add_define(self, *defines):
-        defines = list(defines)
+        defines = flatten(list(defines))
         for define in defines:
             self._compile_flags += format_options(define, '-D')
 
     def add_include_directory(self, *directories):
-        directories = list(directories)
+        directories = flatten(list(directories))
         for directory in directories:
             self._compile_flags += format_options(directory, '-I', True)
             self._link_flags += format_options(directory, '-I', True)
 
     def add_library_directory(self, *directories):
-        directories = list(directories)
+        directories = flatten(list(directories))
         for directory in directories:
             self._link_flags += format_options(directory, '-L', True)
 
     def add_library(self, *libraries):
-        libraries = list(libraries)
+        libraries = flatten(list(libraries))
         for library in libraries:
             self._link_flags += format_options(library, '-l')
 
@@ -153,7 +153,6 @@ class CC(Compiler):
             if self._clang_enabled:
                 item.append('.c')
         return item + self.user_extensions
-            
 
     @property
     def enable_c(self):

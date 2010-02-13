@@ -1,4 +1,5 @@
-# Imports out modules locally, and creates our GPL instance :)
+# Imports out modules locally, and creates our GPL instance, and 
+# sets up a few other things as well :)
 
 # System Modules
 from buildit.system.system import System
@@ -15,5 +16,19 @@ from buildit.compiler.msvc import MSVC
 
 # Global Project Lookup
 from buildit.gpl import GPL
+
+# Magic?
+import sys
+
+windows = False
+macosx = False
+linux = False
+
+if sys.platform == 'win32':
+    windows = True
+if sys.platform == 'darwin':
+    macosx = True
+if sys.platform == 'linux2':
+    linux = True
 
 buildit = GPL()

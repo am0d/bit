@@ -28,7 +28,8 @@ class System(threading.Thread):
         self._complete = False
 
         self.build_directory = 'build/{0}'.format(self.name)
-        self.object_directory = 'object/{0}'.format(self.name)
+        self.object_directory = 'object/{0}/{1}'.format(project_name, 
+                                self.name)
 
         self._build_steps.append(self.build)
 
@@ -57,10 +58,7 @@ class System(threading.Thread):
         self._build_steps.append(function)
 
     def prepend(self, function):
-        self._build_steps.insert(function, 0)
-
-    def pause(self):
-        raw_input('Press Enter to continue...')
+        self._build_steps.insert(function, 0) 
 
     def is_complete(self):
         return self._complete
@@ -166,7 +164,7 @@ class System(threading.Thread):
         self.parser.add_option('-d', '--directory', dest='base_directory',
                                default='.', help='Changes the base directory')
         self.parser.add_option('-p', '--parse-deps', dest='parse_deps',
-                               action='store_true', help='Parse dependencies')
+                               action='store_true', help='Parse Dependencies')
         self.options, self.args = self.parser.parse_args()
         if self.options.parse_deps:
             self._build_steps.insert(0, self.parse_deps)

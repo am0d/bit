@@ -2,12 +2,12 @@ h1. Tutorial
 
 h2. Index
 
-<a name="index"><a/ >
-   &nbsp;<a href="#overview">Overview</a>
-   &nbsp;<a href="#requirements">Requirements</a> 
-   &nbsp;<a href="#installation">Installation</a>
-   &nbsp;<a href="#usage">Usage</a>
-   &nbsp;<a href="#examples">Examples</a>
+"Overview":#overview
+"Requirements":#requirements 
+"Installation":#installation
+"Usage":#usage
+"Advanced Usage":#advanced
+"Examples":#examples
 
 h2(#overview). Overview
 
@@ -19,15 +19,15 @@ A basic "CPython(Python)":http://python.org or "IronPython":http://ironpython.ne
 
 h2(#installation). Installation
 
-From a commandline (with administrative rights), running `setup.py install` will be sufficient to install buildit. If you are on Windows, and prefer to not use the commandline, placing buildit in `site-packages` in your Python installation will suffice.
+From a commandline (with administrative rights), running @setup.py install@ will be sufficient to install buildit. If you are on Windows, and prefer to not use the commandline, placing buildit in @site-packages@ in your Python installation will suffice.
 
 h2(#usage). Usage
 
 buildit is run through a basic python script. You don't need to give the file any specific name. As long as it can be run by Python, you will have your build script.
 
-To get started in your script, you must put `from buildit import *`. This is the absolute minimum needed to run buildit.
+To get started in your script, you must put @from buildit import *@. This is the absolute minimum needed to run buildit.
 
-The basic usage of buildit relies on "mini computers" known as systems. These systems contain a compiler, and a list of files to send to it. They also have an easy to use front end for setting specific information (such as libraries to link with. Take a look at the documentation for which `System` to use. For the purposes of this tutorial, we'll be using the `Unix` system. This system works on Windows, but is targeted for a `CC` like compiler(such as GCC). `Unix` and `MinGW` are interchangeable on Windows.
+The basic usage of buildit relies on "mini computers" known as systems. These systems contain a compiler, and a list of files to send to it. They also have an easy to use front end for setting specific information (such as libraries to link with. Take a look at the documentation for which @System@ to use. For the purposes of this tutorial, we'll be using the @Unix@ system. This system works on Windows, but is targeted for a @CC@ like compiler(such as GCC). @Unix@ and @MinGW@ are interchangeable on Windows.
 
 So let's create our project instance
 
@@ -41,7 +41,7 @@ Next we need to add some files to the project.
 
 Maybe we have an include directory as well, so let's add that now.
 
-`project.add_include_directory('include')`
+@project.add_include_directory('include')@
 
 Maybe we're also linking against two arbitrary libraries.
 
@@ -49,7 +49,11 @@ Maybe we're also linking against two arbitrary libraries.
 
 All of these @add_*@ functions use var args, so you can add as many as you want in one function call. The result is, very small buil scripts that do a lot.
 
-To run this script we have to options. We can either call @project.run()@, or @project.start()@. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual @System.run()@ call. Of course, you still have the extremely large python standard library available as well. 
+To run this script we have two options. We can either call @project.run()@, or @project.start()@. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual @System.run()@ call. Of course, you still have the extremely large python standard library available as well. 
+
+h2(#advanced). Advanced Usage
+
+throw NotYetImplemented :V
 
 h2(#examples). Examples
 

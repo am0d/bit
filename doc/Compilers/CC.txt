@@ -1,5 +1,5 @@
-# Unix C Compiler
+h1. CC
 
-## Description
+h2. Description
 
 Documentation not yet written

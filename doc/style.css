@@ -10,8 +10,6 @@ p { text-align: justify; font-size: 10pt; font-family: sans-serif; }
 code { color: #2E3436; padding: 0px; background-color: #EEEEEC; border-style:solid; border-color: #2E3436; border-width: thin; }
 div { width: 190px; border-style: solid; border-color: #2E3436; border-width: thin; line-height: 0;}
 ul  { list-style: none; display: block; }
-.index_table { background-color: #EEEEEC; }
-.code_table { background-color: #EEEEEC; font-family: serif; }
 
 /* Hyperlinks */
 a { text-align: left; font-size: 10pt; font-family: sans-serif; text-decoration: none; color: #F57900; }

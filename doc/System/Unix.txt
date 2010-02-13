@@ -1,29 +1,29 @@
-# Unix
+h1. Unix
 
-## Description
+h2. Description
 
-`Unix` is based off of `System`, and is used for `cc` based compilers. This includes `gcc`. This is where a majority of C and C++ code are mentioned.
+@Unix@ is based off of @System@, and is used for @cc@ based compilers. This includes @gcc@. This is where a majority of C and C++ code are mentioned.
 
-## Functions
+h2. Functions
 
-#### pkg_config
+h4. pkg_config
 parameters: `package`, `script` (pkg)
 
 description: allows the use of the `pkg-config` (or any other scripts such as `sdl-config` from inside the build script without having to call it yourself. The resulting text is automatically added to the system's compile and link steps.
 
-#### add_define
+h4. add_define
 parameters: `define`
 
 description: adds a define to the compiler (in this case, it is `-D<define>`)
 
-## Properties
+h2. Properties
 
-#### C99
+h4. C99
 type: `get`
 
 description: Calling `Unix.C99` sets a few basic calls to ensure that the C99 standard is used (this is not by default). It is not a function, and does not return anything.
 
-#### enable_c
+h4. enable_c
 type: `get`
 
 description: Calling `Unix.enable_c` will allow the use of C files with a CXX compiler.

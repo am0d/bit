@@ -2,6 +2,7 @@
 # Enables our garbage collection as well, rather than System
 
 import gc
+import sys
 import threading
 
 from buildit.cprint import error
@@ -14,10 +15,9 @@ class GPL(object):
         self.__project_lookup = {}
         self.__project_list = []
 
-    def run_t(self, no_wait=False):
+    def start(self, no_wait=False):
         for project_in self.__project_list:
             project.start()
-        # We should allow people to disable this part.
         if not no_wait:
             while threading.active_count() > 1:
                 time.sleep(1)

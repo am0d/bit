@@ -8,9 +8,9 @@ from buildit.system.content import Content
 
 # Compiler Modules
 from buildit.compiler.cc import CC
-from buildit.compiler.cxx import CXX
 from buildit.compiler.tcc import TCC
 from buildit.compiler.llvmgcc import LLVMGCC
+from buildit.compiler.clang import Clang
 from buildit.compiler.msvc import MSVC
 
 # Global Project Lookup

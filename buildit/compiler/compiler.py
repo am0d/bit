@@ -83,7 +83,6 @@ class Compiler(object):
         for extension in extensions:
             extension = extension.split('.')
             if len(extension) > 1:
-                extension.pop(0)
                 extension = '.'.join(extension)
             else:
                 extension = extension.pop()
@@ -94,7 +93,6 @@ class Compiler(object):
         for extension in extensions:
             extension = extension.split('.')
             if len(extension) > 1:
-                extension.pop(0)
                 extension = '.'.join(extension)
             else:
                 extension = extension.pop()

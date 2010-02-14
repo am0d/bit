@@ -1,37 +1,18 @@
 import os
 import sys
 import subprocess
-from buildit.compiler.compiler import Compiler
+from buildit.compiler.cc import CC
 from buildit.utils import format_options, fix_strings, file_hash
 from buildit.cprint import command as print_command
 
-class MSVC(Compiler):
+class MSVC(CC):
+
     def __init__(self, project_name='PROJECT'):
         Compiler.__init__(self, project_name)
-        self._clang_enabled = False
-        self.__exception_handler = False
         self.executable = 'cl'
-        self._language = CXX()
 
     def __str__(self):
         return 'MSVC'
-
-    def setup_files(self):
-        self.__file_count = len(self._file_list)
-        for file in self._file_list:
-            hash = file_hash(file)
-            out_file = '{0}/{1}.obj'.format(self.object_directory, file)
-            if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
-                try: 
-                    self._file_list.remove(file)
-                except ValueError:
-                    pass
-                self._link_list.append(out_file)
-                self.__file_count -= 1
-                continue
-        self._file_list.sort()
-        return 0
 
     def compile_files(self):
         counter = 1
@@ -51,8 +32,6 @@ class MSVC(Compiler):
             except OSError:
                 pass
             self.command(percentage, info_file)
-            if self.__exception_handler:
-                self._compile_flags += ' /EHa'
             run_string = '{0} /nologo /Fo "{1}" /c "{2}" {3}'.format(
                 self.executable, out_file, file, self._compile_flags)
             if len(run_string) > 1024:
@@ -126,22 +105,3 @@ class MSVC(Compiler):
     @property
     def C99(self):
         pass
-        
-    @property
-    def extensions(self):
-        if not self._clang_enabled:
-            return ['.cpp', '.cc', '.cxx', '.c++', '.C']
-        else:
-            return ['.c', '.cc', '.cpp', '.cxx', '.c++', '.C']
-
-    @property
-    def enable_c(self):
-        self._clang_enabled = True
-
-    @property
-    def exceptio_handler(self):
-        self.__exception_hadnler = True
-
-    @property
-    def module_extension(self):
-        return ['.h', '.hpp', '.hxx', '.h++']

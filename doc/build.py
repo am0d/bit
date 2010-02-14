@@ -65,6 +65,16 @@ if __name__ == '__main__':
     for file in file_list:
         if file.endswith('.txt'):
             generate_docfile(file)
+    file_list = []
     for root, dir, files in os.walk('.'):
         if 'templates' in root: continue
+        for file in files:
+            if file.endswith('.py'):
+                file_list.append('{0}/{1}'.format(root, file))
         shutil.copy('style.css', '../html/{0}'.format(root))
+    file_list = fix_paths(file_list)
+    for file in file_list:
+        try:
+            shutil.copy(file, '../html/{0}'.format(file))
+        except:
+            print('Could not copy {0}'.format(file))

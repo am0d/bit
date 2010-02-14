@@ -36,12 +36,6 @@ parameters: @function@
 
 description: Places the given @function@ before the compiler's run step. Useful for creating prebuild steps.
 
-h4. pause
-
-parameters: @None@
-
-description: Is the same as using @pause@ on windows. It *is* cross platform, and is best used for scripts that are not run through a commandline, but rather run from a desktop interface.
-
 h4. add_path
 
 parameters: @directories@

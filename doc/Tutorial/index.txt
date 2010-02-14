@@ -2,12 +2,12 @@ h1. Tutorial
 
 h2. Index
 
-"Overview":#overview
-"Requirements":#requirements 
-"Installation":#installation
-"Usage":#usage
-"Advanced Usage":#advanced
-"Examples":#examples
+* "Overview":#overview
+* "Requirements":#requirements 
+* "Installation":#installation
+* "Usage":#usage
+* "Advanced Usage":#advanced
+* "Examples":#examples
 
 h2(#overview). Overview
 
@@ -49,11 +49,17 @@ Maybe we're also linking against two arbitrary libraries.
 
 All of these @add_*@ functions use var args, so you can add as many as you want in one function call. The result is, very small buil scripts that do a lot.
 
-To run this script we have two options. We can either call @project.run()@, or @project.start()@. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual @System.run()@ call. Of course, you still have the extremely large python standard library available as well. 
+To run this script we have two options. We can either call @project.run()@, or @project.start()@. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual @System.run()@ call. Of course, you still have the extremely large python standard library available as well. You can see the entire script "here":tutorial1.py
 
 h2(#advanced). Advanced Usage
 
-throw NotYetImplemented :V
+In some instances, it may be necessary to have multiple projects, running in parallel or requiring one to be compiled before the main project. This is where it gets fun.
+
+For parallel projects merely use @buildit.add_project(instance_name)@. For example:
+
+@buildit.add_project(x)@
+
+This places the project in the GPL(Global Project Lookup). The GPL has a dictionary containing all the project names, and their instances. Calling @buildit.run()@ Will run each of these project sequentially. Calling @buildit.start()@ will run the threaded version of the projects, and wait until the total number of threads is 1. (Due to limitations provided by the GIL(Global Interpreter Lock), the threaded versions of the projects may be changed to use the @multiprocessing@ module in later versions, with an option for the older threaded version).
 
 h2(#examples). Examples
 

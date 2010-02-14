@@ -21,8 +21,8 @@ To build the documentation [markdown2](http://code.google.com/p/python-markdown2
 
  * Database backend to replace flatfiles. (Completed November 27th 2009)
  * Static, Shared, and Binaries for all C/C++ compilers. (Completed November 27th 2009)
- * MSVC Support
- * Better Documentation
+ * MSVC Support (Preliminary, not guaranteed to currently work)
+ * Better Documentation (Currently being worked on)
  * pkg-config support (Completed November 25th, 2009)
  
 Contributors:

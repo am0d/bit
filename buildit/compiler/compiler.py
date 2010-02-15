@@ -3,6 +3,8 @@
 import os
 import subprocess
 
+from glob import glob
+
 from buildit.database import Database
 
 from buildit.utils import which, flatten, fix_strings, file_hash

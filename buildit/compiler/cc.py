@@ -25,19 +25,27 @@ class CC(Compiler):
 
     def setup_files(self):
         self._file_list = flatten(self._file_list)
-        self.__file_count = len(self._file_list)
         compile_list = []
-        for file in self._file_list:
-            hash = file_hash(file)
-            out_file = '{0}/{1}.o'.format(self.object_directory, file)
+        for file_name in self._file_list:
+            hash = file_hash(file_name)
+            out_file = '{0}/{1}.o'.format(self.object_directory, file_name)
             if os.path.exists(out_file) and \
-                    hash == self.database.get_hash(file):
+                    hash == self.database.get_hash(file_name):
                 self._link_list.append(out_file)
-                self.__file_count -= 1
             else:
-                compile_list.append(file)
-        self._file_list = compile_list
+                compile_list.append(file_name)
+        for file_name in self._dependency_file_list:
+            hash = file_hash(file_name)
+            deps = []
+            if not hash == self.database.get_dfhs(file_name):
+                deps = self.database.get_deps(file_name)
+            if not len(deps) == 0:
+                for file_name in flatten(deps):
+                    compile_list.append(file_name)
+        # Remove duplicates, sort, and set the file count :)
+        self._file_list = list(set(compile_list))
         self._file_list.sort()
+        self.__file_count = len(self._file_list)
         return 0
 
     def compile_files(self):

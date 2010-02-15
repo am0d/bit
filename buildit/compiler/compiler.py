@@ -21,12 +21,15 @@ class Compiler(object):
         self._executable = which('echo')
         self._file_list = []
         self._link_list = []
+        self._dependency_folder_list = []
+        self._dependency_file_list = []
         self.user_extensions = []
         self.user_dependencies = []
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.link_files)
+        self._compile_steps.append(self.write_deps)
 
     def __str__(self):
         return 'Compiler'
@@ -51,6 +54,26 @@ class Compiler(object):
         return 0
 
     def parse_deps(self):
+        # We want this to run first
+        self._compile_steps.insert(0, self.dependency_tracking)
+        return 0
+    
+    def dependency_tracking(self):
+        for folder in self._dependency_folder_list:
+            if not os.path.isdir(folder):
+                continue
+            glob_list = []
+            for root, dir, file_names in os.walk(folder):
+                for extension in flatten(self.dependency_extensions):
+                    glob_list += glob('{0}/*{1}'.format(root, extension))
+            glob_list = fix_strings(glob_list)
+            for file_name in glob_list:
+                self._dependency_file_list.append(file_name)
+        self._dependency_file_list.sort()
+        return 0
+
+    def write_deps(self):
+        # This runs last (Basically writes our dependency_file_list to disk)
         return 0
 
     def _percentage(self, counter, list_length):
@@ -77,6 +100,11 @@ class Compiler(object):
         flags = flatten(list(flags))
         for flag in flags:
             self._link_flags += format_options(flag)
+
+    def add_dependency_folder(self, *folders):
+        folders = flatten(list(folders))
+        for folder in folders:
+            self._dependency_list.append(folder)
 
     def add_file_extension(self, *extensions):
         extensions = flatten(list(extensions))

@@ -7,6 +7,10 @@ import subprocess
 from buildit.utils import file_hash, error
 from buildit.utils import flatten
 
+# We use the pipe (|) character to separate the files, 
+# because no operating system allows a | in the file name, 
+# and if it does that's just dumb XD
+
 class Database(object):
 
     def __init__(self, project_name):
@@ -14,8 +18,12 @@ class Database(object):
         self.__location = '.buildit/{0}'.format(self.__project_name)
         self.__run()
         try:
+            # File Hashes
             self.__hashdb = anydbm.open('{0}.hash'.format(self.__location), 'c')
+            # Dependency Lists
             self.__depsdb = anydbm.open('{0}.deps'.format(self.__location), 'c')
+            # Dependency File Hashes
+            self.__dfhsdb = anydbm.open('{0}.dfhs'.format(self.__location), 'c')
         except anydbm.error:
             error('Could not open dependency databases')
 
@@ -23,11 +31,15 @@ class Database(object):
         try:
             self.__hashdb.close()
         except AttributeError:
-            pass
+            error('Could not close HashDB safely')
         try:
             self.__depsdb.close()
         except AttributeError:
-            pass
+            error('Could not close DepsDB safely')
+        try:
+            self.__dfhsdb.close()
+        except AttributeError:
+            error('Could not close DFHSDB safely')
 
     def __run(self):
         try:
@@ -39,7 +51,6 @@ class Database(object):
             pass
 
     def get_hash(self, file_name):
-        # Ensure that the hash returned is a string.
         return str(self.__hashdb.get(file_name, ''))
 
     def update_hash(self, file_name):
@@ -51,6 +62,7 @@ class Database(object):
             self.__hashdb[file_name] = str(file_hash(file_name))
         self.__hashdb.sync()
 
+    # Returns a list, so pay attention.
     def get_deps(self, file_name):
         return self.__depsdb.get(file_name, '').split('|')[1:]
 
@@ -58,9 +70,19 @@ class Database(object):
         if file_name not in self.__depsdb:
             self.__depsdb[file_name] = ''
         dependents = flatten(dependents)
-        for dep in dependents:
-            self.__depsdb[file_name] = '{0}|{1}'.format(
-            self.__depsdb[file_name], dep)
-
-    def write_deps(self):
+        dependency_string = '|'.join(dependents)
+        self.__depsdb[file_name] = '{0}|{1}'.format(
+            self.__depsdb[file_name], dependency_string)
         self.__depsdb.sync()
+
+    def get_dfhs(self, file_name):
+        return str(self.__dfhsdb.get(file_name, ''))
+
+    def update_dfhs(self, file_name):
+        self.__dfhsdb[file_name] = str(file_hash(file_name))
+        self.__dfhsdb.sync()
+
+    def write_dfhs(self, file_list):
+        for file_name in flatten(file_list):
+            self.__dfhsdb[file_name] = str(file_hash(file_name))
+        self.__dfhsdb.sync()

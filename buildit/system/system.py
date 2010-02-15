@@ -31,7 +31,9 @@ class System(threading.Thread):
         self.object_directory = 'object/{0}/{1}'.format(project_name, 
                                 self.name)
 
+        self._build_steps.append(self.parse_deps)
         self._build_steps.append(self.build)
+        
 
     def __str__(self):
         return 'System'
@@ -51,9 +53,8 @@ class System(threading.Thread):
         return 0
 
     def build(self):
-        return_value = self.compiler.run
-        return return_value
-
+        return self.compiler.run
+        
     def append(self, function):
         self._build_steps.append(function)
 
@@ -161,18 +162,31 @@ class System(threading.Thread):
                                dest='clean', help='Cleans the project')
         self.parser.add_option('-r', '--rebuild', action='store_true', 
                                dest='rebuild', help='Rebuilds the project')
+        self.parser.add_option('-n', '--no-deps', action='store_true', 
+                               dest='no_deps', help='No dependency tracking')
         self.parser.add_option('-d', '--directory', dest='base_directory',
                                default='.', help='Changes the base directory')
-        self.parser.add_option('-p', '--parse-deps', dest='parse_deps',
-                               action='store_true', help='Parse Dependencies')
+
         self.options, self.args = self.parser.parse_args()
         if self.options.parse_deps:
-            self._build_steps.insert(0, self.parse_deps)
+            try:
+                self._build_steps.remove(self.parse_deps)
+            except ValueError:
+                error('Could not halt dependency tracking')
         if self.options.rebuild:
             self._build_steps.insert(0, self.rebuild)
         if self.options.clean:
             self._build_steps = [self.clean]
         self.change_base_directory(self.options.base_directory)
+
+    def add_dependency_folder(self, *folders):
+        self.compiler.add_dependency_folder(*folders)
+
+    def add_file_extension(self, *extensions):
+        self.compiler.add_file_extension(*extensions)
+
+    def add_dependency_extension(self, *extensions):
+        self.compiler.add_dependency_extension(*extensions)
 
     @property
     def static(self):

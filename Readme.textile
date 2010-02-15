@@ -1,32 +1,33 @@
-# Overview
+h1. Overview
 
 buildit is an easy to use, easy to modify, and easy to understand build system.
 It supports dependency tracking, multiple projects, and an easy to use API.
 
-# Information
+h1. Information
 
 Currently only python 2.6.x is supported, though there are plans to add in Python 3.x support. No python versions before that will be supported. buildit is not guaranteed to run on other Python implementations.
 
-## Installation Instructions
+h2. Installation Instructions
 
-To install buildit, merely run setup.py install as root
+To install buildit, merely run @python setup.py install@ in your favorite shell
 
-## Building The Documentation
+h2. Building The Documentation
 
-To build the documentation [markdown2](http://code.google.com/p/python-markdown2/) is required. In the doc directory, just run `build.py` in the documentation directory. The tutorial is located in the documentation.
+To build the documentation PyTextile:http://pypi.python.org/pypi/textile is required. In the doc directory, just run @build.py@. This will create an html folder one level up from the doc folder. The tutorial is located in the documentation.
 
-# Roadmap
+h1. Roadmap
 
-## Version 0.2 - Fly By Night
+h2. Version 0.2 - Fly By Night
 
  * Database backend to replace flatfiles. (Completed November 27th 2009)
  * Static, Shared, and Binaries for all C/C++ compilers. (Completed November 27th 2009)
+ * pkg-config support (Completed November 25th, 2009)
  * MSVC Support (Preliminary, not guaranteed to currently work)
  * Better Documentation (Currently being worked on)
- * pkg-config support (Completed November 25th, 2009)
- 
+ * Dependency Tracking (Currently being worked on)
+
 Contributors:
-	Tres Walsh      <tres.walsh@mnmlstc.com>    (SAHChandler)
-	Damien Schoof   <damien.schoof@gmail.com>   (a_m0d)
+	Tres Walsh      SAHChandler
+	Damien Schoof   a_m0d
 
 This project is released under a BSD License

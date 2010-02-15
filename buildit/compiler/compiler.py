@@ -72,6 +72,9 @@ class Compiler(object):
         self._dependency_file_list.sort()
         return 0
 
+    # TODO: Write the dependency list to disk 
+    # (i.e. parse said files for the keywords, and find those files etc.)
+
     def write_deps(self):
         # This runs last (Basically writes our dependency_file_list to disk)
         return 0
@@ -104,7 +107,7 @@ class Compiler(object):
     def add_dependency_folder(self, *folders):
         folders = flatten(list(folders))
         for folder in folders:
-            self._dependency_list.append(folder)
+            self._dependency_folder_list.append(folder)
 
     def add_file_extension(self, *extensions):
         extensions = flatten(list(extensions))

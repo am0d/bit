@@ -27,6 +27,8 @@ class System(threading.Thread):
         self._type = 'binary'
         self._complete = False
 
+        self.job_limit = 0
+
         self.build_directory = 'build/{0}'.format(self.name)
         self.object_directory = 'object/{0}/{1}'.format(project_name, 
                                 self.name)
@@ -166,7 +168,8 @@ class System(threading.Thread):
                                dest='no_deps', help='No dependency tracking')
         self.parser.add_option('-d', '--directory', dest='base_directory',
                                default='.', help='Changes the base directory')
-
+        self.parser.add_option('-j', '--jobs', dest='job_limit',
+                               default=2, help='Jobs to run per Project')
         self.options, self.args = self.parser.parse_args()
         if self.options.no_deps:
             try:
@@ -178,7 +181,8 @@ class System(threading.Thread):
         if self.options.clean:
             self._build_steps = [self.clean]
         self.change_base_directory(self.options.base_directory)
-
+        self.job_limit = self.options.job_limit
+        
     def add_dependency_folder(self, *folders):
         self.compiler.add_dependency_folder(*folders)
 

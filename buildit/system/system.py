@@ -168,7 +168,7 @@ class System(threading.Thread):
                                default='.', help='Changes the base directory')
 
         self.options, self.args = self.parser.parse_args()
-        if self.options.parse_deps:
+        if self.options.no_deps:
             try:
                 self._build_steps.remove(self.parse_deps)
             except ValueError:

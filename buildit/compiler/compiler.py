@@ -88,10 +88,10 @@ class Compiler(object):
             run_list.append(file_parser)
         for file_parser in run_list:
             # Suspend operations until we can put more onto the stack :)
-            while running_queue.full():
+            while run_queue.full():
                 time.sleep(0.1)
             file_parser.start()
-            running_queue.put(file_parser)
+            run_queue.put(file_parser)
         return 0
 
     # Implemented by each compiler/language. 

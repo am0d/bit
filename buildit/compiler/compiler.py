@@ -1,9 +1,11 @@
 # Base Compiler Class
 
 import os
+import time
 import subprocess
 
 from glob import glob
+from multiprocessing import Process, Queue
 
 from buildit.database import Database
 
@@ -74,12 +76,28 @@ class Compiler(object):
         self._dependency_file_list.sort()
         return 0
 
-    # TODO: Write the dependency list to disk 
-    # (i.e. parse said files for the keywords, and find those files etc.)
-
+    # TODO: Write the dependency list to disk
+    # Just an FYI I hate this code, and there must be a 
+    # better way to handle it :L
     def write_deps(self):
-        # This runs last (Basically writes our dependency_file_list to disk)
+        run_list = []
+        run_queue = Queue(10)
+        for file_name in self._file_list:
+            file_parser = Process(target=self.read_deps, args=(file_name))
+            file_parser.daemon = True
+            run_list.append(file_parser)
+        for file_parser in run_list:
+            # Suspend operations until we can put more onto the stack :)
+            while running_queue.full():
+                time.sleep(0.1)
+            file_parser.start()
+            running_queue.put(file_parser)
         return 0
+
+    # Implemented by each compiler/language. 
+    # (Is used by multiprocessing, however)
+    def read_deps(self, file_name):
+        pass
 
     def _percentage(self, counter, list_length):
         percentage = 100 * float(counter)/float(list_length)

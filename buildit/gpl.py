@@ -1,5 +1,7 @@
 # Global Project Lookup - Not to be confused with GNU Public License ;D
 # Enables our garbage collection as well, rather than System
+# Need to possibly look into changing everything to multiprocessing 
+# because of the GIL
 
 import gc
 import sys

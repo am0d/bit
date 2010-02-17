@@ -9,7 +9,6 @@ from buildit.compiler.compiler import Compiler
 from buildit.utils import format_options, fix_strings, file_hash, flatten
 from buildit.cprint import command as print_command
 
-
 class CC(Compiler):
 
     def __init__(self, project_name='PROJECT'):
@@ -75,7 +74,8 @@ class CC(Compiler):
             # subprocess *does* work on windows however. 
             # (A simple run_string.split(' ') should have worked, 
             # but alas it does not. 
-            # g++ does not care for quoted files via a list :/
+            # g++ does not care for quoted files via a list
+            # however we need those to allow folders with spaces in them :/
             try:
                 return_value = subprocess.call(run_string)
             except OSError:
@@ -120,6 +120,9 @@ class CC(Compiler):
         if not return_value == 0:
             return return_value
         return 0
+
+    def read_deps(self, file_name):
+        file_name = flatten(list(file_name)).pop()
 
     def add_define(self, *defines):
         defines = flatten(list(defines))

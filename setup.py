@@ -9,9 +9,10 @@ setup(name='buildit',
       description='A Minimal Build System',
       author='Tres Walsh',
       author_email='tres.walsh@mnmlstc.com',
-      url='http://treswalsh.com',
+      url='http://mnmlstc.com',
       packages=['buildit',
                 'buildit.system',
                 'buildit.compiler',
+                'buildit.parser'
                ]
      )

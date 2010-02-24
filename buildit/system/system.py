@@ -169,7 +169,7 @@ class System(threading.Thread):
         self.parser.add_option('-d', '--directory', dest='base_directory',
                                default='.', help='Changes the base directory')
         self.parser.add_option('-j', '--jobs', dest='job_limit',
-                               default=2, help='Jobs to run per Project')
+                               default=1, help='Files to parse per Project')
         self.options, self.args = self.parser.parse_args()
         if self.options.no_deps:
             try:
@@ -182,6 +182,9 @@ class System(threading.Thread):
             self._build_steps = [self.clean]
         self.change_base_directory(self.options.base_directory)
         self.job_limit = self.options.job_limit
+        if self.job_limit == 0:
+            self.job_limit = 1
+        self.compiler.job_limit = self.job_limit
         
     def add_dependency_folder(self, *folders):
         self.compiler.add_dependency_folder(*folders)
@@ -225,6 +228,7 @@ class System(threading.Thread):
         self._compiler._file_list = self._file_list
         self._compiler.type = self._type
         self._compiler._project_name = self._project_name
+        self._compiler.job_limit = self.job_limit
 
     @property
     def build_directory(self):

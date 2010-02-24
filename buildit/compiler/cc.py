@@ -6,6 +6,7 @@ import shutil
 import subprocess
 
 from buildit.compiler.compiler import Compiler
+from buildit.parser.clanguage import CLanguage
 from buildit.utils import format_options, fix_strings, file_hash, flatten
 from buildit.cprint import command as print_command
 
@@ -16,6 +17,7 @@ class CC(Compiler):
         self.executable = 'cc'
         self._cxx_support = False
         self._clang_enabled = False
+        self._parser = CLanguage()
 
     def __str__(self):
         if not self._cxx_support:
@@ -120,9 +122,6 @@ class CC(Compiler):
         if not return_value == 0:
             return return_value
         return 0
-
-    def read_deps(self, file_name):
-        file_name = flatten(list(file_name)).pop()
 
     def add_define(self, *defines):
         defines = flatten(list(defines))

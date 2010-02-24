@@ -7,8 +7,8 @@ import subprocess
 from glob import glob
 from multiprocessing import Process, Queue
 
+from buildit.parser.parser import Parser
 from buildit.database import Database
-
 from buildit.utils import which, flatten, fix_strings, file_hash
 from buildit.utils import format_options
 from buildit.cprint import command as print_command
@@ -29,6 +29,9 @@ class Compiler(object):
         self._dependency_file_list = []
         self.user_extensions = []
         self.user_dependencies = []
+        
+        self._parser = Parser()
+        self.job_limit = 1
 
         self._compile_steps.append(self.setup_files)
         self._compile_steps.append(self.compile_files)
@@ -78,26 +81,25 @@ class Compiler(object):
 
     # TODO: Write the dependency list to disk
     # Just an FYI I hate this code, and there must be a 
-    # better way to handle it :L
+    # better way to handle it. Chances are for 0.3 this entire codebase
+    # will be rewritten from the ground up anyways :/
+    # Pseudo code will remain, but until then we'll just do it 
+    # one file at a time. So rewrite this for 0.3 (Caress of Steel)
     def write_deps(self):
         run_list = []
-        run_queue = Queue(10)
+        #run_queue = Queue(self.job_limit)
         for file_name in self._file_list:
-            file_parser = Process(target=self.read_deps, args=(file_name))
-            file_parser.daemon = True
-            run_list.append(file_parser)
-        for file_parser in run_list:
+            self._parser.parse(file_name)
+            #file_parser = Process(target=self._parser.parse, args=(file_name))
+            #file_parser.daemon = True
+            #run_list.append(file_parser)
+        #for file_parser in run_list:
             # Suspend operations until we can put more onto the stack :)
-            while run_queue.full():
-                time.sleep(0.1)
-            file_parser.start()
-            run_queue.put(file_parser)
-        return 0
-
-    # Implemented by each compiler/language. 
-    # (Is used by multiprocessing, however)
-    def read_deps(self, file_name):
-        pass
+            #while run_queue.full():
+            #    time.sleep(0.1)
+            #file_parser.start()
+            #run_queue.put(file_parser)
+        return 0 
 
     def _percentage(self, counter, list_length):
         percentage = 100 * float(counter)/float(list_length)

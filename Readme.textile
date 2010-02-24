@@ -26,8 +26,10 @@ h2. Version 0.2 - Fly By Night
  * Better Documentation (Currently being worked on)
  * Dependency Tracking (Currently being worked on)
 
+Developers:
+    Tres Walsh (SAHChandler)
+
 Contributors:
-	Tres Walsh      SAHChandler
-	Damien Schoof   a_m0d
+	Damien Schoof (a_m0d)
 
 This project is released under a BSD License

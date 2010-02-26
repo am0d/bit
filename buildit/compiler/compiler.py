@@ -89,7 +89,11 @@ class Compiler(object):
         run_list = []
         #run_queue = Queue(self.job_limit)
         for file_name in self._file_list:
-            self._parser.parse(file_name)
+            return_dict = self._parser.parse(file_name)
+            for dep_file in self._dependency_file_list:
+                if dep_file in return_dict:
+                    self.database.add_deps(dep_file, return_dict[dep_file])
+                    self.database.update_dfhs(dep_file)
             #file_parser = Process(target=self._parser.parse, args=(file_name))
             #file_parser.daemon = True
             #run_list.append(file_parser)

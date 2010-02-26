@@ -25,4 +25,5 @@ class CLanguage(Parser):
             else:
                 error('False positive detected in {0}'.format(file_name))
             deps_string.append(line)
-        
+        # R'lyeh D:
+        return dict([(item, file_name) for item in deps_string])

@@ -1,0 +1,13 @@
+syntax: glob
+
+# Filetypes
+*.swp
+*.o
+*~
+*.pyc
+
+# Folders
+html
+.buildit
+build
+object

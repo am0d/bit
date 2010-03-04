@@ -13,7 +13,7 @@ To install buildit, merely run @python setup.py install@ in your favorite shell
 
 h2. Building The Documentation
 
-To build the documentation PyTextile:http://pypi.python.org/pypi/textile is required. In the doc directory, just run @build.py@. This will create an html folder one level up from the doc folder. The tutorial is located in the documentation.
+To build the documentation "PyTextile":http://pypi.python.org/pypi/textile is required. In the doc directory, just run @build.py@. This will create an html folder one level up from the doc folder. The tutorial is located in the documentation.
 
 h1. Roadmap
 

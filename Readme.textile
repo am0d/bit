@@ -23,8 +23,8 @@ h2. Version 0.2 - Fly By Night
  * Static, Shared, and Binaries for all C/C++ compilers. (Completed November 27th 2009)
  * pkg-config support (Completed November 25th, 2009)
  * MSVC Support (Preliminary, not guaranteed to currently work)
- * Better Documentation (Currently being worked on)
- * Dependency Tracking (Currently being worked on)
+ * Better Documentation (API will be changing for next version. Best to read sources)
+ * Dependency Tracking (Written, but not used due to poor implementation)
 
 Developers:
     Tres Walsh (SAHChandler)

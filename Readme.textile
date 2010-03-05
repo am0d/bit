@@ -17,19 +17,17 @@ To build the documentation "PyTextile":http://pypi.python.org/pypi/textile is re
 
 h1. Roadmap
 
-h2. Version 0.2 - Fly By Night
+h2. Version 0.3 - Caress of Steel
 
- * Database backend to replace flatfiles. (Completed November 27th 2009)
- * Static, Shared, and Binaries for all C/C++ compilers. (Completed November 27th 2009)
- * pkg-config support (Completed November 25th, 2009)
- * MSVC Support (Preliminary, not guaranteed to currently work)
- * Better Documentation (API will be changing for next version. Best to read sources)
- * Dependency Tracking (Written, but not used due to poor implementation)
+ * C/C++/ObjC/C# Support
+ * (Optional) Daemon for Continual Builds
+ * Distributed Compiling (like distcc)
+ * Proper Dependency Tracking
+ * "Python Agnostic" Binary (Using py2app/py2exe and freeze.py)
+ * Python Style Documentation (Sphinx)
+ * Possible Plugin Architecture
 
 Developers:
     Tres Walsh (SAHChandler)
-
-Contributors:
-	Damien Schoof (a_m0d)
 
 This project is released under a BSD License

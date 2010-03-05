@@ -3,6 +3,7 @@
 
 from distutils.core import setup
 
+
 setup(name='buildit',
       version='0.2',
       license='BSD',

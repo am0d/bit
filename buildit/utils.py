@@ -45,6 +45,9 @@ def flatten(list_name, containers=(list, tuple)):
     else:
         return [list_name]
 
+def clean_list(list_var):
+    return list(set(list_var)).sort()
+
 def fix_strings(file_list): # Really should only be used internally
     if isinstance(file_list, list) or isinstance(file_list, tuple):
         if sys.platform == 'win32':

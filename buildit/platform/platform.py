@@ -98,7 +98,7 @@ class Platform(multiprocessing.Process):
         self.add(files)
 
     def add(self, *files):
-        files = flatten_list(files))
+        files = flatten(list(files))
         for file_name in files:
             if os.path.isdir(file_name):
                 glob_list = []

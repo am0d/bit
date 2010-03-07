@@ -2,10 +2,10 @@
 # sets up a few other things as well :)
 
 # System Modules
-from buildit.system.system import System
-from buildit.system.unix import Unix
-from buildit.system.mingw import MinGW
-from buildit.system.content import Content
+from buildit.platform.platform import Platform
+from buildit.platform.unix import Unix
+from buildit.platform.mingw import MinGW
+from buildit.platform.content import Content
 
 # Compiler Modules
 from buildit.compiler.cc import CC

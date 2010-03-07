@@ -79,7 +79,7 @@ def char_print(char, color):
         print('{0}{1}\33[0m'.format(fcolor[color], char))
     print_lock.release()
 
-def info(message):
+def success(message):
     color_print(message, 'green')
 
 def warning(message):
@@ -90,3 +90,6 @@ def error(message):
 
 def command(message):
     color_print(message, 'magenta')
+
+def info(message):
+    color_print(message, 'cyan')

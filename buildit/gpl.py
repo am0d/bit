@@ -7,11 +7,15 @@ import gc
 import sys
 import threading
 
+from buildit.harbinger import Harbinger
+
 from buildit.cprint import error
 
-class GPL(object):
+# We are Harbinger
+class GPL(Harbinger):
 
     def __init__(self):
+        Borg.__init__(self)
         if not gc.isenabled():
             gc.enable()
         self.__project_lookup = {}

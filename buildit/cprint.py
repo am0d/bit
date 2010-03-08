@@ -3,6 +3,8 @@
 import sys
 import multiprocessing
 
+import buildit 
+
 if sys.platform == 'win32':
     import ctypes
     fcolor = { 'blue'   : 0x0001,
@@ -60,6 +62,10 @@ print_lock = multiprocessing.Lock()
 
 def color_print(message, color):
     print_lock.acquire()
+    if buildit.options.no_color:
+        print(message)
+        print_lock.release()
+        return
     if sys.platform == 'win32':
         set_console_text_attribute(handle, fcolor[color] | 0x0008 | background)
         print(message),
@@ -71,6 +77,9 @@ def color_print(message, color):
 
 def char_print(char, color):
     print_lock.acquire()
+    if buildit.options.no_color:
+        sys.stdout.write(char)
+        return
     if sys.platform == 'win32':
         set_console_text_attribute(handle, fcolor[color] | 0x0008 | background)
         sys.stdout.write(char)

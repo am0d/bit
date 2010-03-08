@@ -7,7 +7,9 @@ import multiprocessing
 
 from glob import glob
 from datetime import datetime
-from optparse import OptionParser
+from optparse import OptionGroup
+
+import buildit # For Harbinger instance access
 
 from buildit.compiler.compiler import Compiler
 from buildit.database import Database
@@ -35,15 +37,12 @@ class Platform(multiprocessing.Process):
         
         self._build_steps.append(self.parse_deps)
         self._build_steps.append(self.build)
-
-    def __unicode__(self):
-        return u'{0}'.format(self.__str__())
+        self.parse_options()
 
     def __str__(self):
         return 'Platform'
 
     def run(self):
-        self.parse_options()
         start_time = datetime.now()
         for function in self._build_steps:
             return_value = function()
@@ -189,7 +188,7 @@ class Platform(multiprocessing.Process):
     # Properties
     @property
     def name(self):
-        return self.__unicode__()
+        return self.__str__()
 
     @property
     def static(self):

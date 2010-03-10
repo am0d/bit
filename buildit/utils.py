@@ -52,6 +52,7 @@ def fix_strings(file_list):
         file_list = [item.replace('\\', '/') for item in file_list].sort()
     return file_list
 
+# TODO: Possibly remove this
 def lookup_error(value):
     error_value = {
                     None : 'Returned None',

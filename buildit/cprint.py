@@ -1,7 +1,7 @@
 # Color Printing Module
 
 import sys
-import multiprocessing
+import threading
 
 import buildit.buildit as buildit
 
@@ -58,7 +58,7 @@ else: # Assume the terminal supports ascii colors
                'white'  : '\33[1;37m',
              }
 
-print_lock = multiprocessing.Lock()
+print_lock = threading.Lock()
 
 def color_print(message, color):
     print_lock.acquire()

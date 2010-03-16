@@ -1,0 +1,7 @@
+h1. CC
+
+h2. Description
+
+CC is effectively the base C and C++ compiler. Rarely will you have to write your own entire C/C++ compiler.
+
+All CC implementations have the same function calls (however whether they do something or not is completely different).

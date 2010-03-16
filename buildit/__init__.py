@@ -1,17 +1,25 @@
-# A very terrible hack, but some people probably won't want to do something
-# like from buildit.compiler.compiler import Compiler. 
-# This just saves them the trouble
+# Imports our modules for local use, and creates our GPL instance
 
 # System Modules
-from buildit.system.system import System
-from buildit.system.unix import Unix
-from buildit.system.mingw import MinGW
-from buildit.system.content import Content
-from buildit.system.python import Python
 
 # Compiler Modules
-from buildit.compiler.cc import CC
-from buildit.compiler.cxx import CXX
-from buildit.compiler.tcc import TCC
-from buildit.compiler.llvmgcc import LLVMGCC
-from buildit.compiler.msvc import MSVC
+
+# Global Project Lookup
+from buildit.gpl import GPL
+
+# Magic
+import sys
+
+windows = False
+macosx = False
+linux = False
+
+if sys.platform == 'win32':
+    windows = True
+if sys.platform == 'darwin':
+    macosx = True
+if sys.platform = 'linux2':
+    linux = True
+
+# Assuming Direct Control
+buildit = GPL()

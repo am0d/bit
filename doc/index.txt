@@ -1,7 +1,0 @@
-# buildit
-
-<a class="header" href="Tutorial">Tutorial</a>
-
-<a class="header" href="System">Systems</a>
-
-<a class="header" href="Compilers">Compilers</a>

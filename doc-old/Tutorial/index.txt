@@ -1,0 +1,66 @@
+h1. Tutorial
+
+h2. Index
+
+* "Overview":#overview
+* "Requirements":#requirements 
+* "Installation":#installation
+* "Usage":#usage
+* "Advanced Usage":#advanced
+* "Examples":#examples
+
+h2(#overview). Overview
+
+This tutorial was written to provide you, the user, with the basics required to utilize buildit in your build system. 
+
+h2(#requirements). Requirements
+
+A basic "CPython(Python)":http://python.org or "IronPython":http://ironpython.net 2.6 installation is all that is required. There are plans to eventually port buildit to Python 3, however, nothing before Python 2.6 will be targeted.
+
+h2(#installation). Installation
+
+From a commandline (with administrative rights), running @setup.py install@ will be sufficient to install buildit. If you are on Windows, and prefer to not use the commandline, placing buildit in @site-packages@ in your Python installation will suffice.
+
+h2(#usage). Usage
+
+buildit is run through a basic python script. You don't need to give the file any specific name. As long as it can be run by Python, you will have your build script.
+
+To get started in your script, you must put @from buildit import *@. This is the absolute minimum needed to run buildit.
+
+The basic usage of buildit relies on "mini computers" known as systems. These systems contain a compiler, and a list of files to send to it. They also have an easy to use front end for setting specific information (such as libraries to link with. Take a look at the documentation for which @System@ to use. For the purposes of this tutorial, we'll be using the @Unix@ system. This system works on Windows, but is targeted for a @CC@ like compiler(such as GCC). @Unix@ and @MinGW@ are interchangeable on Windows.
+
+So let's create our project instance
+
+@project = Unix('buildit_tutorial')@
+
+Each @System@ with the exception of @Content@, requires a project name. This partly affects what your final output will be(with several restrictions depending on the project type, and the compiler, as well as the operating system.)
+
+Next we need to add some files to the project.
+
+@project.add('src')@
+
+Maybe we have an include directory as well, so let's add that now.
+
+@project.add_include_directory('include')@
+
+Maybe we're also linking against two arbitrary libraries.
+
+@project.add_library('a', 'b')@
+
+All of these @add_*@ functions use var args, so you can add as many as you want in one function call. The result is, very small buil scripts that do a lot.
+
+To run this script we have two options. We can either call @project.run()@, or @project.start()@. The latter is used if you would like to use threaing on your project. The simplest form of a buildit script is about 4 lines, from the module import to the actual @System.run()@ call. Of course, you still have the extremely large python standard library available as well. You can see the entire script "here":tutorial1.py
+
+h2(#advanced). Advanced Usage
+
+In some instances, it may be necessary to have multiple projects, running in parallel or requiring one to be compiled before the main project. This is where it gets fun.
+
+For parallel projects merely use @buildit.add_project(instance_name)@. For example:
+
+@buildit.add_project(x)@
+
+This places the project in the GPL(Global Project Lookup). The GPL has a dictionary containing all the project names, and their instances. Calling @buildit.run()@ Will run each of these project sequentially. Calling @buildit.start()@ will run the threaded version of the projects, and wait until the total number of threads is 1. (Due to limitations provided by the GIL(Global Interpreter Lock), the threaded versions of the projects may be changed to use the @multiprocessing@ module in later versions, with an option for the older threaded version).
+
+h2(#examples). Examples
+
+Below are links to examples, with different styles, as well as uses.

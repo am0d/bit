@@ -1,3 +1,0 @@
-        <h6>&copy; 2009 - Tres Walsh</h6>
-    </body>
-</html>

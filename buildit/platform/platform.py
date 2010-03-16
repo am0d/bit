@@ -51,27 +51,16 @@ class Platform(threading.Thread):
     def post_build(self):
         return 0
 
-    def add(self, files):
-        if isinstance(files, (tuple,list)):
-            for item in flatten(files):
-                if isinstance(item, basestring):
-                    if os.path.isdir(item):
-                        glob_list = glob('{0}/*'.format(item))
-                        for file_name in glob_list:
-                            if os.path.isfile(file_name):
-                                self._file_list.append(file_name)
-                    else:
-                        self._file_list.append(item)
-        elif isinstance(files, basestring):
-            if os.path.isdir(files):
-                glob_list = glob('{0}/*'.format(files))
-                for file_name in glob_list:
-                    if os.path.isfile(file_name):
-                        self._file_list.append(file_name)
-            else:
-                self._file_list.append(files)
-        else:
-            warning('{0} is not a supported datatype'.format(type(files)))
+    def setup_files(self):
+        for item in flatten(self.files):
+            if isinstance(item, basestring):
+                if os.path.isdir(item):
+                    glob_list = glob('{0}/*'.format(item))
+                    for file_name in glob_list:
+                        if os.path.isfile(file_name):
+                            self._file_list.append(file_name)
+                else:
+                    self._file_list.append(item)
         self._file_list.sort()
 
     def remove(self, files):

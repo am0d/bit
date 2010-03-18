@@ -41,3 +41,13 @@ class GPL(Harbinger):
         self.__project_list.append(instance)
         self.__project_dict['{1}|{0}'.format(instance.project_name, 
                                              instance.name)] = instance
+
+    def add_path(self, *directories):
+        path_list = []
+        directories = flatten(list(directories))
+        for path in os.environ['PATH'].split(os.pathsep):
+            path_list.append(path)
+        for directory in directories:
+            path_list.append(directory)
+        path_list = os.pathsep.join(path_list)
+        os.environ['PATH'] = path_list

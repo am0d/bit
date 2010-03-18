@@ -23,7 +23,7 @@ class Platform(threading.Thread):
         self.object_directory = 'object/{0}/{1}'.format(self.project_name, 
                                                         self.name)
         self.project_directory = '.'
-        # self.compiler = Compiler()
+        self._compiler_list = [Compiler]
         self.__build_steps = []
         self._file_list = []
         self._type = 'binary'
@@ -63,8 +63,11 @@ class Platform(threading.Thread):
         self._complete = True
         return 0
 
-    def build(self): pass
-        # TODO: WRITE THIS!
+    def build(self):
+        self._file_list = self.__remove_backup_files(self._file_list)
+        for compiler in self._compiler_list:
+            x = compiler(self._file_list)
+            x.start()
 
     def append_step(self, function):
         self._build_steps.append(function)
@@ -78,22 +81,16 @@ class Platform(threading.Thread):
     def is_complete(self):
         return self._complete
 
-    def add_path(self, *directories):
-        path_list = []
-        directories = flatten(list(directories))
-        for path in os.environ['PATH'].split(os.pathsep):
-            path_list.append(path)
-        for directory in directories:
-            path_list.append(directory)
-        path_list = os.pathsep.join(path_list)
-        os.environ['PATH'] = path_list
+    def add_compiler(self, *compilers):
+        compilers = flatten(list(compilers))
+        for compiler in compilers:
+            self._compiler_list.append(compiler)
 
     def add_directory(self, *directories):
         directories = flatten(list(directories))
         for directory in directories:
             glob_list = []
-            for extension in self.compiler.language.extensions:
-                glob_list += glob('{0}/*{1}'.format(directory, extension))
+            glob_list += glob('{0}/*'.format(directory))
             for file_name in glob_list:
                 self._file_list.append(file_name)
         clean_list(self._file_list)
@@ -107,8 +104,7 @@ class Platform(threading.Thread):
             if os.path.isdir(file_name):
                 glob_list = []
                 for root, dir, file_names in os.walk(file):
-                    for extensions in self.compiler.language.extensions:
-                        glob_list += glob('{0}/*{1}'.format(root, extension))
+                    glob_list += glob('{0}/*'.format(root))
                 glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
                     self._file_list.append(file_name)
@@ -122,8 +118,7 @@ class Platform(threading.Thread):
             if os.path.isdir(file_name):
                 glob_list = []
                 for root, dir, file_names in os.walk(file);
-                    for extension in self.compiler.language.extensions:
-                        glob_list += glob('{0}/*{1}'.format(root, extension))
+                    glob_list += glob('{0}/*'.format(root)
                 glob_list = fix_strings(glob_list)
                 for file_name in glob_list:
                     try:
@@ -140,18 +135,27 @@ class Platform(threading.Thread):
     def require(self, required_system):
         self._build_steps.insert(0, required_syste.run)
 
-    def clean(self): pass
-
-    def rebuild(self): pass
+    def rebuild(self):
+        for item in ['hash', 'deps']:
+            try:
+                os.remove('.buildit/{0}.{1}'.format(self.project_name, item))
+            except OSError:
+                warning('Could not remove {0}.{1}'.format(self.project_name, item)
 
     def get_options(self):
         if buildit.options.rebuild:
             self._build_steps.insert(0, self.rebuild)
-        if buildit.options.clean:
-            self._build_steps = [self.clean]
         self.job_limit = buildit.options.job_limit
         if self.job_limit:
             self.job_limit = 1
+
+    def __remove_backup_files(file_list):
+        x = []
+        for item in file_list:
+            if item.endswith('~'): 
+                continue
+            x.append(item)
+        return x
 
     @property
     def name(self):

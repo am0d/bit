@@ -17,7 +17,7 @@ class GPL(Harbinger):
         if not gc.isenabled():
             gc.enable()
         self.__project_dict = { }
-        self.__project_list = []
+        self.__project_list = [ ]
         self.parser = OptionParser(conflict_handler='resolve')
         self.parser.add_option('-n', '--no-color', action='store_true',
                                dest='no_color',

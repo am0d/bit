@@ -11,6 +11,7 @@ from optparse import OptionGroup
 
 import buildit.buildit as buildit
 
+from buildit.compiler.compiler import Compiler
 from buildit.utils import flatten, fix_strings, clean_list
 from buildit.cprint import success, warning, error, info
 
@@ -28,7 +29,6 @@ class Platform(threading.Thread):
         self._file_list = []
         self._type = 'binary'
         self._complete = False
-        self.job_limit = 1
 
         self.__build_steps.append(self.build)
 
@@ -36,7 +36,7 @@ class Platform(threading.Thread):
         self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
                                    'These will apply to *all* projects')
         self.options.add_option('-j', '--jobs', dest='jobs', default=3 
-                                help='Number of files to process per project')
+                                help='Number of files to process per compiler')
         self.options.add_option('-c', '--clean', action='store_true',
                                 dest='clean', 
                                 help='Remove all files output from buildit')
@@ -145,9 +145,6 @@ class Platform(threading.Thread):
     def get_options(self):
         if buildit.options.rebuild:
             self._build_steps.insert(0, self.rebuild)
-        self.job_limit = buildit.options.job_limit
-        if self.job_limit:
-            self.job_limit = 1
 
     def __remove_backup_files(file_list):
         x = []

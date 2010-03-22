@@ -2,6 +2,7 @@
 
 import os
 import sys
+import threading
 import subprocess
 
 import buildit.buildit as buildit
@@ -12,7 +13,7 @@ from buildit.cprint import command
 
 class Compiler(object):
 
-    def __init__(self, file_list):
+    def __init__(self, project_name, file_list):
         self._file_list = file_list
         self.object_files = [ ]
         self._compile_steps = [ ]
@@ -27,19 +28,31 @@ class Compiler(object):
         self._compile_steps.append(self.compile_files)
         self._compile_steps.append(self.write_deps)
 
+        self.object_directory = 'object/{0}/{1}'.format(self.project_name, self.name)
+
     def __str__(self):
         return 'Compiler'
 
-    def start(self):
-        self.run
-
     @property
     def run(self):
-        self.database = Database()
+        self.database = Database('{0}_{1}'.format(self.project_name, self.name))
         for function in self._compiler_steps:
             return_value = function()
             if not return_value:
                 return return_value
+        return self.object_files
+
+    # TODO: Should also be implemented here
+    def setup_files(self):
+        return 0
+
+    # TODO: Leave implementation up to each compiler.
+    def compile_files(self):
+        return 0
+
+    # TODO: Should be implemented here
+    def write_deps(self):
+        return 0
 
     def _percentage(self, counter, list_length):
         percentage = 100 * float(counter)/float(list_length)
@@ -62,3 +75,7 @@ class Compiler(object):
     @executable.setter
     def executable(self, value):
         self._executable = which(value)
+
+    @property
+    def name(self):
+        return self.__str__()

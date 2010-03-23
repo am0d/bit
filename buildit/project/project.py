@@ -64,7 +64,7 @@ class Project(threading.thread):
         for compiler in self._compiler_list:
             compiler_inst = compiler(self.project_name, self._file_list)
             object_list += compiler.run
-        linker = Linker(self.project_name)
+        linker = Linker(self.project_name, self.project_type)
         linker.run(object_list)
         return 0 #TODO: Add a bit more to this (Linker, etc.) 
 

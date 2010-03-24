@@ -27,10 +27,13 @@ class Project(threading.thread):
         self.project_complete = False
 
         self._compiler_list = [Compiler]
+        self._linker = Linker
         self.__build_steps = [ ]
         self._file_list = [ ]
         
         self.__build_steps.append(self.build)
+        self.object_directory = 'object/{0}/{1}'.format(self.name, self.project_name)
+        self.output_directory = 'build/{0}/{1}'.format(self.name, self.project_name)
 
         # Commandline options
         self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
@@ -63,10 +66,14 @@ class Project(threading.thread):
         object_list = [ ]
         for compiler in self._compiler_list:
             compiler_inst = compiler(self.project_name, self._file_list)
-            object_list += compiler.run
-        linker = Linker(self.project_name, self.project_type)
-        linker.run(object_list)
-        return 0 #TODO: Add a bit more to this (Linker, etc.) 
+            compiler.object_directory = self.object_directory
+            if not compiler_inst.run:
+                return 42 # Magic number, until a defined list of errors can be created
+            object_list += compiler_inst.completed_files
+        linker = self._linker(self.project_name, self.project_type)
+        linker.output_directory = self.output_directory
+        linker.run(flatten(object_list))
+        return 0 
 
     def append_step(self, function):
         self.__build_steps.append(function)

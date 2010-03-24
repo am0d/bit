@@ -25,6 +25,9 @@ class GPL(Harbinger):
         self.parser.add_option('-s', '--sequential', action='store_true',
                                dest='sequential',
                                help='Run projects one at a time')
+        self.parser.add_option('-q', '--quiet', action='store_true',
+                               dest='quiet', 
+                               help='Minimal Information Printed')
 
     def run(self):
         self.options, self.args = self.parser.parse_args()

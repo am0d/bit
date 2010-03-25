@@ -2,6 +2,7 @@
 *.swp
 *.out
 *~
+.DS_Store
 build
 .buildit
 html

@@ -13,6 +13,8 @@ To install buildit, merely run @python setup.py install@ in your favorite shell
 
 h2. Building The Documentation
 
+(Expect this to change at some point, as Sphinx is expected to replace the current documentation system, which was a quick hack anyways)
+
 To build the documentation "PyTextile":http://pypi.python.org/pypi/textile is required. In the doc directory, just run @build.py@. This will create an html folder one level up from the doc folder. The tutorial is located in the documentation.
 
 h1. Roadmap
@@ -20,14 +22,13 @@ h1. Roadmap
 h2. Version 0.3 - Caress of Steel
 
  * C/C++/ObjC/C# Support
- * (Optional) Daemon for Continual Builds
- * Distributed Compiling (like distcc)
+ * Shiny New API 
  * Proper Dependency Tracking
- * "Python Agnostic" Binary (Using py2app/py2exe and freeze.py)
  * Python Style Documentation (Sphinx)
  * Possible Plugin Architecture
+ * Actual File to run via a script called "snake"
 
 Developers:
     Tres Walsh (SAHChandler)
 
-This project is released under a BSD License
+This project is released under a BSD License (Please see License.txt)

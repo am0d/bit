@@ -60,7 +60,7 @@ else: # Assume the terminal supports ascii colors
 
 print_lock = threading.Lock()
 
-def color_print(message, color):
+def string_color_print(message, color):
     print_lock.acquire()
     if buildit.options.no_color:
         print(message)
@@ -75,7 +75,7 @@ def color_print(message, color):
         print('{0}{1}\33[0m'.format(fcolor[color], message))
     print_lock.release()
 
-def char_print(char, color):
+def string_char_print(char, color):
     print_lock.acquire()
     if buildit.options.no_color:
         sys.stdout.write(char)
@@ -89,16 +89,16 @@ def char_print(char, color):
     print_lock.release()
 
 def success(message):
-    color_print(message, 'green')
+    string_color_print(message, 'green')
 
 def warning(message):
-    color_print(message, 'yellow')
+    string_color_print(message, 'yellow')
 
 def error(message):
-    color_print(message, 'red')
+    string_color_print(message, 'red')
 
 def command(message):
-    color_print(message, 'magenta')
+    string_color_print(message, 'magenta')
 
 def info(message):
-    color_print(message, 'cyan')
+    string_color_print(message, 'cyan')

@@ -12,7 +12,7 @@ from buildit.cprint import error, warning
 
 def file_hash(file_name):
     try: with open(file_name, 'rb') as f:
-        h = hashlib.sha512()
+        h = hashlib.sha1()
         h.update(f.read())
         return str(h.hexdigest())
     except IOError:

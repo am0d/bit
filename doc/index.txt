@@ -1,6 +1,0 @@
-h1. buildit
-
-"(header)Tutorial":Tutorial
-"(header)Projects":Projects
-"(header)Compilers":Compilers
-"(header)Linkers:Linkers

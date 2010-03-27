@@ -6,3 +6,9 @@ Platform
    - Database
  - Linker
  - Progress Bar?
+
+Regexp for C/C++ dependency tracking (replace include with import for objc)
+(Slowly working it out)
+
+/#include./\*./
+

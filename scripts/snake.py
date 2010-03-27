@@ -17,12 +17,8 @@ if __name__ == '__main__':
     options, args = parser.parse_args()
     try:
         snake_file = open(options.file_name)
-        run_string = ''
-        if 'from buildit import *' not in snake_file:
-            run_string = 'from buildit import *\n{0}'.format(
-                         ''.join(snake_file))
-        else:
-            run_string = ''.join(snake_file)
+        run_string = 'from buildit import *\n{0}'.format(''.join(snake_file)) 
+        run_string = '{0}\nbuildit.run()'.format(run_string)
         exec(run_string)
     except IOError:
         error('Could not open file:{0}'.format(options.file_name))

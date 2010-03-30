@@ -8,7 +8,8 @@ import subprocess
 import buildit.buildit as buildit
 
 from buildit.database import Database
-from buildit.utils import which, flatten, fix_strings, file_hash
+from buildit.filehash import FileHash
+from buildit.utils import which, flatten, fix_strings
 from buildit.cprint import command
 
 class Compiler(object):

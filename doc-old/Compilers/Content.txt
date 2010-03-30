@@ -1,4 +1,0 @@
-# Content
-
-## Description
-`Content` is merely a file copier. It is used by the `Content` System. It's functionality may be moved directly into the `Content` System at a later time, making this obsolete.

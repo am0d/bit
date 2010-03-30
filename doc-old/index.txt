@@ -1,5 +1,0 @@
-h1. buildit
-
-"(header)Tutorial":Tutorial
-"(header)Systems":System
-"(header)Compilers":Compilers

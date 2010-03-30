@@ -27,22 +27,25 @@ class Project(threading.thread):
         self.project_complete = False
 
         self._compiler_list = [Compiler]
-        self._linker = Linker
+        self.linker = Linker
         self.__build_steps = [ ]
         self._file_list = [ ]
         
         self.__build_steps.append(self.build)
-        self.object_directory = 'object/{0}/{1}'.format(self.name, self.project_name)
-        self.output_directory = 'build/{0}/{1}'.format(self.name, self.project_name)
+        
+        self.object_directory = 'object/{0}/{1}'.format(self.name, 
+                self.project_name)
+        self.output_directory = 'build/{0}/{1}'.format(self.name, 
+                self.project_name)
 
         # Commandline options
         self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
                                    'These will apply to *all* projects')
         self.options.add_option('-c', '--clean', action='store_true', 
-                                dest='clean',
+                                dest='clean', default=False
                                 help='Removes the object files and build files')
         self.options.add_option('-r', '--rebuild', action='store_true',
-                                dest='rebuild',
+                                dest='rebuild', default=False
                                 help='Fully rebuilds the project')
         buildit.parser.add_option_group(self.options)
 
@@ -70,7 +73,7 @@ class Project(threading.thread):
             if not compiler_inst.run:
                 return 42 # Magic number, until a defined list of errors can be created
             object_list += compiler_inst.completed_files
-        linker = self._linker(self.project_name, self.project_type)
+        linker = self.linker(self.project_name, self.project_type)
         linker.output_directory = self.output_directory
         linker.run(flatten(object_list))
         return 0 

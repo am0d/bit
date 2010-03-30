@@ -20,3 +20,5 @@ class FileHash(Harbinger):
             return str(self.hash_algo.hexdigest())
     except IOError:
         error('Could not hash: {0}'.format(file_name))
+
+file_hash = FileHash()

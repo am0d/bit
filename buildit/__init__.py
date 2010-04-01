@@ -18,7 +18,7 @@ if sys.platform == 'win32':
     windows = True
 if sys.platform == 'darwin':
     macosx = True
-if sys.platform = 'linux2':
+if sys.platform == 'linux2':
     linux = True
 
 # Assuming Direct Control

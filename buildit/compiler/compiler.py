@@ -57,12 +57,13 @@ class Compiler(object):
                 out_file = '{0}/{1}.{2}'.format(self.object_directory, 
                                                 file_name,
                                                 self.output_extension)
-                if os.path.exists(out_file) and \ 
+                if os.path.exists(out_file) and \
                     hash == self.database.get_hash(file_name):
                         self.object_files.append(file_name)
-                elif file_name.endswith(dep_ext) and \ 
+                elif file_name.endswith(dep_ext) and \
                     not hash == self.database.get_hash(file_name):
                         #TODO Write Dependency Parsing
+                        pass
                 else:
                     compile_list.append(file_name)
         self._file_list = list(set(compile_list)).sort()

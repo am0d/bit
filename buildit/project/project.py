@@ -42,10 +42,10 @@ class Project(threading.thread):
         self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
                                    'These will apply to *all* projects')
         self.options.add_option('-c', '--clean', action='store_true', 
-                                dest='clean', default=False
+                                dest='clean', default=False,
                                 help='Removes the object files and build files')
         self.options.add_option('-r', '--rebuild', action='store_true',
-                                dest='rebuild', default=False
+                                dest='rebuild', default=False,
                                 help='Fully rebuilds the project')
         buildit.parser.add_option_group(self.options)
 
@@ -131,7 +131,7 @@ class Project(threading.thread):
                 warning('{0} could not be removed.'.format(file_name))
 
     def remove_files(self, *files):
-        files = flatten(files))
+        files = flatten(files)
         glob_list = [ ]
         for file_name in files:
             if os.path.isdir(file_name):

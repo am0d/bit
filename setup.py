@@ -16,9 +16,10 @@ setup(name='buildit',
       author_email='tres.walsh@mnmlstc.com',
       url='http://mnmlstc.com',
       packages=['buildit',
-                'buildit.platform',
+                'buildit.project',
                 'buildit.compiler',
-                'buildit.parser'
+                'buildit.linker',
+                'buildit.dependency'
                ],
       scripts=script_list,
      )

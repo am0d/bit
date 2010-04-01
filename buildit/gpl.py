@@ -20,16 +20,16 @@ class GPL(Harbinger):
         self.__project_list = [ ]
         self.parser = OptionParser(conflict_handler='resolve')
         self.parser.add_option('-n', '--no-color', action='store_true',
-                               dest='no_color', default=False
+                               dest='no_color', default=False,
                                help='Text does not use colors')
         self.parser.add_option('-s', '--sequential', action='store_true',
-                               dest='sequential', default=False
+                               dest='sequential', default=False,
                                help='Run projects one at a time')
         self.parser.add_option('-q', '--quiet', action='store_true',
-                               dest='quiet', default=False
+                               dest='quiet', default=False,
                                help='Minimal Information Printed')
         self.parser.add_option('-a', '--hash', action='store', type='string',
-                               dest='hash_type', default='md5'
+                               dest='hash_type', default='md5',
                                help='Which hash algorithm to use.')
 
     def run(self):

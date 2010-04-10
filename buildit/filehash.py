@@ -1,4 +1,3 @@
-#Hashes files
 # File Hash type that allows for a constant hash type for all databases.
 
 import hashlib

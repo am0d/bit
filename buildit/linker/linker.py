@@ -3,7 +3,8 @@
 class Linker(object):
 
     def __init__(self, project_name):
-        pass
+        self.project_name = project_name
+        self.file_list = [ ]
 
     def run(self, file_list):
-        pass
+        self.file_list = file_list

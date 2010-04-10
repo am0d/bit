@@ -62,6 +62,7 @@ class Compiler(object):
                         self.object_files.append(file_name)
                 elif file_name.endswith(dep_ext) and \
                     not hash == self.database.get_hash(file_name):
+                        pass
                         #TODO Write Dependency Parsing
                         pass
                 else:

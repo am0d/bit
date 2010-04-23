@@ -26,10 +26,10 @@ class Project(threading.thread):
         self.project_type = 'binary'
         self.project_complete = False
 
-        self._compiler_list = [Compiler]
+        self.compiler_list = [Compiler]
         self.linker = Linker
         self.__build_steps = [ ]
-        self._file_list = [ ]
+        self.file_list = [ ]
         
         self.__build_steps.append(self.build)
         
@@ -67,12 +67,15 @@ class Project(threading.thread):
 
     def build(self):
         object_list = [ ]
-        for compiler in self._compiler_list:
-            compiler_inst = compiler(self.project_name, self._file_list)
-            compiler.object_directory = self.object_directory
-            if not compiler_inst.run:
-                return 42 # Magic number, until a defined list of errors can be created
-            object_list += compiler_inst.completed_files
+        if len(self.compiler_list > 0):
+            for compiler in self.compiler_list:
+                compiler_inst = compiler(self.project_name, self.file_list)
+                compiler.object_directory = self.object_directory
+                if not compiler_inst.run:
+                    error('TEMP ERROR UNTIL NOT LAZY')
+                object_list += compiler_inst.completed_files
+        else:
+            object_list = self.file_list
         linker = self.linker(self.project_name, self.project_type)
         linker.output_directory = self.output_directory
         linker.run(flatten(object_list))
@@ -93,7 +96,7 @@ class Project(threading.thread):
     def add_compiler(self, *compilers):
         compilers = flatten(compilers)
         for compiler in compilers:
-            self._compiler_list.append(compiler)
+            self.compiler_list.append(compiler)
 
     def add_directory(self, *directories):
         directories = flatten(directories)
@@ -102,7 +105,7 @@ class Project(threading.thread):
             glob_list += glob('{0}/*'.format(directory))
         glob_list = fix_strings(clean_list(glob_list))
         for file_name in glob_list:
-            self._file_list.append(file_name)
+            self.file_list.append(file_name)
         
 
     def add_files(self, *files):
@@ -116,7 +119,7 @@ class Project(threading.thread):
                 glob_list.append(file_name)
         glob_list = fix_strings(clean_list(glob_list))
         for file_name in glob_list:
-            self._file_list.append(file_name)
+            self.file_list.append(file_name)
 
     def remove_directory(self, *directories):
         directories = flatten(directories)
@@ -126,7 +129,7 @@ class Project(threading.thread):
         glob_list = fix_strings(clean_list(glob_list))
         for file_name in glob_list:
             try:
-                self._file_list.remove(file_name)
+                self.file_list.remove(file_name)
             except ValueError:
                 warning('{0} could not be removed.'.format(file_name))
 
@@ -142,7 +145,7 @@ class Project(threading.thread):
         glob_list = fix_strings(clean_list(glob_list))
         for file_name in glob_list:
             try:
-                self._file_list.remove(file_name)
+                self.file_list.remove(file_name)
             except ValueError:
                 warning('{0} could not be removed.'.format(file_name))
 

@@ -28,10 +28,10 @@ class Project(threading.thread):
 
         self.compiler_list = [Compiler]
         self.linker = Linker
-        self.__build_steps = [ ]
+        self.build_steps = [ ]
         self.file_list = [ ]
         
-        self.__build_steps.append(self.build)
+        self.build_steps.append(self.build)
         
         self.object_directory = 'object/{0}/{1}'.format(self.name, 
                 self.project_name)
@@ -56,7 +56,7 @@ class Project(threading.thread):
         self.set_options()
         os.chdir(self.project_directory)
         start_time = datetime.now()
-        for function in self.__build_steps:
+        for function in self.build_steps:
             return_value = function()
             if not return_value:
                 error('Error: {0}'.format(return_value))
@@ -82,13 +82,13 @@ class Project(threading.thread):
         return 0 
 
     def append_step(self, function):
-        self.__build_steps.append(function)
+        self.build_steps.append(function)
 
     def prepend_step(self, function):
-        self.__build_steps.insert(function, 0)
+        self.build_steps.insert(function, 0)
 
     def insert_step(self, function, location):
-        self.__build_steps.insert(function, location)
+        self.build_steps.insert(function, location)
 
     def is_complete(self):
         return self.project_complete
@@ -150,11 +150,11 @@ class Project(threading.thread):
                 warning('{0} could not be removed.'.format(file_name))
 
     def require(self, required_system):
-        self.__build_steps.insert(0, required_system.run)
+        self.build_steps.insert(0, required_system.run)
 
     def set_options(self):
         if buildit.options.rebuild:
-            self.__build_steps.insert(0, self.rebuild)
+            self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
         database_path = '.buildit/{0}/{1}'.format(self.name, self.project_name)

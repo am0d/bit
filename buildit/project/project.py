@@ -157,9 +157,10 @@ class Project(threading.thread):
             self.__build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
-        if os.path.exists('.buildit'):
+        database_path = '.buildit/{0}/{1}'.format(self.name, self.project_name)
+        if os.path.exists(database_path):
             try:
-                os.remove('.buildit')
+                os.remove(database_path)
             except:
                 error('Could not remove database/configuration folder!')
         else:

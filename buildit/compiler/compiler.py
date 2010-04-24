@@ -16,19 +16,19 @@ from buildit.cprint import command
 class Compiler(object):
 
     def __init__(self, project_name, file_list):
-        self._file_list = file_list
+        self.file_list = file_list
         self.object_files = [ ]
-        self._compile_steps = [ ]
-        self._compile_flags = [ ]
+        self.compile_steps = [ ]
+        self.compile_flags = [ ]
         
-        self._executable = which('echo')
+        self.compiler_executable = which('echo')
 
         self.job_limit = 1 if buildit.options.job_limit < 1 \
                            else buildit.options.job_limit
 
-        self._compile_steps.append(self.setup_files)
-        self._compile_steps.append(self.compile_files)
-        self._compile_steps.append(self.write_deps)
+        self.compile_steps.append(self.setup_files)
+        self.compile_steps.append(self.compile_files)
+        self.compile_steps.append(self.write_deps)
 
         self.object_directory = 'object/{0}/{1}'.format(self.project_name, 
                                                         self.name)
@@ -40,18 +40,18 @@ class Compiler(object):
 
     @property
     def run(self):
-        self.database = Database('{0}_{1}'.format(self.project_name, self.name))
-        for function in self._compiler_steps:
+        #TODO: Change database file/folder structure
+        self.database = Database(self.project_name, self.name)
+        for function in self.compile_steps:
             return_value = function()
             if not return_value:
                 return return_value
         return self.object_files
 
-    # TODO: Should also be implemented here
     def setup_files(self):
-        self._file_list = list(set(flatten(self._file_list)))
+        self.file_list = list(set(flatten(self.file_list)))
         compile_list = [ ]
-        for file_name in self._file_list:
+        for file_name in self.file_list:
             for dep_ext in self.dependency.extensions:
                 hash = file_hash.hash(file_name)
                 out_file = '{0}/{1}.{2}'.format(self.object_directory, 
@@ -66,16 +66,14 @@ class Compiler(object):
                         #TODO Write Dependency Parsing
                 else:
                     compile_list.append(file_name)
-        self._file_list = list(set(compile_list)).sort()
-        self.file_count = len(self._file_list)
+        self.file_list = list(set(compile_list)).sort()
+        self.file_count = len(self.file_list)
         return 0
-    # TODO: Leave implementation up to each compiler.
+
     def compile_files(self):
         return 0
 
-    # TODO: Should be implemented here
     def write_deps(self):
-        #for file_name in self._file_list:
         return 0
 
     def percentage(self, counter, list_length):
@@ -90,15 +88,15 @@ class Compiler(object):
     def add_compiler_flags(self, *flags):
         flags = flatten(flags)
         for flag in flags:
-            self._compile_flags.append(flag)
+            self.compile_flags.append(flag)
 
     @property
     def executable(self):
-        return self._executable
+        return self.compiler_executable
 
     @executable.setter
     def executable(self, value):
-        self._executable = which(value)
+        self.compiler_executable = which(value)
 
     @property
     def name(self):

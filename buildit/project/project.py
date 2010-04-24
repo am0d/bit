@@ -157,7 +157,7 @@ class Project(threading.thread):
             self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
-        database_path = '.buildit/{0}/{1}'.format(self.name, self.project_name)
+        database_path = '.buildit/{1}'.format(self.project_name)
         if os.path.exists(database_path):
             try:
                 os.remove(database_path)

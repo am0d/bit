@@ -10,10 +10,11 @@ from buildit.cprint import error
 
 class Database(object):
 
-    def __init__(self, name):
-        self.name = name
-        self.location = '.buildit/{0}'.format(self.name)
-        self.run()
+    def __init__(self, project_name, compiler_name):
+        self.project_name = project_name
+        self.compiler_name = compiler_name
+        self.location = '.buildit/{0}/{1}'.format(self.project_name, self.compiler_name)
+        self.run
         try:
             self.hashdb = anydbm.open('{0}.hash'.format(self.location), 'c')
             self.depsdb = anydbm.open('{0}.deps'.format(self.location), 'c')
@@ -30,9 +31,10 @@ class Database(object):
         except AttributeError:
             error('Could not close dependency DB safely')
 
+    @property
     def run(self):
         try:
-            os.makedirs('.buildit')
+            os.makedirs(self.location)
             if sys.platform == 'win32':
                 subprocess.call(['attrib', '+h', '.buildit'])
         except OSError:

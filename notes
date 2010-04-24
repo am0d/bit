@@ -1,8 +1,0 @@
-Shows the class hierarchy planned for 0.3 (Carress of Steel)
-
-Platform
- - Compiler
-   - Dependency
-   - Database
- - Linker
- - Progress Bar?

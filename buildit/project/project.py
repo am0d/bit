@@ -9,7 +9,7 @@ from glob import glob
 from datetime import datetime
 from optparse import OptionGroup
 
-import buildit.buildit as buildit
+from buildit.instance import buildit
 
 from buildit.utils import flatten, fix_strings, clean_list
 from buildit.cprint import success, warning, error, info
@@ -17,7 +17,7 @@ from buildit.cprint import success, warning, error, info
 from buildit.compiler.compiler import Compiler
 from buildit.linker.linker import Linker
 
-class Project(threading.thread):
+class Project(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)

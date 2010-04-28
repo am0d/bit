@@ -5,8 +5,7 @@ import sys
 import anydbm
 import subprocess
 
-from buildit.file_hash import file_hash
-from buildit.utils import flatten
+from buildit.utils import flatten, hash
 from buildit.cprint import error
 
 class Database(object):
@@ -45,7 +44,7 @@ class Database(object):
         return self.hashdb.get(file_name, '')
 
     def update_hash(self, file_name):
-        self.hashdb[file_name] = str(file_hash.hash(file_name))
+        self.hashdb[file_name] = str(hash(file_name))
         self.hashdb.sync()
 
     def get_deps(self, file_name):

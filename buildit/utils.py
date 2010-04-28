@@ -8,7 +8,17 @@ import hashlib
 
 import buildit
 
+from buildit.instance import buildit
 from buildit.cprint import error, warning
+
+def hash(self, file_name):
+    try:
+        with open(file_name, 'rb') as hashable:
+            algo = hashlib.new(buildit.options.hash_type)
+            algo.update(hashable.read())
+            return algo.hexdigest()
+    except IOError:
+        error('Could not hash: {0}'.format(file_name))
 
 def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)

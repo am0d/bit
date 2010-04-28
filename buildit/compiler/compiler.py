@@ -5,12 +5,11 @@ import sys
 import threading
 import subprocess
 
-import buildit.buildit as buildit
+from buildit.instance import buildit
 
 from buildit.database import Database
-from buildit.dependency import Dependency
-from buildit.filehash import file_hash
-from buildit.utils import which, flatten
+from buildit.dependency.dependency import Dependency
+from buildit.utils import which, flatten, hash
 from buildit.cprint import command
 
 class Compiler(object):

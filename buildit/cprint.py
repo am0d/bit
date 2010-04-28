@@ -3,7 +3,7 @@
 import sys
 import threading
 
-import buildit.buildit as buildit
+from buildit.instance import buildit
 
 if sys.platform == 'win32':
     import ctypes

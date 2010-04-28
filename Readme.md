@@ -38,7 +38,7 @@ Roadmap
 Version 0.3 - Caress of Steel
 -----------------------------
 
- * C/C++/ObjC/ooc Support
+ * C/C++/ObjC Support
  * Shiny New API 
  * Proper Dependency Tracking
  * Python Style Documentation (Sphinx)

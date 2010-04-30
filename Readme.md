@@ -29,7 +29,7 @@ Here is a small and quick tutorial to showcase the ease of use that buildit give
     x = Project('ArbitraryProjectName')
     x.add_files('source') # Grabs all files in source
     x.remove_directory('source/arbitrary_platform') # buildit will ignore all files in this directory.
-    buildit.add(x)
+    buildit.add_project(x)
 
 
 Roadmap

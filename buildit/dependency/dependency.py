@@ -1,5 +1,7 @@
 # Base Dependency Class
 
+from buildit.utils import flatten
+
 class Dependency(object):
 
     def __init__(self):
@@ -9,7 +11,7 @@ class Dependency(object):
     # Returns a list of files
     def find(self, file_name):
         with open(file_name) as file:
-            return [parse(line) for line in file]
+            return flatten(list(set([parse(line) for line in file])))
 
     # Override this.
     def parse(self, line):

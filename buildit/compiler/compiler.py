@@ -38,8 +38,7 @@ class Compiler(object):
         return 'Compiler'
 
     @property
-    def run(self):
-        #TODO: Change database file/folder structure
+    def run(self): 
         self.database = Database(self.project_name, self.name)
         for function in self.compile_steps:
             return_value = function()
@@ -47,6 +46,7 @@ class Compiler(object):
                 return return_value
         return self.object_files
 
+    # TODO: Rework this. Does not parse data properly
     def setup_files(self):
         self.file_list = list(set(flatten(self.file_list)))
         compile_list = [ ]
@@ -61,8 +61,11 @@ class Compiler(object):
                         self.object_files.append(file_name)
                 elif file_name.endswith(dep_ext) and \
                     not hash == self.database.get_hash(file_name):
-                        pass
-                        #TODO Write Dependency Parsing
+                        deps = self.dependency.find(file_name)
+                        for dep in deps:
+                            if not dep == '':
+                                compile_list.append(dep)
+                        self.database.update_deps(file_name, deps)
                 else:
                     compile_list.append(file_name)
         self.file_list = list(set(compile_list)).sort()

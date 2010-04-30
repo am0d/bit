@@ -19,7 +19,6 @@ setup(name='buildit',
                 'buildit.project',
                 'buildit.compiler',
                 'buildit.linker',
-                'buildit.dependency'
                ],
       scripts=script_list,
      )

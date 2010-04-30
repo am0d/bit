@@ -16,11 +16,9 @@ if __name__ == '__main__':
                       default='snakefile', help='run from FILE_NAME')
     options, args = parser.parse_args()
     try:
-        snake_file = open(options.file_name)
-        run_string = 'from buildit import *\n{0}'.format(''.join(snake_file)) 
-        run_string = '{0}\nbuildit.run()'.format(run_string)
-        exec(run_string)
+        with open(options.file_name) as snake_file:
+            run_string = 'from buildit import *\n{0}'.format(''.join(snake_file)) 
+            run_string = '{0}\nbuildit.run()'.format(run_string)
+            exec(run_string)
     except IOError:
         error('Could not open file:{0}'.format(options.file_name))
-    finally:
-        snake_file.close()

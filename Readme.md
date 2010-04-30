@@ -2,7 +2,7 @@ Overview
 ========
 
 buildit is an easy to use, easy to modify, and easy to understand build system.  
-It supports dependency tracking, multiple projects, and an easy to use API.  
+It has an easy to use API, and is great for those small projects. Don't worry about configuring your makefile, or writing a build script. Just buildit.  
 
 Information
 -----------
@@ -40,9 +40,7 @@ Version 0.3 - Caress of Steel
 
  * C/C++/ObjC Support
  * Shiny New API 
- * Proper Dependency Tracking
- * Python Style Documentation (Sphinx)
- * Possible Plugin Architecture
+ * Markdown Based Documentation (Read it directly here on github!)
  * Actual File to run via a script called "snake"
 
 Contributors

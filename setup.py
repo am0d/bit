@@ -2,14 +2,16 @@
 # buildit install script
 
 import os
-
+import sys
 from distutils.core import setup
 from glob import glob
 
-script_list = glob('{0}/scripts/*'.format(os.getcwd()))
-script_list = list(set([item.replace('~', '') for item in script_list]))
+
+script_list = ['scripts/snake', 'scripts/snake.bat'] 
+if not sys.platform == 'win32':
+    script_list.remove('scripts/snake.bat')
 setup(name='buildit',
-      version='0.2',
+      version='0.3',
       license='BSD',
       description='A Minimal Build System',
       author='Tres Walsh',

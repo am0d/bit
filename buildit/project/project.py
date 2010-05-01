@@ -72,7 +72,7 @@ class Project(threading.Thread):
                 compiler_inst = compiler(self.project_name, self.file_list)
                 compiler.object_directory = self.object_directory
                 if not compiler_inst.run:
-                    error('TEMP ERROR UNTIL NOT LAZY')
+                    error('Error: Compiler Errors')
                 object_list += compiler_inst.completed_files
         else:
             object_list = self.file_list

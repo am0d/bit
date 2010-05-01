@@ -22,8 +22,7 @@ class Compiler(object):
 
         self.compiler_executable = which('echo')
 
-        self.job_limit = 1 if buildit.options.job_limit < 1 \
-                           else buildit.options.job_limit
+        self.job_limit = 1 if buildit.options.job_limit < 1 else buildit.options.job_limit
 
         self.compile_steps.append(self.setup_files)
         self.compile_steps.append(self.compile_files)
@@ -43,14 +42,14 @@ class Compiler(object):
             return_value = function()
             if not return_value:
                 return return_value
-        return self.object_files
+        return 0
 
     def setup_files(self):
         self.file_list = list(set(flatten(self.file_list)))
         compile_list = [ ]
         proper_list = [ ]
         for extension in self.file_extensions:
-            if file_name.endswith(extension):
+            if file_name.endswith('.{0}'.format(extension)):
                 proper_list.append(file_name)
         self.file_list = proper_list
         for file_name in self.file_list:
@@ -98,3 +97,11 @@ class Compiler(object):
     @property
     def name(self):
         return self.__str__()
+
+    @property
+    def type(self):
+        return self.project_type
+
+    @type.setter
+    def type(self, value):
+        self.project_type = value

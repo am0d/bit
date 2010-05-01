@@ -37,7 +37,6 @@ class GCC(Compiler):
             # or if there was a catastrophe. But we'll find out soon enough. :D
             except OSError:
                 pass
-        
             if self.type == 'dynamic'
                 self.add_compiler_flags('-fPIC')
             run_list = [self.executable, '-o', '"{0}"'.format(out_file), '-c',
@@ -52,4 +51,4 @@ class GCC(Compiler):
                 return return_value
             self.completed_files.append(out_file)
             counter += 1
-        return 0
+        return 0        

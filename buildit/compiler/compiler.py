@@ -18,7 +18,7 @@ class Compiler(object):
         self.completed_files =  [ ]
         self.compile_steps = [ ]
         self.compile_flags = [ ]
-        self.file_extensions = ['txt']
+        self.file_extensions = ['.txt']
 
         self.compiler_executable = which('echo')
 
@@ -49,7 +49,7 @@ class Compiler(object):
         compile_list = [ ]
         proper_list = [ ]
         for extension in self.file_extensions:
-            if file_name.endswith('.{0}'.format(extension)):
+            if file_name.endswith('{0}'.format(extension)):
                 proper_list.append(file_name)
         self.file_list = proper_list
         for file_name in self.file_list:

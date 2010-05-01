@@ -1,3 +1,4 @@
+# GCC Compiler
 import os
 import sys
 import shutil
@@ -9,7 +10,8 @@ from buildit.utils import flatten
 class GCC(Compiler):
 
     def __init__(self, project_name, file_list):
-        self.file_extensions = ['c', 'm']
+        Compiler.__init__(self)
+        self.file_extensions = ['.c', '.m']
         self.executable = 'gcc'
         self.output_extension = 'o'
 
@@ -38,13 +40,14 @@ class GCC(Compiler):
         
             if self.type == 'dynamic'
                 self.add_compiler_flags('-fPIC')
-            # TODO: Change to using a list, which allows subprocess.call to not kill itself
-            run_string = '{0} -o "{1}" -c "{2}" {3}'.format(self.executable, out_file, file_name, 
-                     ' '.join(self.compile_flags))
+            run_list = [self.executable, '-o', '"{0}"'.format(out_file), '-c',
+                        '"{0}"'.format(file_name)]
+            for item in self.compile_flags:
+                run_list.append(item)
             try: 
-                return_value = subprocess.call(run_string)
+                return_value = subprocess.call(run_list)
             except OSError:
-                return_value = os.system(run_string)
+                return_value = os.system(' '.join(run_list))
             if not return_value == 0:
                 return return_value
             self.completed_files.append(out_file)

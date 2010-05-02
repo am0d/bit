@@ -40,9 +40,7 @@ class GCC(Compiler):
             if self.type == 'dynamic'
                 self.add_compiler_flags('-fPIC')
             run_list = [self.executable, '-o', '"{0}"'.format(out_file), '-c',
-                        '"{0}"'.format(file_name)]
-            for item in self.compile_flags:
-                run_list.append(item)
+                        '"{0}"'.format(file_name)] + self.compiler_flags
             try: 
                 return_value = subprocess.call(run_list)
             except OSError:

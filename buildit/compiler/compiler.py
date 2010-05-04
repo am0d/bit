@@ -13,69 +13,75 @@ from buildit.cprint import command
 
 class Compiler(object):
 
-    def __init__(self, project_name, file_list):
-        self.file_list = file_list
-        self.completed_files =  [ ]
-        self.compile_steps = [ ]
-        self.compile_flags = [ ]
-        self.file_extensions = ['.txt']
+    def __init__(self, project_name):
+        self.file_list = [ ]
+        self.link_list = [ ]
+        self.build_steps = [ ]
 
-        self.compiler_executable = which('echo')
-        self.linker_executable = which('echo')
+        self.compiler_flags = [ ]
+        self.linker_flags = [ ]
+        self.internal_hash_tracker = { }
 
         self.job_limit = 1 if buildit.options.job_limit < 1 else buildit.options.job_limit
 
-        self.compile_steps.append(self.setup_files)
-        self.compile_steps.append(self.compile_files)
-        self.compile_steps.append(self.write_deps)
-        self.compile_steps.append(self.link_files)
+        self.compiler_executable = which('echo')
+        self.linker_executable = which('echo')
+    
+        self.build_steps.append(self.setup_files)
+        self.build_steps.append(self.compile_files)
+        self.build_steps.append(self.write_deps)
+        self.build_steps.append(self.link_files)
 
         self.object_directory = '.buildit/{0}/{1}'.format(self.project_name, self.name)
+        self.build_directory = 'build/{0}'.format(self.project_name)
         self.output_extension = 'txt'
-        self.internal_hash_tracker = { }
 
     def __str__(self):
         return 'Compiler'
 
+    def __repr__(self):
+        return 'Name: {0}\nOutput Directory: {1}\nExecutables: {2}|{3}\n'.format(self.name, 
+                self.build_directory, self.compiler_executable, self.linker_executable)
+    
     @property
-    def run(self): 
-        self.database = Database(self.project_name, self.name)
+    def run(self):
+        self.database = Database(self.project_name)
         for function in self.compile_steps:
             return_value = function()
             if not return_value:
-                return return_value
+                return retuen_value
         return 0
 
     def setup_files(self):
         self.file_list = list(set(flatten(self.file_list)))
-        compile_list = [ ]
         proper_list = [ ]
-        for extension in self.file_extensions:
-            if file_name.endswith('{0}'.format(extension)):
-                proper_list.append(file_name)
+        compile_list = [ ]
+        for extension in self.extensions:
+            for file_name in self.file_list:
+                if file_name.endswith(extension)
+                    proper_list.append(file_name)
         self.file_list = proper_list
         for file_name in self.file_list:
             file_hash = hash(file_name)
-            out_file = '{0}/{1}.{2}'.format(self.output_directory, file_name, self.output_extension)
+            out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
             if os.path.exists(out_file) and file_hash == self.database.get_hash(file_name):
-                self.completed_files.append(file_name)
+                self.link_list.append(file_name)
                 continue
-            self.internal_hash_tracker[file_name] = hash
             compile_list.append(file_name)
+            self.internal_hash_tracker[file_name] = hash
         self.file_list = list(set(compile_list)).sort()
-        self.file_count = len(self.file_list)
-        return 0
-
-    # Most likely you'll override this EVERY TIME.
-    def compile_files(self):
-        return 0
+        self.file_count = len(file.file_list)
 
     def write_deps(self):
         for key, value in self.internal_hash_tracker.iteritems():
             self.database.update_hash(key, value)
         return 0
+    
+    # Should Override
+    def compile_files(self):
+        return 0
 
-    # Also, override this.
+    # Should Override
     def link_files(self):
         return 0
 
@@ -85,33 +91,36 @@ class Compiler(object):
         return percentage
 
     def format_command(self, percentage, file_name):
-        command('[{0:>3}%] {1}: {2}'.format(percentage, 
-            str(self).upper(), file_name))
+        command('[{0:>3}%] {1}: {2}'.format(percentage, self.name.upper(), file_name))
 
     def add_compiler_flags(self, *flags):
         for flag in flatten(flags):
-            self.compile_flags.append(flag)
+            self.compiler_flags.append(flag)
 
     def add_linker_flags(self, *flags):
         for flag in flatten(flags):
-            self.linker_flags.append(flag)
+            self.linker_flags.append(flags)
 
     @property
-    def executable(self):
+    def compiler(self):
         return self.compiler_executable
 
-    @executable.setter
-    def executable(self, value):
+    @compiler.setter
+    def compiler(self, value):
         self.compiler_executable = which(value)
+
+    @property
+    def linker(self):
+        return self.linker_executable
+
+    @linker.setter
+    def linker(self, value):
+        self.linker_executable = which(value)
 
     @property
     def name(self):
         return self.__str__()
 
     @property
-    def type(self):
-        return self.project_type
-
-    @type.setter
-    def type(self, value):
-        self.project_type = value
+    def extensions(self):
+        return ['.txt']

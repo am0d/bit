@@ -32,9 +32,7 @@ class Project(threading.Thread):
         self.file_list = [ ]
         
         self.build_steps.append(self.build)
-        
-        self.object_directory = 'object/{0}/{1}'.format(self.name, 
-                self.project_name)
+
         self.output_directory = 'build/{0}/{1}'.format(self.name, 
                 self.project_name)
 
@@ -70,7 +68,6 @@ class Project(threading.Thread):
         if len(self.compiler_list > 0):
             for compiler in self.compiler_list:
                 compiler_inst = compiler(self.project_name, self.file_list)
-                compiler.object_directory = self.object_directory
                 if not compiler_inst.run:
                     error('Error: Compiler Errors')
                 object_list += compiler_inst.completed_files
@@ -79,6 +76,7 @@ class Project(threading.Thread):
         linker = self.linker(self.project_name, self.project_type)
         linker.output_directory = self.output_directory
         linker.run(flatten(object_list))
+        self.project_complete = True
         return 0 
 
     def append_step(self, function):
@@ -106,7 +104,6 @@ class Project(threading.Thread):
         glob_list = fix_strings(clean_list(glob_list))
         for file_name in glob_list:
             self.file_list.append(file_name)
-        
 
     def add_files(self, *files):
         files = flatten(files)

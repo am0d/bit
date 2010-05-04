@@ -20,7 +20,6 @@ setup(name='buildit',
       packages=['buildit',
                 'buildit.project',
                 'buildit.compiler',
-                'buildit.linker',
                ],
       scripts=script_list,
      )

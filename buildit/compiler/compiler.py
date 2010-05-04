@@ -21,14 +21,16 @@ class Compiler(object):
         self.file_extensions = ['.txt']
 
         self.compiler_executable = which('echo')
+        self.linker_executable = which('echo')
 
         self.job_limit = 1 if buildit.options.job_limit < 1 else buildit.options.job_limit
 
         self.compile_steps.append(self.setup_files)
         self.compile_steps.append(self.compile_files)
         self.compile_steps.append(self.write_deps)
+        self.compile_steps.append(self.link_files)
 
-        self.output_directory = '.buildit/{0}/{1}'.format(self.project_name, self.name)
+        self.object_directory = '.buildit/{0}/{1}'.format(self.project_name, self.name)
         self.output_extension = 'txt'
         self.internal_hash_tracker = { }
 
@@ -71,6 +73,11 @@ class Compiler(object):
     def write_deps(self):
         for key, value in self.internal_hash_tracker.iteritems():
             self.database.update_hash(key, value)
+        return 0
+
+    # Also, override this.
+    def link_files(self):
+        return 0
 
     def percentage(self, counter, list_length):
         percentage = 100 * float(counter)/float(list_length)
@@ -82,9 +89,12 @@ class Compiler(object):
             str(self).upper(), file_name))
 
     def add_compiler_flags(self, *flags):
-        flags = flatten(flags)
-        for flag in flags:
+        for flag in flatten(flags):
             self.compile_flags.append(flag)
+
+    def add_linker_flags(self, *flags):
+        for flag in flatten(flags):
+            self.linker_flags.append(flag)
 
     @property
     def executable(self):

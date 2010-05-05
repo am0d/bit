@@ -35,6 +35,7 @@ class Compiler(object):
         self.object_directory = '.buildit/{0}/{1}'.format(self.project_name, self.name)
         self.build_directory = 'build/{0}'.format(self.project_name)
         self.output_extension = 'txt'
+        self.database = Database(self.project_name, self.name)
 
     def __str__(self):
         return 'Compiler'
@@ -45,7 +46,6 @@ class Compiler(object):
     
     @property
     def run(self):
-        self.database = Database(self.project_name)
         for function in self.compile_steps:
             return_value = function()
             if not return_value:

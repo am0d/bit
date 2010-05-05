@@ -3,6 +3,7 @@ import os
 import subprocess
 
 from buildit.compiler.compiler import Compiler
+from buildit.cprint import command
 
 class GCC(Compiler):
 
@@ -34,7 +35,7 @@ class GCC(Compiler):
                 pass
             if self.type == 'dynamic':
                 self.add_compiler_flags('-fPIC')
-            run_list = [self.executable = '-o' '"{0}"'.format(out_file), '-c', 
+            run_list = [self.compiler, '-o' '"{0}"'.format(out_file), '-c', 
                         '"{0}"'.format(file_name)] + self.compiler_flags
             try:
                 return_value = subprocess.call(run_list)
@@ -46,4 +47,14 @@ class GCC(Compiler):
         return 0
 
     def link_files(self):
+        try:
+            os.makedirs(self.output_directory)
+        except OSError:
+            pass
+        run_list = [self.linker, '-o', '"{0}"'] + self.link_list + self.linker_flags
+        command('[LINK] {0}'.format(self.project_name))
+        try:
+            subprocess.call(run_list)
+        except OSError:
+            os.system(' '.join(run_list))
         return 0

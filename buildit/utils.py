@@ -35,7 +35,7 @@ def which(program_name):
             exe_file = os.path.join(path, program_name)
             if is_exe(exe_file):
                 return exe_file
-    return 'echo'
+    raise Exception('Could not find {0} on the system path'.format(program_name)) 
 
 def flatten(list_name, containers=(list, tuple)):
     if isinstance(list_name, containers):

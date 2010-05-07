@@ -6,13 +6,15 @@
 import os
 import sys
 
-from optparse import OptionParser
+from optparse import OptionGroup
+from buildit.instance import buildit
 
 if __name__ == '__main__':
-    parser = OptionParser(conflict_handler='resolve')
-    parser.add_option('-f', '--file', dest='file_name', 
+    options = OptionGroup(buildit.parser)
+    options.add_option('-f', '--file', dest='file_name', 
                       default='snakefile', help='run from FILE_NAME')
-    options, args = parser.parse_args()
+    buildit.parser.add_option_group(options)
+    options, args = buildit.parser.parse_args()
     try:
         with open(options.file_name) as snake_file:
             run_string = 'from buildit import *\n{0}'.format(''.join(snake_file)) 

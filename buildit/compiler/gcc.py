@@ -8,7 +8,7 @@ from buildit.cprint import command
 class GCC(Compiler):
 
     def __init__(self, project_name):
-        Compiler.__init__(self)
+        Compiler.__init__(self, project_name)
         self.compiler = 'gcc'
         self.linker = 'gcc'
         self.output_extension = 'o'

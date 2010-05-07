@@ -15,7 +15,6 @@ from buildit.utils import flatten, fix_strings, clean_list
 from buildit.cprint import success, warning, error, info
 
 from buildit.compiler.compiler import Compiler
-from buildit.linker.linker import Linker
 
 class Project(threading.Thread):
 
@@ -26,8 +25,7 @@ class Project(threading.Thread):
         self.project_type = 'binary'
         self.project_complete = False
 
-        self.compiler_list = [Compiler]
-        self.linker = Linker
+        self.compiler = Compiler(self.project_name)
         self.build_steps = [ ]
         self.file_list = [ ]
         
@@ -59,23 +57,14 @@ class Project(threading.Thread):
             if not return_value:
                 error('Error: {0}'.format(return_value))
                 sys.exit(return_value)
-        end_time - datetime.now()
+        end_time = datetime.now()
         info('{0}|{1}: {2}'.format(self.project_name.upper(), self.name,
                                    (end_time - start_time)))
 
     def build(self):
-        object_list = [ ]
-        if len(self.compiler_list > 0):
-            for compiler in self.compiler_list:
-                compiler_inst = compiler(self.project_name, self.file_list)
-                if not compiler_inst.run:
-                    error('Error: Compiler Errors')
-                object_list += compiler_inst.completed_files
-        else:
-            object_list = self.file_list
-        linker = self.linker(self.project_name, self.project_type)
-        linker.output_directory = self.output_directory
-        linker.run(flatten(object_list))
+        self.compiler.file_list = self.file_list
+        if not self.compiler.run:
+            return 1
         self.project_complete = True
         return 0 
 
@@ -90,11 +79,6 @@ class Project(threading.Thread):
 
     def is_complete(self):
         return self.project_complete
-
-    def add_compiler(self, *compilers):
-        compilers = flatten(compilers)
-        for compiler in compilers:
-            self.compiler_list.append(compiler)
 
     def add_directory(self, *directories):
         directories = flatten(directories)
@@ -154,6 +138,7 @@ class Project(threading.Thread):
             self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
+        raise Exception('Currently broken, refrain from use please')
         database_path = '.buildit/{1}'.format(self.project_name)
         if os.path.exists(database_path):
             try:

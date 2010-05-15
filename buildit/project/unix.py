@@ -2,6 +2,7 @@
 
 from buildit.project.project import Project
 from buildit.compiler.gcc import GCC
+
 class Unix(Project):
 
     def __init__(self, project_name):

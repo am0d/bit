@@ -1,13 +1,13 @@
 # Imports our modules for local use, and creates our GPL instance
 
 # Project Modules
-from buildit.project. 
-
+from buildit.project.cocoa import Cocoa
+from buildit.project.msvc import MSVC
+from buildit.project.unix import UNIX
 
 # Compiler Modules
 from buildit.compiler.gcc import GCC
 from buildit.compiler.gpp import GPP
-
 
 # Global Project Lookup
 from buildit.gpl import GPL

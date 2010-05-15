@@ -58,7 +58,7 @@ class Compiler(object):
         compile_list = [ ]
         for extension in self.extensions:
             for file_name in self.file_list:
-                if file_name.endswith(extension)
+                if file_name.endswith(extension):
                     proper_list.append(file_name)
         self.file_list = proper_list
         for file_name in self.file_list:

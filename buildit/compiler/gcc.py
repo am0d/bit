@@ -58,3 +58,15 @@ class GCC(Compiler):
         except OSError:
             os.system(' '.join(run_list))
         return 0
+
+    @property
+    def C99(self):
+        pass
+
+    @property
+    def CXX(self):
+        pass
+
+    @property
+    def enable_c(self):
+        pass

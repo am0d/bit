@@ -1,1 +1,1 @@
-@python snake %*
+@python bit %*

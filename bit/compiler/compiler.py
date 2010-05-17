@@ -5,6 +5,8 @@ import sys
 import threading
 import subprocess
 
+from multiprocessing import Pool
+
 from bit.instance import bit
 
 from bit.database import Database
@@ -20,6 +22,7 @@ class Compiler(object):
 
         self.compiler_flags = [ ]
         self.linker_flags = [ ]
+        self.extensions = { }
         self.internal_hash_tracker = { }
 
         self.job_limit = 1 if buildit.options.job_limit < 1 else buildit.options.job_limit
@@ -36,6 +39,8 @@ class Compiler(object):
         self.build_directory = 'build/{0}'.format(self.project_name)
         self.output_extension = 'txt'
         self.database = Database(self.project_name, self.name)
+        
+        self.build_pool = Pool(self.job_limit)
 
     def __str__(self):
         return 'Compiler'
@@ -56,7 +61,7 @@ class Compiler(object):
         self.file_list = list(set(flatten(self.file_list)))
         proper_list = [ ]
         compile_list = [ ]
-        for extension in self.extensions:
+        for extension in iter(self.extensions):
             for file_name in self.file_list:
                 if file_name.endswith(extension):
                     proper_list.append(file_name)
@@ -120,7 +125,3 @@ class Compiler(object):
     @property
     def name(self):
         return self.__str__()
-
-    @property
-    def extensions(self):
-        return ['.txt']

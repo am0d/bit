@@ -6,7 +6,7 @@ import subprocess
 from bit.project.project import Project
 from bit.compiler.gcc import GCC
 from bit.utils import flatten
-from bit.cprint
+from bit.cprint import error
 
 class Unix(Project):
 
@@ -24,7 +24,7 @@ class Unix(Project):
             self.compiler.add_compile_flags(cflags)
             self.compiler.add_link_flags(cflags, lflags)
 
-    def pkg_config(self, (packages):
+    def pkg_config(self, packages):
         for package in flatten(list(set(packages))):
             cflags = config_script_flags('pkg', package, '--cflags')
             lflags = config_script_flags('pkg', package, '--libs')

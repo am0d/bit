@@ -79,6 +79,9 @@ class Project(threading.Thread):
     def is_complete(self):
         return self.project_complete
 
+    def add_extension(self, extension, command=self.compiler.compiler):
+        self.compiler.extensions[extension] = which(command)
+
     def add_directory(self, *directories):
         directories = flatten(directories)
         glob_list = [ ]

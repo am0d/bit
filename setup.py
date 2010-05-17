@@ -7,9 +7,9 @@ from distutils.core import setup
 from glob import glob
 
 
-script_list = ['scripts/snake', 'scripts/snake.bat'] 
+script_list = ['scripts/bit', 'scripts/bit.bat'] 
 if not sys.platform == 'win32':
-    script_list.remove('scripts/snake.bat')
+    script_list.remove('scripts/bit.bat')
 setup(name='bit',
       version='0.3',
       license='BSD',

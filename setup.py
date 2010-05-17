@@ -10,16 +10,16 @@ from glob import glob
 script_list = ['scripts/snake', 'scripts/snake.bat'] 
 if not sys.platform == 'win32':
     script_list.remove('scripts/snake.bat')
-setup(name='buildit',
+setup(name='bit',
       version='0.3',
       license='BSD',
       description='A Minimal Build System',
       author='Tres Walsh',
       author_email='tres.walsh@mnmlstc.com',
       url='http://mnmlstc.com',
-      packages=['buildit',
-                'buildit.project',
-                'buildit.compiler',
+      packages=['bit',
+                'bit.project',
+                'bit.compiler',
                ],
       scripts=script_list,
      )

@@ -1,8 +1,8 @@
 Overview
 ========
 
-buildit is an easy to use, easy to modify, and easy to understand build system.  
-It has an easy to use API, and is great for those small projects. Don't worry about configuring your makefile, or writing a build script. Just buildit.  
+bit is an easy to use, easy to modify, and easy to understand build system.  
+It has an easy to use API, and is great for those small projects.   
 
 Information
 -----------
@@ -14,22 +14,22 @@ buildit is not guaranteed to run on other Python implementations.
 Installation Instructions
 -------------------------
 
-To install buildit, merely run `python setup.py install` in your favorite shell
+To install bit, merely run `python setup.py install` in your favorite shell
 
 Building The Documentation
 --------------------------
 
-Chances are that the documentation will be placed here on github, either via the project wiki, or in a doc folder in markdown format. 
+The documentation is written using markdown syntax, and can be viewed in an HTML format via github.
 
 Tutorial
 ========
 
-Here is a small and quick tutorial to showcase the ease of use that buildit gives to you, the developer. Just place some code like so in a file named "snakefile"
+Here is a small and quick tutorial to showcase the ease of use that bit gives to you, the developer. Just place some code like so in a file named "bitfile"
 
     x = Project('ArbitraryProjectName')
     x.add_files('source') # Grabs all files in source
     x.remove_directory('source/arbitrary_platform') # buildit will ignore all files in this directory.
-    buildit.add_project(x)
+    bit.add_project(x)
 
 
 Roadmap

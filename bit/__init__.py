@@ -1,16 +1,15 @@
 # Imports our modules for local use, and creates our GPL instance
 
 # Project Modules
-from buildit.project.cocoa import Cocoa
-from buildit.project.msvc import MSVC
-from buildit.project.unix import UNIX
+from bit.project.cocoa import Cocoa
+from bit.project.msvc import MSVC
+from bit.project.unix import UNIX
 
 # Compiler Modules
-from buildit.compiler.gcc import GCC
-from buildit.compiler.gpp import GPP
+from bit.compiler.gcc import GCC
 
 # Global Project Lookup
-from buildit.gpl import GPL
+from bit.gpl import GPL
 
 # Magic
 import sys
@@ -27,4 +26,4 @@ if sys.platform == 'linux2':
     linux = True
 
 # Assuming Direct Control
-buildit = GPL()
+bit = GPL()

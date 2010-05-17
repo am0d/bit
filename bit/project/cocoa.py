@@ -1,5 +1,5 @@
 # MAC OS X C/C++/ObjC Projects
-from buildit.project.unix import Unix
+from bit.project.unix import Unix
 
 class Cocoa(Unix):
     

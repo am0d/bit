@@ -3,9 +3,9 @@
 import os
 import subprocess
 
-from buildit.project.unix import Unix
-from buildit.utils import which, flatten
-from buildit.cprint import error
+from bit.project.unix import Unix
+from bit.utils import which, flatten
+from bit.cprint import error
 
 class MinGW(Unix):
 

@@ -2,8 +2,8 @@
 import os
 import subprocess
 
-from buildit.compiler.compiler import Compiler
-from buildit.cprint import command
+from bit.compiler.compiler import Compiler
+from bit.cprint import command
 
 class GCC(Compiler):
 

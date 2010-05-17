@@ -3,10 +3,10 @@
 import os
 import subprocess
 
-from buildit.project.project import Project
-from buildit.compiler.gcc import GCC
-from buildit.utils import flatten
-from buildit.cprint
+from bit.project.project import Project
+from bit.compiler.gcc import GCC
+from bit.utils import flatten
+from bit.cprint
 
 class Unix(Project):
 

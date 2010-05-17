@@ -6,10 +6,10 @@ import time
 import shutil
 import hashlib
 
-import buildit
+import bit
 
-from buildit.instance import buildit
-from buildit.cprint import error, warning
+from bit.instance import bit
+from bit.cprint import error, warning
 
 def hash(self, file_name):
     try:
@@ -24,7 +24,7 @@ def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
 
 def which(program_name):
-    if buildit.windows:
+    if bit.windows:
         program_name = '{0}.exe'.format(program_name)
     filepath = os.path.split(program_name)[0]
     if filepath:

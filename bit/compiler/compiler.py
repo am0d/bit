@@ -5,11 +5,11 @@ import sys
 import threading
 import subprocess
 
-from buildit.instance import buildit
+from bit.instance import bit
 
-from buildit.database import Database
-from buildit.utils import which, flatten, hash
-from buildit.cprint import command
+from bit.database import Database
+from bit.utils import which, flatten, hash
+from bit.cprint import command
 
 class Compiler(object):
 
@@ -32,7 +32,7 @@ class Compiler(object):
         self.build_steps.append(self.write_deps)
         self.build_steps.append(self.link_files)
 
-        self.object_directory = '.buildit/{0}/{1}'.format(self.project_name, self.name)
+        self.object_directory = '.bit/{0}/{1}'.format(self.project_name, self.name)
         self.build_directory = 'build/{0}'.format(self.project_name)
         self.output_extension = 'txt'
         self.database = Database(self.project_name, self.name)

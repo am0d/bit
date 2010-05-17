@@ -5,15 +5,15 @@ import sys
 import anydbm
 import subprocess
 
-from buildit.utils import flatten, hash
-from buildit.cprint import error
+from bit.utils import flatten, hash
+from bit.cprint import error
 
 class Database(object):
 
     def __init__(self, project_name, compiler_name):
         self.project_name = project_name
         self.compiler_name = compiler_name
-        self.location = '.buildit/{0}/{1}'.format(self.project_name, self.compiler_name)
+        self.location = '.bit/{0}/{1}'.format(self.project_name, self.compiler_name)
         self.run
         try:
             self.hashdb = anydbm.open('{0}.hash'.format(self.location), 'c')
@@ -31,7 +31,7 @@ class Database(object):
         try:
             os.makedirs(self.location)
             if sys.platform == 'win32':
-                subprocess.call(['attrib', '+h', '.buildit'])
+                subprocess.call(['attrib', '+h', '.bit'])
         except OSError:
             pass
 

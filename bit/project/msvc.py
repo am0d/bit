@@ -1,6 +1,6 @@
 # MSVC Project Class
 
-from buildit.project.project import Project
+from bit.project.project import Project
 
 class MSVC(Project):
     

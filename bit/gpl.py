@@ -7,7 +7,7 @@ import threading
 
 from optparse import OptionParser
 
-from buildit.harbinger import Harbinger
+from bit.harbinger import Harbinger
 
 # We are Harbinger
 class GPL(Harbinger):

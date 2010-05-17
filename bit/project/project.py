@@ -9,12 +9,12 @@ from glob import glob
 from datetime import datetime
 from optparse import OptionGroup
 
-from buildit.instance import buildit
+from bit.instance import bit
 
-from buildit.utils import flatten, fix_strings, clean_list
-from buildit.cprint import success, warning, error, info
+from bit.utils import flatten, fix_strings, clean_list
+from bit.cprint import success, warning, error, info
 
-from buildit.compiler.compiler import Compiler
+from bit.compiler.compiler import Compiler
 
 class Project(threading.Thread):
 
@@ -31,8 +31,7 @@ class Project(threading.Thread):
         
         self.build_steps.append(self.build)
 
-        self.output_directory = 'build/{0}/{1}'.format(self.name, 
-                self.project_name)
+        self.output_directory = 'build/{0}/{1}'.format(self.name, self.project_name)
 
         # Commandline options
         self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
@@ -139,7 +138,7 @@ class Project(threading.Thread):
 
     def rebuild(self):
         raise Exception('Currently broken, refrain from use please')
-        database_path = '.buildit/{1}'.format(self.project_name)
+        database_path = '.bit/{1}'.format(self.project_name)
         if os.path.exists(database_path):
             try:
                 os.remove(database_path)

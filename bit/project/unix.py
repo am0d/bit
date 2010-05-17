@@ -4,7 +4,7 @@ import os
 import subprocess
 
 from bit.project.project import Project
-from bit.compiler.gcc import GCC
+from bit.compiler.cc import CC
 from bit.utils import flatten
 from bit.cprint import error
 
@@ -12,7 +12,7 @@ class Unix(Project):
 
     def __init__(self, project_name):
         Project.__init__(self, project_name)
-        self.compiler = GCC(self.project_name)
+        self.compiler = CC(self.project_name)
 
     def __str__(self):
         return 'Unix'
@@ -60,6 +60,10 @@ class Unix(Project):
     @property
     def CPP(self):
         self.compiler.CXX
+
+    @property
+    def enable_c(self):
+        self.compiler.enable_c
 
 def config_script_flags(script, package, argument):
     process = subprocess.Popen(['{0}-config'.format(script), package, argument], 

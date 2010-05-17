@@ -59,6 +59,7 @@ class Project(threading.Thread):
         end_time = datetime.now()
         info('{0}|{1}: {2}'.format(self.project_name.upper(), self.name,
                                    (end_time - start_time)))
+        return 0
 
     def build(self):
         self.compiler.file_list = self.file_list
@@ -78,9 +79,6 @@ class Project(threading.Thread):
 
     def is_complete(self):
         return self.project_complete
-
-    def add_extension(self, extension, command=self.compiler.compiler):
-        self.compiler.extensions[extension] = which(command)
 
     def add_directory(self, *directories):
         directories = flatten(directories)
@@ -140,7 +138,6 @@ class Project(threading.Thread):
             self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
-        raise Exception('Currently broken, refrain from use please')
         database_path = '.bit/{1}'.format(self.project_name)
         if os.path.exists(database_path):
             try:
@@ -157,11 +154,14 @@ class Project(threading.Thread):
     @property
     def static(self):
         self.project_type = 'static'
+        self.compiler.type = self.project_type
 
     @property
     def binary(self):
         self.project_type = 'binary'
+        self.compiler.type = self.project_type
 
     @property
     def dynamic(self):
         self.project_type = 'dynamic'
+        self.compiler.type = self.project_type

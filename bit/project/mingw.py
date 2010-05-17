@@ -12,6 +12,7 @@ class MinGW(Unix):
     def __init__(self, project_name):
         Unix.__init__(self, project_name)
         self.resource_compiler = 'windres'
+        self.compiler.compiler = 'gcc'
 
     def __str__(self):
         return 'MinGW'
@@ -36,6 +37,9 @@ class MinGW(Unix):
                 error('Could not compile resource file: {0}'.format(file_name))
                 return
             self.compiler.link_list.append(file_out)
+    @property
+    def CXX(self):
+        self.
 
     @property
     def resource_compiler(self):

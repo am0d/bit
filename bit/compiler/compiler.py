@@ -22,7 +22,6 @@ class Compiler(object):
 
         self.compiler_flags = [ ]
         self.linker_flags = [ ]
-        self.extensions = { }
         self.internal_hash_tracker = { }
 
         self.job_limit = 1 if buildit.options.job_limit < 1 else buildit.options.job_limit
@@ -61,7 +60,7 @@ class Compiler(object):
         self.file_list = list(set(flatten(self.file_list)))
         proper_list = [ ]
         compile_list = [ ]
-        for extension in iter(self.extensions):
+        for extension in self.extensions:
             for file_name in self.file_list:
                 if file_name.endswith(extension):
                     proper_list.append(file_name)
@@ -113,14 +112,6 @@ class Compiler(object):
     @compiler.setter
     def compiler(self, value):
         self.compiler_executable = which(value)
-
-    @property
-    def linker(self):
-        return self.linker_executable
-
-    @linker.setter
-    def linker(self, value):
-        self.linker_executable = which(value)
 
     @property
     def name(self):

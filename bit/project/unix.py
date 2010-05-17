@@ -68,5 +68,5 @@ def config_script_flags(script, package, argument):
     output, errput = process.communicate()
     if not output:
         error('{0}: {1}'.format(package, errput))
-        return
+        raise Exception('Config error!')
     return output.replace('\n', '')

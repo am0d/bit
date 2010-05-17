@@ -61,12 +61,10 @@ class GCC(Compiler):
 
     @property
     def C99(self):
-        pass
+        self.add_compile_flags('-std=c99')
+        self.add_linker_flags('-std=c99')
 
     @property
     def CXX(self):
-        pass
-
-    @property
-    def enable_c(self):
-        pass
+        self.compiler = 'g++'
+        self.linker = 'g++'

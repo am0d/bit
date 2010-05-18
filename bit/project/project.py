@@ -11,7 +11,7 @@ from optparse import OptionGroup
 
 from bit.instance import bit
 
-from bit.utils import flatten, fix_strings, clean_list
+from bit.utils import flatten, fix_strings
 from bit.cprint import success, warning, error, info
 
 from bit.compiler.compiler import Compiler
@@ -34,7 +34,7 @@ class Project(threading.Thread):
         self.output_directory = 'build/{0}/{1}'.format(self.name, self.project_name)
 
         # Commandline options
-        self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
+        self.options = OptionGroup(bit.parser, 'Project Specific Options:',
                                    'These will apply to *all* projects')
         self.options.add_option('-c', '--clean', action='store_true', 
                                 dest='clean', default=False,
@@ -42,7 +42,7 @@ class Project(threading.Thread):
         self.options.add_option('-r', '--rebuild', action='store_true',
                                 dest='rebuild', default=False,
                                 help='Fully rebuilds the project')
-        buildit.parser.add_option_group(self.options)
+        bit.parser.add_option_group(self.options)
 
     def __str__(self):
         return 'Project'
@@ -57,8 +57,7 @@ class Project(threading.Thread):
                 error('Error: {0}'.format(return_value))
                 sys.exit(return_value)
         end_time = datetime.now()
-        info('{0}|{1}: {2}'.format(self.project_name.upper(), self.name,
-                                   (end_time - start_time)))
+        info('{0}|{1}: {2}'.format(self.name.upper(), self.project_name, (end_time - start_time)))
         return 0
 
     def build(self):
@@ -85,7 +84,7 @@ class Project(threading.Thread):
         glob_list = [ ]
         for directory in directories:
             glob_list += glob('{0}/*'.format(directory))
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             self.file_list.append(file_name)
 
@@ -98,7 +97,7 @@ class Project(threading.Thread):
                     glob_list += glob('{0}/*'.format(root))
             else:
                 glob_list.append(file_name)
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             self.file_list.append(file_name)
 
@@ -107,7 +106,7 @@ class Project(threading.Thread):
         glob_list = [ ]
         for directory in directories:
             glob_list += glob('{0}/*'.format(directory))
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             try:
                 self.file_list.remove(file_name)
@@ -123,7 +122,7 @@ class Project(threading.Thread):
                     glob_list += glob('{0}/*'.format(root))
             else:
                 glob_list.append(file_name)
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             try:
                 self.file_list.remove(file_name)
@@ -134,7 +133,7 @@ class Project(threading.Thread):
         self.build_steps.insert(0, required_system.run)
 
     def set_options(self):
-        if buildit.options.rebuild:
+        if bit.options.rebuild:
             self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):

@@ -5,8 +5,6 @@ import sys
 import threading
 import subprocess
 
-from multiprocessing import Pool
-
 from bit.instance import bit
 
 from bit.database import Database
@@ -16,6 +14,7 @@ from bit.cprint import command
 class Compiler(object):
 
     def __init__(self, project_name):
+        self.project_name = project_name
         self.file_list = [ ]
         self.link_list = [ ]
         self.build_steps = [ ]
@@ -23,8 +22,6 @@ class Compiler(object):
         self.compiler_flags = [ ]
         self.linker_flags = [ ]
         self.internal_hash_tracker = { }
-
-        self.job_limit = 1 if buildit.options.job_limit < 1 else buildit.options.job_limit
 
         self.compiler_executable = which('echo')
         self.linker_executable = which('echo')
@@ -39,8 +36,6 @@ class Compiler(object):
         self.output_extension = 'txt'
         self.database = Database(self.project_name, self.name)
         
-        self.build_pool = Pool(self.job_limit)
-
     def __str__(self):
         return 'Compiler'
 
@@ -50,10 +45,10 @@ class Compiler(object):
     
     @property
     def run(self):
-        for function in self.compile_steps:
+        for function in self.build_steps:
             return_value = function()
-            if not return_value:
-                return retuen_value
+            if return_value:
+                return return_value
         return 0
 
     def setup_files(self):
@@ -73,8 +68,9 @@ class Compiler(object):
                 continue
             compile_list.append(file_name)
             self.internal_hash_tracker[file_name] = hash
-        self.file_list = list(set(compile_list)).sort()
-        self.file_count = len(file.file_list)
+        self.file_list = list(set(compile_list))
+        self.file_count = len(self.file_list)
+        return 0
 
     def write_deps(self):
         for key, value in self.internal_hash_tracker.iteritems():

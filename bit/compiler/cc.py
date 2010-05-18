@@ -17,12 +17,13 @@ class CC(Compiler):
         self.type = 'binary'
 
     def __str__(self):
-        return 'CC' if not self.cxx_support else 'CXX'
+        return 'CC'
 
     def compile_files(self):
         counter = 1
         if self.type == 'dynamic':
             self.add_compiler_flags('-fPIC')
+        print self.file_list
         for file_name in self.file_list:
             out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
             percentage = self.percentage(counter, self.file_count)
@@ -80,7 +81,7 @@ class CC(Compiler):
             self.add_compiler_flags('-I', directory)
             self.add_linker_flags('-I', directory)
 
-    def add_library_directory(self *directories):
+    def add_library_directory(self, *directories):
         for directory in flatten(list(set(directories))):
             self.add_linker_flags('-L', directory)
 

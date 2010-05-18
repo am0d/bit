@@ -39,7 +39,7 @@ class MinGW(Unix):
             self.compiler.link_list.append(file_out)
     @property
     def CXX(self):
-        self.
+        self.compiler = 'g++'
 
     @property
     def resource_compiler(self):

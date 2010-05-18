@@ -6,15 +6,13 @@ import time
 import shutil
 import hashlib
 
-import bit
-
 from bit.instance import bit
 from bit.cprint import error, warning
 
-def hash(self, file_name):
+def hash(file_name):
     try:
         with open(file_name, 'rb') as hashable:
-            algo = hashlib.new(buildit.options.hash_type)
+            algo = hashlib.new(bit.options.hash_type)
             algo.update(hashable.read())
             return algo.hexdigest()
     except IOError:
@@ -24,7 +22,7 @@ def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
 
 def which(program_name):
-    if bit.windows:
+    if sys.platform == 'win32':
         program_name = '{0}.exe'.format(program_name)
     filepath = os.path.split(program_name)[0]
     if filepath:
@@ -46,10 +44,7 @@ def flatten(list_name, containers=(list, tuple)):
     else:
         return [list_name]
 
-def clean_list(list_var):
-    return list(set(list_var)).sort()
-
 def fix_strings(file_list):
-    if buildit.windows:
+    if sys.platform == 'win32':
         file_list = [item.replace('\\', '/') for item in file_list].sort()
     return file_list

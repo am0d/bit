@@ -3,7 +3,7 @@
 # Project Modules
 from bit.project.cocoa import Cocoa
 from bit.project.msvc import MSVC
-from bit.project.unix import UNIX
+from bit.project.unix import Unix
 
 # Compiler Modules
 from bit.compiler.gcc import GCC

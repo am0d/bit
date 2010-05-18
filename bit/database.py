@@ -15,7 +15,7 @@ class Database(object):
         self.compiler_name = compiler_name
         self.location = '.bit/{0}/{1}'.format(self.project_name, self.compiler_name)
         self.run
-        self.hashdb = anydbm.open('{0}'.format(self.location), 'c')
+        self.hashdb = anydbm.open('{0}.hash'.format(self.location), 'c')
 
     def __del__(self):
         try:

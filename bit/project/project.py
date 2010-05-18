@@ -62,6 +62,7 @@ class Project(threading.Thread):
 
     def build(self):
         self.compiler.file_list = self.file_list
+        self.compiler.build_directory =self.output_directory
         if not self.compiler.run:
             return 1
         self.project_complete = True
@@ -137,7 +138,7 @@ class Project(threading.Thread):
             self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
-        database_path = '.bit/{1}'.format(self.project_name)
+        database_path = '.bit/{0}'.format(self.project_name)
         if os.path.exists(database_path):
             try:
                 os.remove(database_path)

@@ -63,11 +63,12 @@ class Compiler(object):
         for file_name in self.file_list:
             file_hash = hash(file_name)
             out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
+            print file_hash + ': ' + self.database.get_hash(file_name)
             if os.path.exists(out_file) and file_hash == self.database.get_hash(file_name):
                 self.link_list.append(file_name)
                 continue
             compile_list.append(file_name)
-            self.internal_hash_tracker[file_name] = hash
+            self.internal_hash_tracker[file_name] = file_hash
         self.file_list = list(set(compile_list))
         self.file_count = len(self.file_list)
         return 0

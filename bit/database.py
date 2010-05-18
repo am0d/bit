@@ -2,7 +2,7 @@
 
 import os
 import sys
-import anydbm
+import shelve
 import subprocess
 
 from bit.utils import flatten, hash
@@ -15,15 +15,12 @@ class Database(object):
         self.compiler_name = compiler_name
         self.location = '.bit/{0}/{1}'.format(self.project_name, self.compiler_name)
         self.run
-        try:
-            self.hashdb = anydbm.open('{0}.hash'.format(self.location), 'c')
-        except anydbm.error:
-            error('Could not locate hash database')
+        self.hashdb = shelve.open('{0}.hash'.format(self.location), 'c', writeback=True)
 
     def __del__(self):
         try:
             self.hashdb.close()
-        except AttributeError:
+        except ValueError:
             error('Could not close hash DB safely.')
 
     @property
@@ -36,7 +33,10 @@ class Database(object):
             pass
 
     def get_hash(self, file_name):
-        return self.hashdb.get(file_name, '')
+        if self.hashdb.has_key(file_name):
+            return self.hashdb[file_name]
+        return ''
 
     def update_hash(self, file_name, file_hash):
         self.hashdb[file_name] = str(file_hash)
+        self.hashdb.sync()

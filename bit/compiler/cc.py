@@ -1,11 +1,12 @@
 # GCC Compiler
 import os
+import sys
 import subprocess
 
 import bit
 
 from bit.compiler.compiler import Compiler
-from bit.utils import flatten
+from bit.utils import flatten, hash
 from bit.cprint import command
 
 class CC(Compiler):
@@ -24,7 +25,6 @@ class CC(Compiler):
         counter = 1
         if self.type == 'dynamic':
             self.add_compiler_flags('-fPIC')
-        print self.file_list
         for file_name in self.file_list:
             out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
             percentage = self.percentage(counter, self.file_count)
@@ -46,13 +46,16 @@ class CC(Compiler):
                         '{0}'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             try:
-            #TODO FIXME
-                raise OSError()
-                #return_value = subprocess.call(run_list)
+                if sys.platform == 'darwin':
+                    raise OSError()
+                return_value = subprocess.call(run_list)
             except OSError:
                 return_value = os.system(' '.join(run_list))
             if not return_value == 0:
                 return return_value
+            self.link_list.append(out_file)
+            self.internal_hash_tracker[file_name] = hash(file_name)
+            print self.internal_hash_tracker
             counter += 1
         return 0
 
@@ -67,9 +70,12 @@ class CC(Compiler):
             os.makedirs(self.build_directory)
         except OSError:
             pass
-        run_list = flatten([self.compiler, '-o', '"{0}"'.format(self.project_name)] + self.link_list + self.linker_flags)
+        # Stops extra parameters from existing
+        self.linker_flags = list(set(self.linker_flags))
+        run_list = flatten([self.compiler, '-o', 
+                            '{0}/{1}'.format(self.build_directory, self.project_name)] 
+                            + self.link_list + self.linker_flags)
         command('[LINK] {0}'.format(self.project_name))
-        print run_list
         try:
             subprocess.call(run_list)
         except OSError:

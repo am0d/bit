@@ -12,3 +12,8 @@ class Cocoa(Unix):
     def add_framework(self, *frameworks):
         for framework in flatten(list(set(frameworks))):
             self.compiler.add_linker_flags('-framework', framework)
+
+    def add_arch(self, *arches):
+        for arch in flatten(list(set(arches))):
+            self.compiler.add_compiler_flags('-arch', arch)
+            self.compiler.add_linker_flags('-arch', arch)

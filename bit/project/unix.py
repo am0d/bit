@@ -13,6 +13,7 @@ class Unix(Project):
     def __init__(self, project_name):
         Project.__init__(self, project_name)
         self.compiler = CC(self.project_name)
+        self.output_extension = self.compiler.output_extension
 
     def __str__(self):
         return 'Unix'

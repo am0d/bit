@@ -23,12 +23,10 @@ class Compiler(object):
         self.linker_flags = [ ]
         self.internal_hash_tracker = { }
 
-        self.compiler_executable = which('echo')
-        self.linker_executable = which('echo')
+        self.compiler_executable = 'echo'
     
         self.build_steps.append(self.setup_files)
         self.build_steps.append(self.compile_files)
-        self.build_steps.append(self.write_deps)
         self.build_steps.append(self.link_files)
 
         self.object_directory = '.bit/{0}/{1}'.format(self.project_name, self.name)
@@ -47,7 +45,9 @@ class Compiler(object):
         for function in self.build_steps:
             return_value = function()
             if return_value:
-                return return_value
+                error('Error: {0}'.format(return_value))
+                break
+        self.write_deps()
         del self.database
         return 0
 
@@ -104,11 +104,11 @@ class Compiler(object):
             self.linker_flags.append(flags)
 
     @property
-    def compiler(self):
+    def executable(self):
         return self.compiler_executable
 
-    @compiler.setter
-    def compiler(self, value):
+    @executable.setter
+    def executable(self, value):
         self.compiler_executable = which(value)
 
     @property

@@ -2,8 +2,9 @@
 
 # Project Modules
 from bit.project.cocoa import Cocoa
-from bit.project.msvc import MSVC
 from bit.project.unix import Unix
+from bit.project.mingw import MinGW
+from bit.project.msvc import MSVC
 
 # Compiler Modules
 from bit.compiler.cc import CC

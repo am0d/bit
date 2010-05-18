@@ -12,7 +12,7 @@ class MinGW(Unix):
     def __init__(self, project_name):
         Unix.__init__(self, project_name)
         self.resource_compiler = 'windres'
-        self.compiler.compiler = 'gcc'
+        self.compiler.executable = 'gcc'
 
     def __str__(self):
         return 'MinGW'
@@ -28,18 +28,18 @@ class MinGW(Unix):
             except OSError:
                 pass
             file_out = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
-            run_string = '{0} {1} {2}'.format(self.resource_compiler, file_name, file_out)
+            run_string = '{0} {1} -o {2}'.format(self.resource_compiler, file_name, file_out)
             try:
                 return_value = subprocess.call(run_string)
             except OSError:
                 return_value = os.system(run_string)
-            if not return_value:
-                error('Could not compile resource file: {0}'.format(file_name))
+            if return_value:
                 return
             self.compiler.link_list.append(file_out)
+
     @property
     def CXX(self):
-        self.compiler = 'g++'
+        self.executable = 'g++'
 
     @property
     def resource_compiler(self):

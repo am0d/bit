@@ -46,5 +46,5 @@ def flatten(list_name, containers=(list, tuple)):
 
 def fix_strings(file_list):
     if sys.platform == 'win32':
-        file_list = [item.replace('\\', '/') for item in file_list].sort()
+        file_list = [item.replace('\\', '/') for item in file_list]
     return file_list

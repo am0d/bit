@@ -32,13 +32,10 @@ class Project(threading.Thread):
         self.build_steps.append(self.build)
 
         self.output_directory = 'build/{0}/{1}'.format(self.name, self.project_name)
-
+        self.object_directory = '.bit/{0}'.format(self.project_name)
         # Commandline options
         self.options = OptionGroup(bit.parser, 'Project Specific Options:',
                                    'These will apply to *all* projects')
-        self.options.add_option('-c', '--clean', action='store_true', 
-                                dest='clean', default=False,
-                                help='Removes the object files and build files')
         self.options.add_option('-r', '--rebuild', action='store_true',
                                 dest='rebuild', default=False,
                                 help='Fully rebuilds the project')
@@ -101,6 +98,7 @@ class Project(threading.Thread):
         glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             self.file_list.append(file_name)
+        
 
     def remove_directory(self, *directories):
         directories = flatten(directories)

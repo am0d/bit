@@ -26,7 +26,8 @@ class CC(Compiler):
         if self.type == 'dynamic':
             self.add_compiler_flags('-fPIC')
         for file_name in self.file_list:
-            out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
+            out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, 
+                                            self.output_extension)
             percentage = self.percentage(counter, self.file_count)
             object_directory = out_file.split('/')
             object_directory.pop()
@@ -54,8 +55,7 @@ class CC(Compiler):
             if not return_value == 0:
                 return return_value
             self.link_list.append(out_file)
-            self.internal_hash_tracker[file_name] = hash(file_name)
-            print self.internal_hash_tracker
+            self.database.update_hash(file_name, hash(file_name))
             counter += 1
         return 0
 

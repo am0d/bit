@@ -46,12 +46,11 @@ class CC(Compiler):
             run_list = [self.compiler, '-o', '"{0}"'.format(out_file), '-c', 
                         '{0}'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
+            run_list = ' '.join(run_list)
             try:
-                if sys.platform == 'darwin':
-                    raise OSError()
                 return_value = subprocess.call(run_list)
             except OSError:
-                return_value = os.system(' '.join(run_list))
+                return_value = os.system(run_list)
             if not return_value == 0:
                 return return_value
             self.link_list.append(out_file)
@@ -72,14 +71,14 @@ class CC(Compiler):
             pass
         # Stops extra parameters from existing
         self.linker_flags = list(set(self.linker_flags))
-        run_list = flatten([self.compiler, '-o', 
+        run_list = ' '.join(flatten([self.compiler, '-o', 
                             '{0}/{1}'.format(self.build_directory, self.project_name)] 
-                            + self.link_list + self.linker_flags)
+                            + self.link_list + self.linker_flags))
         command('[LINK] {0}'.format(self.project_name))
         try:
             subprocess.call(run_list)
         except OSError:
-            os.system(' '.join(run_list))
+            os.system(run_list)
         return 0
 
     def add_define(self, *defines):

@@ -34,7 +34,6 @@ class Compiler(object):
         self.object_directory = '.bit/{0}/{1}'.format(self.project_name, self.name)
         self.build_directory = 'build/{0}'.format(self.project_name)
         self.output_extension = 'txt'
-        self.database = Database(self.project_name, self.name)
         
     def __str__(self):
         return 'Compiler'
@@ -52,6 +51,7 @@ class Compiler(object):
         return 0
 
     def setup_files(self):
+        self.database = Database(self.project_name, self.name)
         self.file_list = list(set(flatten(self.file_list)))
         proper_list = [ ]
         compile_list = [ ]
@@ -62,8 +62,8 @@ class Compiler(object):
         self.file_list = proper_list
         for file_name in self.file_list:
             file_hash = hash(file_name)
-            out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
-            print file_hash + ': ' + self.database.get_hash(file_name)
+            out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, 
+                                            self.output_extension)
             if os.path.exists(out_file) and file_hash == self.database.get_hash(file_name):
                 self.link_list.append(file_name)
                 continue

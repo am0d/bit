@@ -6,7 +6,7 @@ from bit.project.msvc import MSVC
 from bit.project.unix import Unix
 
 # Compiler Modules
-from bit.compiler.gcc import GCC
+from bit.compiler.cc import CC
 
 # Global Project Lookup
 from bit.gpl import GPL

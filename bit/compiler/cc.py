@@ -5,6 +5,7 @@ import subprocess
 import bit
 
 from bit.compiler.compiler import Compiler
+from bit.utils import flatten
 from bit.cprint import command
 
 class CC(Compiler):
@@ -41,11 +42,13 @@ class CC(Compiler):
                 pass
             if self.type == 'dynamic':
                 self.add_compiler_flags('-fPIC')
-            run_list = [self.compiler, '-o' '"{0}"'.format(out_file), '-c', 
-                        '"{0}"'.format(file_name)] + self.compiler_flags
+            run_list = [self.compiler, '-o', '"{0}"'.format(out_file), '-c', 
+                        '{0}'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             try:
-                return_value = subprocess.call(run_list)
+            #TODO FIXME
+                raise OSError()
+                #return_value = subprocess.call(run_list)
             except OSError:
                 return_value = os.system(' '.join(run_list))
             if not return_value == 0:
@@ -61,11 +64,12 @@ class CC(Compiler):
             self.project_name = 'lib{0}{1}'.format(self.project_name, self.link_extension)
             self.add_linker_flags('-shared')
         try:
-            os.makedirs(self.output_directory)
+            os.makedirs(self.build_directory)
         except OSError:
             pass
-        run_list = [self.compiler, '-o', '"{0}"'.format(project_name)] + self.link_list + self.linker_flags
+        run_list = flatten([self.compiler, '-o', '"{0}"'.format(self.project_name)] + self.link_list + self.linker_flags)
         command('[LINK] {0}'.format(self.project_name))
+        print run_list
         try:
             subprocess.call(run_list)
         except OSError:

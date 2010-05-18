@@ -93,7 +93,7 @@ class Project(threading.Thread):
         glob_list = [ ]
         for file_name in files:
             if os.path.isdir(file_name):
-                for root, directory, file_names in os.walk(file):
+                for root, directory, file_names in os.walk(file_name):
                     glob_list += glob('{0}/*'.format(root))
             else:
                 glob_list.append(file_name)

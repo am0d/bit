@@ -40,4 +40,3 @@ class Database(object):
 
     def update_hash(self, file_name, file_hash):
         self.hashdb[file_name] = str(file_hash)
-        self.hashdb.sync()

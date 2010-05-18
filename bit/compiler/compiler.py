@@ -48,6 +48,7 @@ class Compiler(object):
             return_value = function()
             if return_value:
                 return return_value
+        del self.database
         return 0
 
     def setup_files(self):

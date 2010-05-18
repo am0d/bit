@@ -19,10 +19,9 @@ class Database(object):
         if not os.path.exists(dbfile): open(dbfile, 'w+b').close()
         self.hashdb = open(dbfile, 'r+b')
         for line in self.hashdb:
-            key, value = line.split('|')
+            key, value = line.replace('\n', '').split('|')
             self.internal_dict[key] = value
         self.hashdb.close()
-
 
     def __del__(self):
         hashdb = open('{0}.hash'.format(self.location), 'w+b')

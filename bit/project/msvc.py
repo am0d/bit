@@ -18,7 +18,12 @@ class MSVC(Project):
     def setup_environment(self):
         msvc_path = fix_strings([os.environ[self.compiler_version]]).pop().split('/')
         msvc_path.pop(), msvc_path.pop()
-        return subprocess.call('{0}/{1} {2}'.format(msvc_path, vcvarsall.bat, self.arch))
+        ret_value = subprocess.call('{0}/{1} {2}'.format(msvc_path, vcvarsall.bat, self.arch))
+        if ret_value:
+            return ret_value
+        self.add_library('kernel32', 'user32', 'gdi32', 'winspool', 
+                         'comdlg32', 'advapi32', 'shell32', 'ole32', 
+                         'oleaut32', 'uuid', 'odbc32', 'odbccp32')
 
     def add_define(self, *defines):
         self.compiler.add_define(defines)

@@ -5,6 +5,7 @@ from bit.project.cocoa import Cocoa
 from bit.project.unix import Unix
 from bit.project.mingw import MinGW
 from bit.project.msvc import MSVC
+from bit.project.content import Content
 
 # Compiler Modules
 from bit.compiler.cc import CC

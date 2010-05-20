@@ -9,7 +9,7 @@ from bit.instance import bit
 
 from bit.database import Database
 from bit.utils import which, flatten, hash
-from bit.cprint import command
+from bit.cprint import command, error
 
 class Compiler(object):
 

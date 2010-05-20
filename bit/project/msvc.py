@@ -10,7 +10,7 @@ class MSVC(Project):
     def __init__(self, project_name):
         Project.__init__(self, project_name)
         self.arch = 'x86'
-        self.prepend_step(
+        self.prepend_step(setup_environment)
 
     def __str__(self):
         return 'MSVC'

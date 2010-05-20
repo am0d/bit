@@ -1,7 +1,7 @@
 # Used for copying data
 
 from bit.project.project import Project
-from buildit.compiler.content import Content as ContentCompiler
+from bit.compiler.content import Content as ContentCompiler
 
 class Content(Project):
 

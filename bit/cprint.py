@@ -3,7 +3,7 @@
 import sys
 import threading
 
-import buildit.buildit as buildit
+from bit.instance import bit
 
 if sys.platform == 'win32':
     import ctypes
@@ -62,7 +62,7 @@ print_lock = threading.Lock()
 
 def string_color_print(message, color):
     print_lock.acquire()
-    if buildit.options.no_color:
+    if bit.options.no_color:
         print(message)
         print_lock.release()
         return

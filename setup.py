@@ -2,24 +2,23 @@
 # buildit install script
 
 import os
-
+import sys
 from distutils.core import setup
 from glob import glob
 
-script_list = glob('{0}/scripts/*'.format(os.getcwd()))
-script_list = list(set([item.replace('~', '') for item in script_list]))
-setup(name='buildit',
-      version='0.2',
+script_list = ['scripts/bit', 'scripts/bit.bat'] 
+if not sys.platform == 'win32':
+    script_list.remove('scripts/bit.bat')
+setup(name='bit',
+      version='0.3',
       license='BSD',
       description='A Minimal Build System',
       author='Tres Walsh',
       author_email='tres.walsh@mnmlstc.com',
       url='http://mnmlstc.com',
-      packages=['buildit',
-                'buildit.project',
-                'buildit.compiler',
-                'buildit.linker',
-                'buildit.dependency'
+      packages=['bit',
+                'bit.project',
+                'bit.compiler',
                ],
       scripts=script_list,
      )

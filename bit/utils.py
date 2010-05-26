@@ -6,15 +6,23 @@ import time
 import shutil
 import hashlib
 
-import buildit
+from bit.instance import bit
+from bit.cprint import error, warning
 
-from buildit.cprint import error, warning
+def hash(file_name):
+    try:
+        with open(file_name, 'rb') as hashable:
+            algo = hashlib.new(bit.options.hash_type)
+            algo.update(hashable.read())
+            return algo.hexdigest()
+    except IOError:
+        error('Could not hash: {0}'.format(file_name))
 
 def is_exe(filepath):
     return os.path.exists(filepath) and os.access(filepath, os.X_OK)
 
 def which(program_name):
-    if buildit.windows:
+    if sys.platform == 'win32':
         program_name = '{0}.exe'.format(program_name)
     filepath = os.path.split(program_name)[0]
     if filepath:
@@ -25,7 +33,7 @@ def which(program_name):
             exe_file = os.path.join(path, program_name)
             if is_exe(exe_file):
                 return exe_file
-    return 'echo'
+    raise Exception('Could not find {0} on the system path'.format(program_name)) 
 
 def flatten(list_name, containers=(list, tuple)):
     if isinstance(list_name, containers):
@@ -36,24 +44,7 @@ def flatten(list_name, containers=(list, tuple)):
     else:
         return [list_name]
 
-def clean_list(list_var):
-    return list(set(list_var)).sort()
-
 def fix_strings(file_list):
-    if buildit.windows:
-        file_list = [item.replace('\\', '/') for item in file_list].sort()
+    if sys.platform == 'win32':
+        file_list = [item.replace('\\', '/') for item in file_list]
     return file_list
-
-# TODO: Possibly remove this
-def lookup_error(value):
-    error_value = {
-                    None : 'Returned None',
-                    1000 : 'File Copy Error',
-                    1001 : 'Operating System Error',
-                    1002 : 'Compiler Error',
-                    1003 : 'Linker Error',
-                    1004 : 'File IO Error',
-                    1005 : 'Unable to remove directory',
-                    1006 : 'Unknown Output Type',
-                  }
-    return error_value.get(value, 'Unknown Error')

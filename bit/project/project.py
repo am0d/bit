@@ -9,15 +9,14 @@ from glob import glob
 from datetime import datetime
 from optparse import OptionGroup
 
-import buildit.buildit as buildit
+from bit.instance import bit
 
-from buildit.utils import flatten, fix_strings, clean_list
-from buildit.cprint import success, warning, error, info
+from bit.utils import flatten, fix_strings
+from bit.cprint import success, warning, error, info
 
-from buildit.compiler.compiler import Compiler
-from buildit.linker.linker import Linker
+from bit.compiler.compiler import Compiler
 
-class Project(threading.thread):
+class Project(threading.Thread):
 
     def __init__(self, project_name):
         threading.Thread.__init__(self)
@@ -26,28 +25,21 @@ class Project(threading.thread):
         self.project_type = 'binary'
         self.project_complete = False
 
-        self._compiler_list = [Compiler]
-        self.linker = Linker
-        self.__build_steps = [ ]
-        self._file_list = [ ]
+        self.compiler = Compiler(self.project_name)
+        self.build_steps = [ ]
+        self.file_list = [ ]
         
-        self.__build_steps.append(self.build)
-        
-        self.object_directory = 'object/{0}/{1}'.format(self.name, 
-                self.project_name)
-        self.output_directory = 'build/{0}/{1}'.format(self.name, 
-                self.project_name)
+        self.build_steps.append(self.build)
 
+        self.output_directory = 'build/{0}/{1}'.format(self.name, self.project_name)
+        self.object_directory = '.bit/{0}'.format(self.project_name)
         # Commandline options
-        self.options = OptionGroup(buildit.parser, 'Project Specific Options:',
+        self.options = OptionGroup(bit.parser, 'Project Specific Options:',
                                    'These will apply to *all* projects')
-        self.options.add_option('-c', '--clean', action='store_true', 
-                                dest='clean', default=False,
-                                help='Removes the object files and build files')
         self.options.add_option('-r', '--rebuild', action='store_true',
                                 dest='rebuild', default=False,
                                 help='Fully rebuilds the project')
-        buildit.parser.add_option_group(self.options)
+        bit.parser.add_option_group(self.options)
 
     def __str__(self):
         return 'Project'
@@ -56,77 +48,67 @@ class Project(threading.thread):
         self.set_options()
         os.chdir(self.project_directory)
         start_time = datetime.now()
-        for function in self.__build_steps:
+        for function in self.build_steps:
             return_value = function()
             if not return_value:
                 error('Error: {0}'.format(return_value))
                 sys.exit(return_value)
-        end_time - datetime.now()
-        info('{0}|{1}: {2}'.format(self.project_name.upper(), self.name,
-                                   (end_time - start_time)))
+        end_time = datetime.now()
+        info('{0}|{1}: {2}'.format(self.name.upper(), self.project_name, (end_time - start_time)))
+        return 0
 
     def build(self):
-        object_list = [ ]
-        for compiler in self._compiler_list:
-            compiler_inst = compiler(self.project_name, self._file_list)
-            compiler.object_directory = self.object_directory
-            if not compiler_inst.run:
-                return 42 # Magic number, until a defined list of errors can be created
-            object_list += compiler_inst.completed_files
-        linker = self.linker(self.project_name, self.project_type)
-        linker.output_directory = self.output_directory
-        linker.run(flatten(object_list))
+        self.compiler.file_list = self.file_list
+        self.compiler.build_directory =self.output_directory
+        if not self.compiler.run:
+            return 1
+        self.project_complete = True
         return 0 
 
     def append_step(self, function):
-        self.__build_steps.append(function)
+        self.build_steps.append(function)
 
     def prepend_step(self, function):
-        self.__build_steps.insert(function, 0)
+        self.build_steps.insert(function, 0)
 
     def insert_step(self, function, location):
-        self.__build_steps.insert(function, location)
+        self.build_steps.insert(function, location)
 
     def is_complete(self):
         return self.project_complete
-
-    def add_compiler(self, *compilers):
-        compilers = flatten(compilers)
-        for compiler in compilers:
-            self._compiler_list.append(compiler)
 
     def add_directory(self, *directories):
         directories = flatten(directories)
         glob_list = [ ]
         for directory in directories:
             glob_list += glob('{0}/*'.format(directory))
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
-            self._file_list.append(file_name)
-        
+            self.file_list.append(file_name)
 
     def add_files(self, *files):
         files = flatten(files)
         glob_list = [ ]
         for file_name in files:
             if os.path.isdir(file_name):
-                for root, directory, file_names in os.walk(file):
+                for root, directory, file_names in os.walk(file_name):
                     glob_list += glob('{0}/*'.format(root))
             else:
                 glob_list.append(file_name)
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
-            self._file_list.append(file_name)
+            self.file_list.append(file_name)
+        
 
     def remove_directory(self, *directories):
         directories = flatten(directories)
         glob_list = [ ]
         for directory in directories:
             glob_list += glob('{0}/*'.format(directory))
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             try:
-                self._file_list.remove(file_name)
+                self.file_list.remove(file_name)
             except ValueError:
                 warning('{0} could not be removed.'.format(file_name))
 
@@ -139,24 +121,25 @@ class Project(threading.thread):
                     glob_list += glob('{0}/*'.format(root))
             else:
                 glob_list.append(file_name)
-        glob_list = fix_strings(clean_list(glob_list))
+        glob_list = fix_strings(list(set(glob_list)))
         for file_name in glob_list:
             try:
-                self._file_list.remove(file_name)
+                self.file_list.remove(file_name)
             except ValueError:
                 warning('{0} could not be removed.'.format(file_name))
 
     def require(self, required_system):
-        self.__build_steps.insert(0, required_system.run)
+        self.build_steps.insert(0, required_system.run)
 
     def set_options(self):
-        if buildit.options.rebuild:
-            self.__build_steps.insert(0, self.rebuild)
+        if bit.options.rebuild:
+            self.build_steps.insert(0, self.rebuild)
 
     def rebuild(self):
-        if os.path.exists('.buildit'):
+        database_path = '.bit/{0}'.format(self.project_name)
+        if os.path.exists(database_path):
             try:
-                os.remove('.buildit')
+                os.remove(database_path)
             except:
                 error('Could not remove database/configuration folder!')
         else:
@@ -169,11 +152,14 @@ class Project(threading.thread):
     @property
     def static(self):
         self.project_type = 'static'
+        self.compiler.type = self.project_type
 
     @property
     def binary(self):
         self.project_type = 'binary'
+        self.compiler.type = self.project_type
 
     @property
     def dynamic(self):
         self.project_type = 'dynamic'
+        self.compiler.type = self.project_type

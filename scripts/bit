@@ -1,19 +1,18 @@
 #!/usr/bin/env python
 # Rhymes with bake, rake, and make
-# This is the "execution" script. By default it will read from a "snakefile". 
+# This is the "execution" script. By default it will read from a "bitfile". 
 # Requires buildit to be installed.
 
 import os
 import sys
 
-from optparse import OptionGroup
+from optparse import OptionParser
 from bit.instance import bit
 
 if __name__ == '__main__':
-    options = OptionGroup(bit.parser)
-    options.add_option('-f', '--file', dest='file_name', 
+    bit.parser = OptionParser()
+    bit.parser.add_option('-f', '--file', dest='file_name', 
                       default='bitfile', help='run from FILE_NAME')
-    bit.parser.add_option_group(options)
     options, args = bit.parser.parse_args()
     try:
         with open(options.file_name) as bitfile:

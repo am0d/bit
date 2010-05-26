@@ -7,7 +7,6 @@ from glob import glob
 from datetime import datetime
 
 from buildit.compiler.compiler import Compiler
-from buildit.database import Database
 from buildit.utils import lookup_error, flatten, fix_strings
 from buildit.utils import name as uname
 from buildit.cprint import error, warning, info
@@ -16,7 +15,6 @@ class Platform(threading.Thread):
 
     def __init__(self, project_name, type='binary'):
         threading.Thread.__init__(self)
-        self._database = Database(project_name)
         self._compiler = Compiler(type) 
         self._build_steps = []
         self._file_list = []

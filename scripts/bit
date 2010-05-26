@@ -10,7 +10,6 @@ from optparse import OptionParser
 from bit.instance import bit
 
 if __name__ == '__main__':
-    bit.parser = OptionParser()
     bit.parser.add_option('-f', '--file', dest='file_name', 
                       default='bitfile', help='run from FILE_NAME')
     options, args = bit.parser.parse_args()

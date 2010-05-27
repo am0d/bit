@@ -29,26 +29,26 @@ class Unix(Project):
         for package in flatten(list(set(packages))):
             cflags = config_script_flags('pkg', package, '--cflags')
             lflags = config_script_flags('pkg', package, '--libs')
-            self.compiler.add_compile_flags(cflags)
-            self.compiler.add_link_flags(cflags, lflags)
+            self.compiler.cflags(cflags)
+            self.compiler.lflags(cflags, lflags)
 
     def define(self, *defines):
-        self.compiler.add_define(defines)
+        self.compiler.define(defines)
 
-    def includedir(self, *directories):
-        self.compiler.add_include_directory(directories)
+    def incdir(self, *directories):
+        self.compiler.incdir(directories)
 
-    def librarydir(self, *directories):
-        self.compiler.add_library_directory(directories)
+    def libdir(self, *directories):
+        self.compiler.libdir(directories)
 
     def library(self, *libraries):
-        self.compiler.add_library(libraries)
+        self.compiler.library(libraries)
 
     def flag(self, *flags):
-        self.compiler.add_flags(flags)
+        self.compiler.flags(flags)
 
     def lflag(self, *flags):
-        self.compiler.add_link_flags(flags)
+        self.compiler.lflags(flags)
 
     @property
     def C99(self):

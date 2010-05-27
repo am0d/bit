@@ -3,12 +3,15 @@
 import subprocess
 
 from bit.project.project import Project
+from bit.compiler.msvc import MSVCCompiler
 from bit.utils import fix_strings
 
 class MSVC(Project):
     
     def __init__(self, project_name):
         Project.__init__(self, project_name)
+        self.compiler = MSVCCompiler(self.project_name)
+        self.vs2008 # We'll try 2008 by default.
         self.arch = 'x86'
         self.prepend_step(setup_environment)
 
@@ -21,21 +24,24 @@ class MSVC(Project):
         ret_value = subprocess.call('{0}/{1} {2}'.format(msvc_path, vcvarsall.bat, self.arch))
         if ret_value:
             return ret_value
-        self.add_library('kernel32', 'user32', 'gdi32', 'winspool', 
-                         'comdlg32', 'advapi32', 'shell32', 'ole32', 
-                         'oleaut32', 'uuid', 'odbc32', 'odbccp32')
 
-    def add_define(self, *defines):
-        self.compiler.add_define(defines)
+    def define(self, *defines):
+        self.compiler.define(defines)
 
-    def add_library(self, *libraries):
-        self.compiler.add_library(libraries)
+    def incdir(self, *directories):
+        self.compiler.incdir(directories)
 
-    def add_library_directory(self, *directories):
-        self.compiler.add_library_directory(directories)
+    def libdir(self, *directories):
+        self.compiler.libdir(directories)
 
-    def add_include_directory(self, *directories):
-        self.compiler.add_include_directory(directories)
+    def library(self, *libraries):
+        self.compiler.library(libraries)
+
+    def flag(self, *flags):
+        self.compiler.flags(flags)
+
+    def lflag(self, *flags):
+        self.compiler.lflags(flags)
 
     @property
     def x64(self):

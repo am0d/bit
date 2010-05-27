@@ -77,7 +77,7 @@ class Project(threading.Thread):
     def is_complete(self):
         return self.project_complete
 
-    def add_directory(self, *directories):
+    def directory(self, *directories):
         directories = flatten(directories)
         glob_list = [ ]
         for directory in directories:
@@ -86,7 +86,7 @@ class Project(threading.Thread):
         for file_name in glob_list:
             self.file_list.append(file_name)
 
-    def add_files(self, *files):
+    def files(self, *files):
         files = flatten(files)
         glob_list = [ ]
         for file_name in files:
@@ -100,7 +100,7 @@ class Project(threading.Thread):
             self.file_list.append(file_name)
         
 
-    def remove_directory(self, *directories):
+    def rmdir(self, *directories):
         directories = flatten(directories)
         glob_list = [ ]
         for directory in directories:
@@ -113,7 +113,7 @@ class Project(threading.Thread):
                 #warning('{0} could not be removed.'.format(file_name))
                 print('{0} could not be removed.'.format(file_name))
 
-    def remove_files(self, *files):
+    def rmfiles(self, *files):
         files = flatten(files)
         glob_list = [ ]
         for file_name in files:

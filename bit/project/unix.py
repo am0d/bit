@@ -18,7 +18,7 @@ class Unix(Project):
     def __str__(self):
         return 'Unix'
 
-    def add_pkg(self, *scripts):
+    def pkg(self, *scripts):
         for script in flatten(list(set(scripts))):
             cflags = config_script_flags(script, '', '--cflags')
             lflags = config_script_flags(script, '', '--libs')
@@ -32,22 +32,22 @@ class Unix(Project):
             self.compiler.add_compile_flags(cflags)
             self.compiler.add_link_flags(cflags, lflags)
 
-    def add_define(self, *defines):
+    def define(self, *defines):
         self.compiler.add_define(defines)
 
-    def add_include_directory(self, *directories):
+    def includedir(self, *directories):
         self.compiler.add_include_directory(directories)
 
-    def add_library_directory(self, *directories):
+    def librarydir(self, *directories):
         self.compiler.add_library_directory(directories)
 
-    def add_library(self, *libraries):
+    def library(self, *libraries):
         self.compiler.add_library(libraries)
 
-    def add_flag(self, *flags):
+    def flag(self, *flags):
         self.compiler.add_flags(flags)
 
-    def add_link_flag(self, *flags):
+    def lflag(self, *flags):
         self.compiler.add_link_flags(flags)
 
     @property

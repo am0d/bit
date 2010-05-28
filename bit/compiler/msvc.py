@@ -1,6 +1,8 @@
 # MSVC Compiler
 
 from bit.compiler.compiler import Compiler
+from bit.utils import flatten, hash
+from bit.cprint import command
 
 class MSVCCompiler(Compiler):
 
@@ -14,19 +16,15 @@ class MSVCCompiler(Compiler):
         pass
 
     def define(self, *defines):
-        pass
+        for define in flatten(list(set(defines))):
+            self.cflags('/D', define)
 
     def incdir(self, *directories):
-        pass
+        for directory in flatten(list(set(directories))):
+            self.cflags('/I', directory)
 
     def libdir(self, *directories):
-        pass
+        for directory in flatten(list(set(directories))):
+            self.lflags('/L', directory)
 
     def library(self, *libraries):
-        pass
-
-    def flags(self, *flags):
-        pass
-
-    def lflags(self, *flags):
-        pass

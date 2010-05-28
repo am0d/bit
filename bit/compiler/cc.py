@@ -80,20 +80,20 @@ class CC(Compiler):
             os.system(run_list)
         return 0
 
-    def add_define(self, *defines):
+    def define(self, *defines):
         for define in flatten(list(set(defines))):
             self.add_compiler_flags('-D', define)
 
-    def add_include_directory(self, *directories):
+    def incdir(self, *directories):
         for directory in flatten(list(set(directories))):
             self.add_compiler_flags('-I', directory)
             self.add_linker_flags('-I', directory)
 
-    def add_library_directory(self, *directories):
+    def libdir(self, *directories):
         for directory in flatten(list(set(directories))):
             self.add_linker_flags('-L', directory)
 
-    def add_library(self, *libraries):
+    def library(self, *libraries):
         for library in flatten(list(set(libraries))):
             self.add_linker_flags('-l', library)
 

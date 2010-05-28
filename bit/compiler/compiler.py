@@ -95,11 +95,11 @@ class Compiler(object):
     def format_command(self, percentage, file_name):
         command('[{0:>3}%] {1}: {2}'.format(percentage, self.name.upper(), file_name))
 
-    def add_compiler_flags(self, *flags):
+    def cflags(self, *flags):
         for flag in flatten(flags):
             self.compiler_flags.append(flag)
 
-    def add_linker_flags(self, *flags):
+    def lflags(self, *flags):
         for flag in flatten(flags):
             self.linker_flags.append(flags)
 

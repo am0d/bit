@@ -44,8 +44,8 @@ class Unix(Project):
     def library(self, *libraries):
         self.compiler.library(libraries)
 
-    def flag(self, *flags):
-        self.compiler.flags(flags)
+    def cflag(self, *flags):
+        self.compiler.cflags(flags)
 
     def lflag(self, *flags):
         self.compiler.lflags(flags)

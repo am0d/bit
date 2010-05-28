@@ -24,7 +24,7 @@ class CC(Compiler):
     def compile_files(self):
         counter = 1
         if self.type == 'dynamic':
-            self.add_compiler_flags('-fPIC')
+            self.cflags('-fPIC')
         for file_name in self.file_list:
             out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, 
                                             self.output_extension)
@@ -42,7 +42,7 @@ class CC(Compiler):
             except OSError:
                 pass
             if self.type == 'dynamic':
-                self.add_compiler_flags('-fPIC')
+                self.cflags('-fPIC')
             run_list = [self.compiler, '-o', '"{0}"'.format(out_file), '-c', 
                         '{0}'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
@@ -60,10 +60,10 @@ class CC(Compiler):
     def link_files(self):
         if self.type == 'static':
             self.project_name = 'lib{0}.a'.format(self.project_name)
-            self.add_linker_flags('-static')
+            self.lflags('-static')
         elif self.type == 'dynamic':
             self.project_name = 'lib{0}{1}'.format(self.project_name, self.link_extension)
-            self.add_linker_flags('-shared')
+            self.lflags('-shared')
         try:
             os.makedirs(self.build_directory)
         except OSError:
@@ -82,25 +82,25 @@ class CC(Compiler):
 
     def define(self, *defines):
         for define in flatten(list(set(defines))):
-            self.add_compiler_flags('-D', define)
+            self.cflags('-D', define)
 
     def incdir(self, *directories):
         for directory in flatten(list(set(directories))):
-            self.add_compiler_flags('-I', directory)
-            self.add_linker_flags('-I', directory)
+            self.cflags('-I', directory)
+            self.lflags('-I', directory)
 
     def libdir(self, *directories):
         for directory in flatten(list(set(directories))):
-            self.add_linker_flags('-L', directory)
+            self.lflags('-L', directory)
 
     def library(self, *libraries):
         for library in flatten(list(set(libraries))):
-            self.add_linker_flags('-l', library)
+            self.lflags('-l', library)
 
     @property
     def C99(self):
-        self.add_compile_flags('-std=c99')
-        self.add_linker_flags('-std=c99')
+        self.cflags('-std=c99')
+        self.lflags('-std=c99')
 
     @property
     def CXX(self):

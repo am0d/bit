@@ -22,8 +22,8 @@ class Unix(Project):
         for script in flatten(list(set(scripts))):
             cflags = config_script_flags(script, '', '--cflags')
             lflags = config_script_flags(script, '', '--libs')
-            self.compiler.add_compile_flags(cflags)
-            self.compiler.add_link_flags(cflags, lflags)
+            self.compiler.cflags(cflags)
+            self.compiler.lflags(cflags, lflags)
 
     def pkg_config(self, packages):
         for package in flatten(list(set(packages))):

@@ -1,5 +1,7 @@
 # MSVC Compiler
 
+import os
+
 from bit.compiler.compiler import Compiler
 from bit.utils import flatten, hash
 from bit.cprint import command
@@ -24,7 +26,11 @@ class MSVCCompiler(Compiler):
             self.cflags('/I', directory)
 
     def libdir(self, *directories):
+        path_list = [path for path in os.environ['LIB'].split(os.pathsep)]
         for directory in flatten(list(set(directories))):
-            self.lflags('/L', directory)
+            path_list.append(directory)
+        os.environ['LIB'] = os.pathsep.join(path_list)
 
     def library(self, *libraries):
+        for library in flatten(list(set(directories))):
+            self.lflags('{0}.lib'.format(library))

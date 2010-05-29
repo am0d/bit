@@ -35,7 +35,8 @@ class MSVCCompiler(Compiler):
             except OSError:
                 pass
             #TODO Finish up the run_list command
-            run_list = [self.executable]
+            run_list = [self.executable, '/nologo', '/Fo"{0}"'.format(out_file), '/c'
+                        '"{0}"'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             run_list = ' '.join(run_list)
             try:
@@ -49,6 +50,14 @@ class MSVCCompiler(Compiler):
         return 0
 
     def link_files(self):
+        if self.type == 'static':
+            self.project_name = '{0}.lib'.format(self.project_name)
+            self.executable = 'lib'
+        elif self.type == 'dynamic':
+            self.lflags('/LD')
+        else:
+            self.project_name = '{0}.exe'.format(self.project_name)
+            self.lflags('/Fe"{0}/{1}"'.format(self.output_directory, self.project_name))
         command('[LINK] {0}'.format(self.project_name))
         return 0
 

@@ -44,7 +44,7 @@ class CC(Compiler):
             if self.type == 'dynamic':
                 self.cflags('-fPIC')
             run_list = [self.executable, '-o', '"{0}"'.format(out_file), '-c', 
-                        '{0}'.format(file_name)] + self.compiler_flags
+                        '"{0}"'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             run_list = ' '.join(run_list)
             try:

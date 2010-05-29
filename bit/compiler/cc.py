@@ -13,7 +13,7 @@ class CC(Compiler):
 
     def __init__(self, project_name):
         Compiler.__init__(self, project_name)
-        self.compiler = 'cc'
+        self.executable = 'cc'
         self.output_extension = 'o'
         self.cxx_support = False
         self.type = 'binary'
@@ -43,7 +43,7 @@ class CC(Compiler):
                 pass
             if self.type == 'dynamic':
                 self.cflags('-fPIC')
-            run_list = [self.compiler, '-o', '"{0}"'.format(out_file), '-c', 
+            run_list = [self.executable, '-o', '"{0}"'.format(out_file), '-c', 
                         '{0}'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             run_list = ' '.join(run_list)
@@ -51,7 +51,7 @@ class CC(Compiler):
                 return_value = subprocess.call(run_list)
             except OSError:
                 return_value = os.system(run_list)
-            if not return_value == 0:
+            if not return_value:
                 return return_value
             self.link_list.append(out_file)
             counter += 1
@@ -104,7 +104,7 @@ class CC(Compiler):
 
     @property
     def CXX(self):
-        self.compiler = 'c++'
+        self.executable = 'c++'
         self.cxx_support = True
 
     @property

@@ -77,7 +77,7 @@ def string_color_print(message, color):
 
 def string_char_print(char, color):
     print_lock.acquire()
-    if buildit.options.no_color:
+    if bit.options.no_color:
         sys.stdout.write(char)
         return
     if sys.platform == 'win32':

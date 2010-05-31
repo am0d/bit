@@ -110,7 +110,7 @@ class Project(threading.Thread):
             try:
                 self.file_list.remove(file_name)
             except ValueError:
-                warning('{0} could not be removed.'.format(file_name))
+                raise Exception('Could not remove {0}'.format(file_name)) 
 
     def rmfiles(self, *files):
         files = flatten(files)
@@ -126,7 +126,7 @@ class Project(threading.Thread):
             try:
                 self.file_list.remove(file_name)
             except ValueError:
-                warning('{0} could not be removed.'.format(file_name))
+                raise Exception('Could not remove {0}'.format(file_name)) 
 
     def require(self, required_system):
         self.build_steps.insert(0, required_system.run)

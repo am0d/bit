@@ -8,10 +8,12 @@ import sys
 
 from optparse import OptionParser
 from bit.instance import bit
+from bit.project.project import Project
 
 if __name__ == '__main__':
     bit.parser.add_option('-f', '--file', dest='file_name', 
                       default='bitfile', help='run from FILE_NAME')
+    dummy = Project('Dummy')
     options, args = bit.parser.parse_args()
     try:
         with open(options.file_name) as bitfile:

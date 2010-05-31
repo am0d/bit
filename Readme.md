@@ -27,9 +27,9 @@ Tutorial
 Here is a small and quick tutorial to showcase the ease of use that bit gives to you, the developer. Just place some code like so in a file named "bitfile"
 
     x = Project('ArbitraryProjectName')
-    x.add_files('source') # Grabs all files in source
-    x.remove_directory('source/arbitrary_platform') # buildit will ignore all files in this directory.
-    bit.add_project(x)
+    x.files('source') # Grabs all files in source
+    x.rmdir('source/arbitrary_platform') # buildit will ignore all files in this directory.
+    bit.project(x)
 
 
 Roadmap

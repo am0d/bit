@@ -110,8 +110,7 @@ class Project(threading.Thread):
             try:
                 self.file_list.remove(file_name)
             except ValueError:
-                #warning('{0} could not be removed.'.format(file_name))
-                print('{0} could not be removed.'.format(file_name))
+                warning('{0} could not be removed.'.format(file_name))
 
     def rmfiles(self, *files):
         files = flatten(files)

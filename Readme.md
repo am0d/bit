@@ -27,9 +27,9 @@ Tutorial
 Here is a small and quick tutorial to showcase the ease of use that bit gives to you, the developer. Just place some code like so in a file named "bitfile"
 
     x = Project('ArbitraryProjectName')
-    x.add_files('source') # Grabs all files in source
-    x.remove_directory('source/arbitrary_platform') # buildit will ignore all files in this directory.
-    bit.add_project(x)
+    x.files('source') # Grabs all files in source
+    x.rmdir('source/arbitrary_platform') # buildit will ignore all files in this directory.
+    bit.project(x)
 
 
 Roadmap
@@ -41,11 +41,12 @@ Version 0.3 - Caress of Steel
  * C/C++/ObjC Support
  * Shiny New API 
  * Markdown Based Documentation (Read it directly here on github!)
- * Actual File to run via a script called "snake"
+ * Actual File to run via a script called "bit"
 
 Contributors
 ------------
 
-Tres Walsh (SAHChandler)
+Tres Walsh      (SAHChandler)
+Damien Schoof   (a_m0d)
 
 This project is released under a BSD License (Please see License.md)

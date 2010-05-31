@@ -41,11 +41,12 @@ Version 0.3 - Caress of Steel
  * C/C++/ObjC Support
  * Shiny New API 
  * Markdown Based Documentation (Read it directly here on github!)
- * Actual File to run via a script called "snake"
+ * Actual File to run via a script called "bit"
 
 Contributors
 ------------
 
-Tres Walsh (SAHChandler)
+Tres Walsh      (SAHChandler)
+Damien Schoof   (a_m0d)
 
 This project is released under a BSD License (Please see License.md)

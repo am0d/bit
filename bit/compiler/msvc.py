@@ -33,9 +33,8 @@ class MSVCCompiler(Compiler):
             try:
                 os.makedirs(object_directory)
             except OSError:
-                pass
-            #TODO Finish up the run_list command
-            run_list = [self.executable, '/nologo', '/Fo"{0}"'.format(out_file), '/c'
+                pass 
+            run_list = [self.executable, '/nologo', '/EHsc', '/Fo"{0}"'.format(out_file), '/c'
                         '"{0}"'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             run_list = ' '.join(run_list)
@@ -58,7 +57,14 @@ class MSVCCompiler(Compiler):
         else:
             self.project_name = '{0}.exe'.format(self.project_name)
             self.lflags('/Fe"{0}/{1}"'.format(self.output_directory, self.project_name))
+        run_list = list(set([self.executable, '/out:{0}/{1}'.format(self.build_directory, self.project_name)] + \
+                             self.link_list + self.linker_flags))
+        run_list = ' '.join(run_list)
         command('[LINK] {0}'.format(self.project_name))
+        try:
+            subprocess.call(run_list)
+        except OSError:
+            os.system(run_list)
         return 0
 
     def define(self, *defines):
@@ -84,7 +90,7 @@ class MSVCCompiler(Compiler):
         self.c_support = True
 
     @property 
-    def extensions:
+    def extensions(self):
         item = ['.cpp', '.cc', '.cxx', '.c++']
         if self.c_support:
             item.append('.c')

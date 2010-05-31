@@ -49,6 +49,10 @@ class Unix(Project):
 
     def lflag(self, *flags):
         self.compiler.lflags(flags)
+    
+    def flag(self, *flags):
+        self.compiler.cflags(flags)
+        self.compiler.lflags(flags)
 
     @property
     def C99(self):

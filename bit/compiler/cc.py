@@ -51,7 +51,7 @@ class CC(Compiler):
                 return_value = subprocess.call(run_list)
             except OSError:
                 return_value = os.system(run_list)
-            if not return_value:
+            if return_value:
                 return return_value
             self.link_list.append(out_file)
             counter += 1
@@ -81,21 +81,21 @@ class CC(Compiler):
         return 0
 
     def define(self, *defines):
-        for define in flatten(list(set(defines))):
+        for define in flatten(list(defines)):
             self.cflags('-D', define)
 
     def incdir(self, *directories):
-        for directory in flatten(list(set(directories))):
+        for directory in flatten(list(directories)):
             self.cflags('-I', directory)
             self.lflags('-I', directory)
 
     def libdir(self, *directories):
-        for directory in flatten(list(set(directories))):
+        for directory in flatten(list(directories)):
             self.lflags('-L', directory)
 
     def library(self, *libraries):
-        for library in flatten(list(set(libraries))):
-            self.lflags('-l', library)
+        for library in flatten(list(libraries)):
+            self.lflags('-l{0}'.format(library))
 
     @property
     def C99(self):

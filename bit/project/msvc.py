@@ -1,10 +1,13 @@
 # MSVC Project Class
 
+import os
 import subprocess
 
 from bit.project.project import Project
 from bit.compiler.msvc import MSVCCompiler
 from bit.utils import fix_strings
+
+from bit.cprint import error
 
 class MSVC(Project):
     
@@ -13,17 +16,19 @@ class MSVC(Project):
         self.compiler = MSVCCompiler(self.project_name)
         self.vs2008 # We'll try 2008 by default.
         self.arch = 'x86'
-        self.prepend_step(setup_environment)
+        self.prepend_step(self.setup_environment)
 
     def __str__(self):
         return 'MSVC'
 
     def setup_environment(self):
         msvc_path = fix_strings([os.environ[self.compiler_version]]).pop().split('/')
-        msvc_path.pop(), msvc_path.pop()
-        ret_value = subprocess.call('{0}/{1} {2}'.format(msvc_path, vcvarsall.bat, self.arch))
-        if ret_value:
-            return ret_value
+        msvc_path.pop(), msvc_path.pop(), msvc_path.pop()
+        msvc_path.append('VC')
+        msvc_path = '/'.join(msvc_path)
+        ret_value = subprocess.call('{0}/vcvarsall.bat {1}'.format(msvc_path, self.arch))
+        
+        return ret_value
 
     def define(self, *defines):
         self.compiler.define(defines)
@@ -42,6 +47,11 @@ class MSVC(Project):
 
     def lflag(self, *flags):
         self.compiler.lflags(flags)
+    
+    # Compatibility :)
+    @property
+    def CXX(self):
+        pass
 
     @property
     def x64(self):

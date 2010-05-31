@@ -60,7 +60,7 @@ class Project(threading.Thread):
     def build(self):
         self.compiler.file_list = self.file_list
         self.compiler.build_directory =self.output_directory
-        if not self.compiler.run:
+        if self.compiler.run:
             return 1
         self.project_complete = True
         return 0 

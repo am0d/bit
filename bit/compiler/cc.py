@@ -51,7 +51,7 @@ class CC(Compiler):
                 return_value = subprocess.call(run_list)
             except OSError:
                 return_value = os.system(run_list)
-            if not return_value:
+            if return_value:
                 return return_value
             self.link_list.append(out_file)
             counter += 1

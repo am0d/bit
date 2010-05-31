@@ -1,16 +1,16 @@
 # MSVC Compiler
 
 import os
+import subprocess 
 
 from bit.compiler.compiler import Compiler
 from bit.utils import flatten, hash
-from bit.cprint import command
+from bit.cprint import command, error
 
 class MSVCCompiler(Compiler):
 
     def __init__(self, project_name):
         Compiler.__init__(self, project_name)
-        self.compiler = 'cl'
         self.c_support = False
         self.output_extension = 'obj'
         self.type = 'binary'
@@ -19,6 +19,7 @@ class MSVCCompiler(Compiler):
         return 'MSVC'
 
     def compile_files(self):
+        self.executable = 'cl'
         counter = 1
         for file_name in self.file_list:
             out_file = '{0}/{1}.{2}'.format(self.object_directory, file_name, self.output_extension)
@@ -34,8 +35,7 @@ class MSVCCompiler(Compiler):
                 os.makedirs(object_directory)
             except OSError:
                 pass 
-            run_list = [self.executable, '/nologo', '/EHsc', '/Fo"{0}"'.format(out_file), '/c'
-                        '"{0}"'.format(file_name)] + self.compiler_flags
+            run_list = [self.executable, '/nologo', '/EHsc', '/Fo"{0}"'.format(out_file), '/c', '"{0}"'.format(file_name)] + self.compiler_flags
             self.format_command(percentage, info_file)
             run_list = ' '.join(run_list)
             try:
@@ -56,9 +56,9 @@ class MSVCCompiler(Compiler):
             self.lflags('/LD')
         else:
             self.project_name = '{0}.exe'.format(self.project_name)
-            self.lflags('/Fe"{0}/{1}"'.format(self.output_directory, self.project_name))
-        run_list = list(set([self.executable, '/out:{0}/{1}'.format(self.build_directory, self.project_name)] + \
-                             self.link_list + self.linker_flags))
+            self.lflags('/Fe"{0}/{1}"'.format(self.build_directory, self.project_name))
+        print self.executable
+        run_list = list(set(flatten([self.executable, '/out:{0}/{1}'.format(self.build_directory, self.project_name)] + self.link_list + self.linker_flags)))
         run_list = ' '.join(run_list)
         command('[LINK] {0}'.format(self.project_name))
         try:
@@ -82,7 +82,7 @@ class MSVCCompiler(Compiler):
         os.environ['LIB'] = os.pathsep.join(path_list)
 
     def library(self, *libraries):
-        for library in flatten(list(set(directories))):
+        for library in flatten(list(set(libraries))):
             self.lflags('{0}.lib'.format(library))
 
     @property

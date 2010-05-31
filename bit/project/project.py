@@ -50,7 +50,7 @@ class Project(threading.Thread):
         start_time = datetime.now()
         for function in self.build_steps:
             return_value = function()
-            if not return_value:
+            if not return_value == 0: # This line breaks so much I HAD to put in the == 0 :/
                 error('Error: {0}'.format(return_value))
                 sys.exit(return_value)
         end_time = datetime.now()
@@ -69,10 +69,10 @@ class Project(threading.Thread):
         self.build_steps.append(function)
 
     def prepend_step(self, function):
-        self.build_steps.insert(function, 0)
+        self.build_steps.insert(0, function)
 
     def insert_step(self, function, location):
-        self.build_steps.insert(function, location)
+        self.build_steps.insert(location, function)
 
     def is_complete(self):
         return self.project_complete

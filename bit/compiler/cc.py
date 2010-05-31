@@ -70,7 +70,7 @@ class CC(Compiler):
             pass
         # Stops extra parameters from existing
         self.linker_flags = list(set(self.linker_flags))
-        run_list = ' '.join(flatten([self.compiler, '-o', 
+        run_list = ' '.join(flatten([self.executable, '-o', 
                             '{0}/{1}'.format(self.build_directory, self.project_name)] 
                             + self.link_list + self.linker_flags))
         command('[LINK] {0}'.format(self.project_name))

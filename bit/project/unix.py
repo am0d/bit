@@ -75,7 +75,7 @@ def config_script_flags(script, package, argument):
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                universal_newlines=True)
     output, errput = process.communicate()
-    if not output:
+    if output == None:
         error('{0}: {1}'.format(package, errput))
         raise Exception('Config error!')
     return output.replace('\n', '')

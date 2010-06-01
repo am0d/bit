@@ -81,20 +81,20 @@ class CC(Compiler):
         return 0
 
     def define(self, *defines):
-        for define in flatten(list(defines)):
+        for define in flatten(list(set(defines))):
             self.cflags('-D', define)
 
     def incdir(self, *directories):
-        for directory in flatten(list(directories)):
+        for directory in flatten(list(set(directories))):
             self.cflags('-I', directory)
             self.lflags('-I', directory)
 
     def libdir(self, *directories):
-        for directory in flatten(list(directories)):
+        for directory in flatten(list(set(directories))):
             self.lflags('-L', directory)
 
     def library(self, *libraries):
-        for library in flatten(list(libraries)):
+        for library in flatten(list(set(libraries))):
             self.lflags('-l{0}'.format(library))
 
     @property

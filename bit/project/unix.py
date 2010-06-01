@@ -6,7 +6,6 @@ import subprocess
 from bit.project.project import Project
 from bit.compiler.cc import CC
 from bit.utils import flatten
-from bit.cprint import error
 
 class Unix(Project):
 
@@ -44,10 +43,14 @@ class Unix(Project):
     def library(self, *libraries):
         self.compiler.library(libraries)
 
-    def cflag(self, *flags):
+    def cflags(self, *flags):
         self.compiler.cflags(flags)
 
-    def lflag(self, *flags):
+    def lflags(self, *flags):
+        self.compiler.lflags(flags)
+    
+    def flags(self, *flags):
+        self.compiler.cflags(flags)
         self.compiler.lflags(flags)
 
     @property
@@ -71,7 +74,6 @@ def config_script_flags(script, package, argument):
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                universal_newlines=True)
     output, errput = process.communicate()
-    if not output:
-        error('{0}: {1}'.format(package, errput))
-        raise Exception('Config error!')
+    if output == None:
+        raise Exception('Config error!\n{0}: {1}'.format(package, errput))
     return output.replace('\n', '')

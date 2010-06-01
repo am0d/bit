@@ -42,12 +42,16 @@ class MSVC(Project):
     def library(self, *libraries):
         self.compiler.library(libraries)
 
-    def flag(self, *flags):
-        self.compiler.flags(flags)
+    def cflags(self, *flags):
+        self.compiler.cflags(flags)
 
-    def lflag(self, *flags):
+    def lflags(self, *flags):
         self.compiler.lflags(flags)
     
+    def flags(self, *flags):
+        self.compiler.cflags(flags)
+        self.compiler.lflags(flags)
+
     # Compatibility :)
     @property
     def CXX(self):

@@ -139,8 +139,8 @@ class Project(threading.Thread):
         database_path = '.bit/{0}'.format(self.project_name)
         if os.path.exists(database_path):
             try:
-                os.remove(database_path)
-            except:
+                shutil.rmtree(database_path)
+            except OSError:
                 error('Could not remove database/configuration folder!')
         else:
             warning('No database folder found.')

@@ -44,13 +44,13 @@ class Unix(Project):
     def library(self, *libraries):
         self.compiler.library(libraries)
 
-    def cflag(self, *flags):
+    def cflags(self, *flags):
         self.compiler.cflags(flags)
 
-    def lflag(self, *flags):
+    def lflags(self, *flags):
         self.compiler.lflags(flags)
     
-    def flag(self, *flags):
+    def flags(self, *flags):
         self.compiler.cflags(flags)
         self.compiler.lflags(flags)
 

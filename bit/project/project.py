@@ -144,6 +144,7 @@ class Project(threading.Thread):
                 error('Could not remove database/configuration folder!')
         else:
             warning('No database folder found.')
+        return 0
 
     @property
     def name(self):

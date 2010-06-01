@@ -6,7 +6,6 @@ import subprocess
 from bit.project.project import Project
 from bit.compiler.cc import CC
 from bit.utils import flatten
-from bit.cprint import error
 
 class Unix(Project):
 
@@ -76,6 +75,5 @@ def config_script_flags(script, package, argument):
                                universal_newlines=True)
     output, errput = process.communicate()
     if output == None:
-        error('{0}: {1}'.format(package, errput))
-        raise Exception('Config error!')
+        raise Exception('Config error!\n{0}: {1}'.format(package, errput)
     return output.replace('\n', '')

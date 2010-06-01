@@ -70,12 +70,10 @@ class Unix(Project):
         self.compiler.enable_c
 
 def config_script_flags(script, package, argument):
-    print package, argument
     process = subprocess.Popen(['{0}-config'.format(script), package, argument], 
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                universal_newlines=True)
     output, errput = process.communicate()
-    print output, errput
     if output == None:
         raise Exception('Config error!\n{0}: {1}'.format(package, errput))
     return output.replace('\n', '')

@@ -46,7 +46,7 @@ Version 0.3 - Caress of Steel
 Contributors
 ------------
 
-Tres Walsh      (SAHChandler)
-Damien Schoof   (a_m0d)
+Tres Walsh      (SAHChandler)  
+Damien Schoof   (a_m0d)  
 
 This project is released under a BSD License (Please see License.md)

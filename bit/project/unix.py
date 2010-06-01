@@ -75,5 +75,5 @@ def config_script_flags(script, package, argument):
                                universal_newlines=True)
     output, errput = process.communicate()
     if output == None:
-        raise Exception('Config error!\n{0}: {1}'.format(package, errput)
+        raise Exception('Config error!\n{0}: {1}'.format(package, errput))
     return output.replace('\n', '')

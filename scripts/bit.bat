@@ -1,1 +1,1 @@
-@python bit_script %*
+@python bit_script.py %*

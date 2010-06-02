@@ -10,7 +10,7 @@ script_list = ['scripts/bit', 'scripts/bit.bat']
 if not sys.platform == 'win32':
     script_list.remove('scripts/bit.bat')
 if sys.platform == 'win32':
-    os.rename('scripts/bit', 'scripts/bit_script')
+    os.rename('scripts/bit', 'scripts/bit_script.py')
 setup(name='bit',
       version='0.3',
       license='BSD',

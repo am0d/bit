@@ -2,8 +2,11 @@
 *.swp
 *.out
 *~
+
+bit_script.py
 .DS_Store
+
 build
-.buildit
+.bit
 html
 object

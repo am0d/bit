@@ -24,7 +24,7 @@ class Unix(Project):
             self.compiler.cflags(cflags)
             self.compiler.lflags(cflags, lflags)
 
-    def pkg_config(self, packages):
+    def pkg_config(self, *packages):
         for package in flatten(list(set(packages))):
             cflags = config_script_flags('pkg', package, '--cflags')
             lflags = config_script_flags('pkg', package, '--libs')

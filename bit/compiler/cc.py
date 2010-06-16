@@ -91,7 +91,7 @@ class CC(Compiler):
 
     def libdir(self, *directories):
         for directory in flatten(list(set(directories))):
-            self.lflags('-L', directory)
+            self.lflags('-L{0}'.format(directory))
 
     def library(self, *libraries):
         for library in flatten(list(set(libraries))):

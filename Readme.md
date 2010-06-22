@@ -9,7 +9,7 @@ Information
 
 Currently only python 2.6.x is supported, though there are plans to add in Python 3.x support.  
 No python versions before that will be supported.  
-buildit is not guaranteed to run on other Python implementations.  
+bit is not guaranteed to run on other Python implementations.  
 
 Installation Instructions
 -------------------------
@@ -28,7 +28,7 @@ Here is a small and quick tutorial to showcase the ease of use that bit gives to
 
     x = Project('ArbitraryProjectName')
     x.files('source') # Grabs all files in source
-    x.rmdir('source/arbitrary_platform') # buildit will ignore all files in this directory.
+    x.rmdir('source/arbitrary_platform') # bit will ignore all files in this directory.
     bit.project(x)
 
 

@@ -9,6 +9,7 @@ from bit.project.content import Content
 
 # Compiler Modules
 from bit.compiler.cc import CC
+from bit.compiler.clang import Clang
 
 # Global Project Lookup
 from bit.gpl import GPL

@@ -5,6 +5,7 @@ import subprocess
 
 from bit.project.project import Project
 from bit.compiler.cc import CC
+from bit.compiler.clang import Clang
 from bit.utils import flatten
 
 class Unix(Project):
@@ -68,6 +69,11 @@ class Unix(Project):
     @property
     def enable_c(self):
         self.compiler.enable_c
+    
+    @property
+    def clang(self):
+        self.compiler = Clang(self.project_name)
+        self.output_extension = self.compiler.output_extension
 
 def config_script_flags(script, package, argument):
     process = subprocess.Popen(['{0}-config'.format(script), package, argument], 

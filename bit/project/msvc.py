@@ -5,7 +5,7 @@ import subprocess
 
 from bit.project.project import Project
 from bit.compiler.msvc import MSVCCompiler
-from bit.utils import fix_strings
+from bit.utils import fix_strings, which
 
 from bit.cprint import error
 
@@ -26,9 +26,18 @@ class MSVC(Project):
         msvc_path.pop(), msvc_path.pop(), msvc_path.pop()
         msvc_path.append('VC')
         msvc_path = '/'.join(msvc_path)
-        ret_value = subprocess.call('{0}/vcvarsall.bat {1}'.format(msvc_path, self.arch))
-        
-        return ret_value
+        # Now here's where the magic happens
+        if not os.path.exists('.bit/msvc.bat'):
+            with open('.bit/msvc.bat', 'w') as file:
+                file.write('@call "{0}/vcvarsall.bat" {1}'.format(msvc_path, self.arch))
+                file.write('\n@echo %PATH%')
+        os.chdir('.bit')
+        syscheck = subprocess.Popen('msvc.bat', stdout=subprocess.PIPE, universal_newlines=True).communicate()
+        os.chdir('..')
+        syscheck = list(syscheck).pop(0).split('\n').pop(1)
+        syscheck = fix_strings([path for path in syscheck.split(os.pathsep)])
+        os.environ['PATH'] = os.pathsep.join(syscheck)
+        return 0
 
     def define(self, *defines):
         self.compiler.define(defines)

@@ -56,8 +56,7 @@ class MSVCCompiler(Compiler):
             self.lflags('/LD')
         else:
             self.project_name = '{0}.exe'.format(self.project_name)
-            self.lflags('/Fe"{0}/{1}"'.format(self.build_directory, self.project_name))
-        print self.executable
+            self.lflags('/Fe"{0}/{1}"'.format(self.build_directory, self.project_name)) 
         run_list = list(set(flatten([self.executable, '/out:{0}/{1}'.format(self.build_directory, self.project_name)] + self.link_list + self.linker_flags)))
         run_list = ' '.join(run_list)
         command('[LINK] {0}'.format(self.project_name))

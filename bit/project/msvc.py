@@ -31,12 +31,20 @@ class MSVC(Project):
             with open('.bit/msvc.bat', 'w') as file:
                 file.write('@call "{0}/vcvarsall.bat" {1}'.format(msvc_path, self.arch))
                 file.write('\n@echo %PATH%')
+                file.write('\n@echo %LIB%')
+                file.write('\n@echo %LIBPATH%')
+                file.write('\n@echo %INCLUDE%')
         os.chdir('.bit')
-        syscheck = subprocess.Popen('msvc.bat', stdout=subprocess.PIPE, universal_newlines=True).communicate()
+        paths = subprocess.Popen('msvc.bat', stdout=subprocess.PIPE, universal_newlines=True).communicate()
         os.chdir('..')
-        syscheck = list(syscheck).pop(0).split('\n').pop(1)
-        syscheck = fix_strings([path for path in syscheck.split(os.pathsep)])
-        os.environ['PATH'] = os.pathsep.join(syscheck)
+        # Oh joy, now we get to modify strings :V
+        paths = list(paths).pop(0).split('\n')
+        paths.pop(0), paths.pop()
+        sys_path, lib_path, dir_path, inc_path = [fix_strings(path.split(os.pathsep)) for path in paths] 
+        os.environ['PATH'] = os.pathsep.join(sys_path)
+        os.environ['LIB'] = os.pathsep.join(lib_path)
+        os.environ['LIBPATH'] = os.pathsep.join(dir_path)
+        os.environ['INCLUDE'] = os.pathsep.join(inc_path)
         return 0
 
     def define(self, *defines):

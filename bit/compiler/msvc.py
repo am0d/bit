@@ -49,6 +49,10 @@ class MSVCCompiler(Compiler):
         return 0
 
     def link_files(self):
+        try:
+            os.makedirs(self.build_directory)
+        except OSError:
+            pass
         if self.type == 'static':
             self.executable = 'lib'
             out_comm = '/OUT:{0}/{1}.lib'.format(self.build_directory, self.project_name)

@@ -1,7 +1,7 @@
 Unix
 ====
 
-Unix is the go to project for basic C, C++, and Objective-C based projects. Both `Cocoa`, and `MinGW` inherit all of the following functions and properties from `Unix`. In addition, `Unix` inherits from `Project`, which should never be used in any bit projects. The default compiler for `Unix` is `CC`, but can be changed to any other compiler from the `bit.compiler` module. 
+`Unix` is the go to project for basic C, C++, and Objective-C based projects. Both `Cocoa`, and `MinGW` inherit all of the following functions and properties from `Unix`. In addition, `Unix` inherits from `Project`, which should never be used in any bit projects. The default compiler for `Unix` is `CC`, but can be changed to any other compiler from the `bit.compiler` module. 
 
 Functions
 ---------

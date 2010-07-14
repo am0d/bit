@@ -15,4 +15,4 @@ Properties
 
 ### resource_compiler ###
 
-Takes a string that is then searched for on the syytem `PATH`. Use this to allow for different resource compilers on windows, or, if using a cross compiler, such as `i586-mingw32-windres` on Linux.
+Takes a string that is then searched for on the system `PATH`. Use this to allow for different resource compilers on windows, or, if using a cross compiler, such as `i586-mingw32-windres` on Linux.

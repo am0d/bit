@@ -1,7 +1,7 @@
 MinGW
 =====
 
-MinGW is a Windows specific project type for GCC projects. This documentation shows the functions that are specific to MinGW. For the entire list of functions see `Unix`
+MinGW is a Windows specific project type for GCC projects. This documentation shows the functions that are specific to MinGW. For the rest of the list see `Unix`
 
 Functions
 ---------

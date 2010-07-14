@@ -15,7 +15,7 @@ In this small tutorial, we're going to get you (the user) up and running with bi
 Installing bit
 --------------
 
-bit (0.3) currently requires a python 2.6 installation. It is known to work on Mac OS X, Linux, and Windows. To install bit, merely use the classic `setup.py install` from the commandline. On Windows, you will need to make sure that the [python installation path]\Scripts is on your system `PATH`. This is so that the `bit` commandline app can be used. On OS X and Linux, these are automatically added to a folder on your PATH (assuming you're not doing anything wonky)
+bit (0.3) currently requires a python 2.6 installation. It is known to work on Mac OS X, Linux, and Windows. To install bit, merely use the classic `setup.py install` from the commandline. On Windows, you will need to make sure that the [python installation path]\Scripts is on your system `PATH`. This is so that the `bit` commandline app can be used. On OS X and Linux, these are automatically added to a folder on your `PATH` (assuming you're not doing anything wonky)
 
 The bitfile
 -----------

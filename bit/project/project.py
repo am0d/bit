@@ -40,6 +40,10 @@ class Project(threading.Thread):
                                 dest='rebuild', default=False,
                                 help='Fully rebuilds the project')
         bit.parser.add_option_group(self.options)
+        try:
+            os.makedirs('.bit')
+        except OSError:
+            pass
 
     def __str__(self):
         return 'Project'

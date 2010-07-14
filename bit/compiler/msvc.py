@@ -49,16 +49,20 @@ class MSVCCompiler(Compiler):
         return 0
 
     def link_files(self):
+        try:
+            os.makedirs(self.build_directory)
+        except OSError:
+            pass
         if self.type == 'static':
-            self.project_name = '{0}.lib'.format(self.project_name)
             self.executable = 'lib'
+            out_comm = '/OUT:{0}/{1}.lib'.format(self.build_directory, self.project_name)
         elif self.type == 'dynamic':
-            self.lflags('/LD')
+            self.lflags('/LD'), self.lflags('/DLL'), self.lflags('/link')
+            out_comm = '/OUT:{0}/{1}.dll'.format(self.build_directory, self.project_name)
         else:
-            self.project_name = '{0}.exe'.format(self.project_name)
-            self.lflags('/Fe"{0}/{1}"'.format(self.build_directory, self.project_name))
-        print self.executable
-        run_list = list(set(flatten([self.executable, '/out:{0}/{1}'.format(self.build_directory, self.project_name)] + self.link_list + self.linker_flags)))
+            self.lflags('/Fe"{0}/{1}.exe"'.format(self.build_directory, self.project_name))
+            out_comm = [ ]
+        run_list = flatten([self.executable, '/nologo'] + self.link_list + self.linker_flags + [out_comm])
         run_list = ' '.join(run_list)
         command('[LINK] {0}'.format(self.project_name))
         try:

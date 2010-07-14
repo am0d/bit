@@ -43,10 +43,10 @@ class GPL(Harbinger):
         while threading.active_count < 1:
             time.sleep(1)
 
-    def project(self, instance):
-        self.project_list.append(instance)
-        self.project_dict['{1}|{0}'.format(instance.project_name, 
-                                             instance.name)] = instance
+    def project(self, *instances):
+        for instance in instances:
+            self.project_list.append(instance)
+            self.project_dict['{1}|{0}'.format(instance.project_name, instance.name)] = instance
 
     def path(self, *directories):
         path_list = []

@@ -1,14 +1,14 @@
 MinGW
 =====
 
-MinGW is a Windows specific project type for GCC projects. This documentation shows the functions that are specific to MinGW. For the rest of the list see `Unix`
+MinGW is a Windows specific project type for GCC projects. This documentation shows the functions that are specific to MinGW. For the rest of the list see `Unix`.
 
 Functions
 ---------
 
 ### resource ###
 
-Takes any number of windows resource (.rc) files. These are then compiled to object files with `windres`, and placed in the proper directory, and then linked in the with project. Use this to embed icons and other resources into your executable.  
+Takes any number of windows resource (.rc) files. These are then compiled to object files with `windres`, and placed in the proper directory, and then linked in with the project. Use this to embed icons and other resources into your executable.  
 
 Properties
 ----------
